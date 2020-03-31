@@ -1,0 +1,94 @@
+﻿@model Uni.Models.Fornecedor
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Fornecedor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Cnpj" />
+            <div class="form-group">
+                <label asp-for="NomeEmpresa" class="control-label"></label>
+                <input asp-for="NomeEmpresa" class="form-control" />
+                <span asp-validation-for="NomeEmpresa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InscricaoEstadual" class="control-label"></label>
+                <input asp-for="InscricaoEstadual" class="form-control" />
+                <span asp-validation-for="InscricaoEstadual" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InscricaoMunicipal" class="control-label"></label>
+                <input asp-for="InscricaoMunicipal" class="form-control" />
+                <span asp-validation-for="InscricaoMunicipal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Telefone.Telefones" class="control-label"></label>
+                <input asp-for="Telefone.Telefones" class="form-control" />
+                <span asp-validation-for="Telefone.Telefones" class="text-danger"></span>
+            </div>
+            <div class="form-group d-none">
+                <label asp-for="Telefone_Id_telefone" class="control-label"></label>
+                <input asp-for="Telefone_Id_telefone" class="form-control" />
+                <span asp-validation-for="Telefone_Id_telefone" class="text-danger"></span>
+            </div>
+            <div class="form-group d-none">
+                <label asp-for="Endereco_Id_endereco" class="control-label"></label>
+                <input asp-for="Endereco_Id_endereco" class="form-control" />
+                <span asp-validation-for="Endereco_Id_endereco" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Endereco.Cep" class="control-label"></label>
+                <input asp-for="Endereco.Cep" class="form-control" />
+                <span asp-validation-for="Endereco.Cep" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Endereco.Rua" class="control-label"></label>
+                <input asp-for="Endereco.Rua" class="form-control" />
+                <span asp-validation-for="Endereco.Rua" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Endereco.Numero" class="control-label"></label>
+                <input asp-for="Endereco.Numero" class="form-control" />
+                <span asp-validation-for="Endereco.Numero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Endereco.Bairro" class="control-label"></label>
+                <input asp-for="Endereco.Bairro" class="form-control" />
+                <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Endereco.Cidade" class="control-label"></label>
+                <input asp-for="Endereco.Cidade" class="form-control" />
+                <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Endereco.Estado" class="control-label"></label>
+                <input asp-for="Endereco.Estado" class="form-control" />
+                <span asp-validation-for="Endereco.Estado" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

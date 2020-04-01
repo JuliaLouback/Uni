@@ -56,6 +56,7 @@ namespace Uni.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Bairro")
+                        .IsRequired()
                         .HasColumnType("nvarchar(45)")
                         .HasMaxLength(45);
 
@@ -63,10 +64,12 @@ namespace Uni.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Cidade")
+                        .IsRequired()
                         .HasColumnType("nvarchar(45)")
                         .HasMaxLength(45);
 
                     b.Property<string>("Estado")
+                        .IsRequired()
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
@@ -74,6 +77,7 @@ namespace Uni.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Rua")
+                        .IsRequired()
                         .HasColumnType("nvarchar(60)")
                         .HasMaxLength(60);
 
@@ -88,6 +92,7 @@ namespace Uni.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(60)")
                         .HasMaxLength(60);
 
@@ -154,6 +159,51 @@ namespace Uni.Migrations
                     b.ToTable("Funcionario");
                 });
 
+            modelBuilder.Entity("Uni.Models.Produto", b =>
+                {
+                    b.Property<int>("Id_produto")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Estoque_maximo")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Estoque_minimo")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("Fornecedor Cnpj")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Fornecedor_Cnpj")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(80)")
+                        .HasMaxLength(80);
+
+                    b.Property<string>("Unidade_medida")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(60)")
+                        .HasMaxLength(60);
+
+                    b.Property<string>("Valor_unitario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(80)")
+                        .HasMaxLength(80);
+
+                    b.HasKey("Id_produto");
+
+                    b.HasIndex("Fornecedor Cnpj");
+
+                    b.ToTable("Produto");
+                });
+
             modelBuilder.Entity("Uni.Models.Telefone", b =>
                 {
                     b.Property<int>("Id_telefone")
@@ -212,6 +262,13 @@ namespace Uni.Migrations
                         .HasForeignKey("Telefone_Id_telefone")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Uni.Models.Produto", b =>
+                {
+                    b.HasOne("Uni.Models.Fornecedor", "Fornecedor")
+                        .WithMany()
+                        .HasForeignKey("Fornecedor Cnpj");
                 });
 #pragma warning restore 612, 618
         }

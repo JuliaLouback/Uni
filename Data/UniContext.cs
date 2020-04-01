@@ -20,6 +20,7 @@ namespace Uni.Data
         public DbSet<Uni.Models.Endereco> Endereco { get; set; }
         public DbSet<Uni.Models.Funcionario> Funcionario { get; set; }
         public DbSet<Uni.Models.Cliente> Cliente { get; set; }
+        public DbSet<Uni.Models.Produto> Produto { get; set; }
 
     }
 }

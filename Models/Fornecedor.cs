@@ -11,20 +11,27 @@ namespace Uni.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
+        [Required(ErrorMessage = "CNPJ é obrigatório", AllowEmptyStrings = false)]
+        [Display(Name = "CNPJ")]
         public long Cnpj { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nome da empresa é obrigatório", AllowEmptyStrings = false)]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$", ErrorMessage = "Informe uma empresa válida")]
         [Display(Name = "Nome")]
         [StringLength(80)]
         public string NomeEmpresa { get; set; }
 
+        [Required(ErrorMessage = "E-mail é obrigatório", AllowEmptyStrings = false)]
         [Display(Name = "E-mail")]
+        [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Informe um email válido")]
         [StringLength(60)]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Inscrição Estadual é obrigatório", AllowEmptyStrings = false)]
         [Display(Name = "Inscrição Estadual")]
         public long InscricaoEstadual { get; set; }
 
+        [Required(ErrorMessage = "Inscrição Municipal é obrigatório", AllowEmptyStrings = false)]
         [Display(Name = "Inscrição Municipal")]
         public long InscricaoMunicipal { get; set; }
 

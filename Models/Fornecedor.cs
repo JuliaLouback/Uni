@@ -9,7 +9,6 @@ namespace Uni.Models
 {
     public class Fornecedor
     {
-        internal object Fornecedores;
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]

@@ -424,3 +424,8 @@ D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Cliente_Venda\Delete.cshtml.g.cs
 D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Cliente_Venda\Details.cshtml.g.cs
 D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Cliente_Venda\Edit.cshtml.g.cs
 D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Cliente_Venda\Index.cshtml.g.cs
+D:\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Register.cshtml.g.cs
+D:\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_ViewImports.cshtml.g.cs
+D:\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
+D:\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
+D:\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Login.cshtml.g.cs

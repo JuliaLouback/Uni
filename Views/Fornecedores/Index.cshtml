@@ -19,6 +19,9 @@
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Cnpj)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.InscricaoEstadual)
             </th>
             <th>
@@ -37,14 +40,17 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Cnpj)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.InscricaoEstadual)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.InscricaoMunicipal)
             </td>
             <td>
-                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Cnpj" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco">Editar</a> 
-                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Cnpj">Detalhes</a> 
+                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Cnpj" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco">Editar</a>
+                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Cnpj">Detalhes</a>
                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Cnpj">Excluir</a>
             </td>
         </tr>

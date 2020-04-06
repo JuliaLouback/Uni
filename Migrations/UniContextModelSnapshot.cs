@@ -15,7 +15,7 @@ namespace Uni.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -46,6 +46,28 @@ namespace Uni.Migrations
                     b.HasIndex("Telefone_Id_telefone");
 
                     b.ToTable("Cliente");
+                });
+
+            modelBuilder.Entity("Uni.Models.Cliente_Venda", b =>
+                {
+                    b.Property<int>("Id_clienteVenda")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("Cliente_Cpf")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Venda_Id_venda")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id_clienteVenda");
+
+                    b.HasIndex("Cliente_Cpf");
+
+                    b.HasIndex("Venda_Id_venda");
+
+                    b.ToTable("Cliente_Venda");
                 });
 
             modelBuilder.Entity("Uni.Models.Endereco", b =>
@@ -187,6 +209,9 @@ namespace Uni.Migrations
                         .HasColumnType("nvarchar(80)")
                         .HasMaxLength(80);
 
+                    b.Property<int?>("Produto_Id_produto")
+                        .HasColumnType("int");
+
                     b.Property<string>("Unidade_medida")
                         .IsRequired()
                         .HasColumnType("nvarchar(60)")
@@ -200,6 +225,8 @@ namespace Uni.Migrations
                     b.HasKey("Id_produto");
 
                     b.HasIndex("Fornecedor Cnpj");
+
+                    b.HasIndex("Produto_Id_produto");
 
                     b.ToTable("Produto");
                 });
@@ -219,6 +246,58 @@ namespace Uni.Migrations
                     b.ToTable("Telefone");
                 });
 
+            modelBuilder.Entity("Uni.Models.Venda", b =>
+                {
+                    b.Property<int>("Id_venda")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Data_venda")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("Funcionario_Cpf")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Valor_frete")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<decimal>("Valor_total")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.HasKey("Id_venda");
+
+                    b.HasIndex("Funcionario_Cpf");
+
+                    b.ToTable("Venda");
+                });
+
+            modelBuilder.Entity("Uni.Models.Venda_Produto", b =>
+                {
+                    b.Property<int>("Id_vendaProduto")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Produto_Id_produto")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<int>("Venda_Id_venda")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id_vendaProduto");
+
+                    b.HasIndex("Venda_Id_venda");
+
+                    b.ToTable("Venda_Produto");
+                });
+
             modelBuilder.Entity("Uni.Models.Cliente", b =>
                 {
                     b.HasOne("Uni.Models.Endereco", "Endereco")
@@ -230,6 +309,21 @@ namespace Uni.Migrations
                     b.HasOne("Uni.Models.Telefone", "Telefone")
                         .WithMany()
                         .HasForeignKey("Telefone_Id_telefone")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Uni.Models.Cliente_Venda", b =>
+                {
+                    b.HasOne("Uni.Models.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("Cliente_Cpf")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Uni.Models.Venda", "Venda")
+                        .WithMany()
+                        .HasForeignKey("Venda_Id_venda")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -269,6 +363,28 @@ namespace Uni.Migrations
                     b.HasOne("Uni.Models.Fornecedor", "Fornecedor")
                         .WithMany()
                         .HasForeignKey("Fornecedor Cnpj");
+
+                    b.HasOne("Uni.Models.Venda_Produto", null)
+                        .WithMany("Produto")
+                        .HasForeignKey("Produto_Id_produto");
+                });
+
+            modelBuilder.Entity("Uni.Models.Venda", b =>
+                {
+                    b.HasOne("Uni.Models.Funcionario", "Funcionario")
+                        .WithMany()
+                        .HasForeignKey("Funcionario_Cpf")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Uni.Models.Venda_Produto", b =>
+                {
+                    b.HasOne("Uni.Models.Venda", "Venda")
+                        .WithMany()
+                        .HasForeignKey("Venda_Id_venda")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

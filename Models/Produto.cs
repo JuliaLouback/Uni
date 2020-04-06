@@ -18,7 +18,7 @@ namespace Uni.Models
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Valor do produto é obrigatório", AllowEmptyStrings = false)]
-        [Display(Name = "Valor Unitario")]
+        [Display(Name = "Valor Unitário")]
         [StringLength(80)]
         public string Valor_unitario { get; set; }
 
@@ -32,16 +32,16 @@ namespace Uni.Models
         public string Descricao { get; set; }
 
         [Required(ErrorMessage = "Estoque minimo é obrigatório", AllowEmptyStrings = false)]
-        [Display(Name = "Estoque Minimo")]
+        [Display(Name = "Estoque Mínimo")]
         public long Estoque_minimo { get; set; }
 
         [Required(ErrorMessage = "Estoque maximo é obrigatório", AllowEmptyStrings = false)]
-        [Display(Name = "Estoque Maximo")]
+        [Display(Name = "Estoque Máximo")]
         public long Estoque_maximo { get; set; }
 
         [ForeignKey("Fornecedor Cnpj")]
         public Fornecedor Fornecedor { get; set; }
-
+        [Display(Name = "Fornecedor")]
         public long Fornecedor_Cnpj { get; set; }
 
 

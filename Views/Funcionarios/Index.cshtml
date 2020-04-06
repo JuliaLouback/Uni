@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<Uni.Models.Funcionario>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Funcionários";
 }
 
-<h1>Index</h1>
+<h1 class="text-primary mt-2">Funcionários</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-outline-primary mt-4" asp-action="Create">Adicionar</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -20,9 +20,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cargo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Data_nascimento)
             </th>
             <th></th>
         </tr>
@@ -40,12 +37,9 @@
                 @Html.DisplayFor(modelItem => item.Cargo)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Data_nascimento)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Cpf" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Cpf">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Cpf">Delete</a>
+                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Cpf" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco">Editar</a> 
+                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Cpf">Detalhes</a> 
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Cpf">Excluir</a>
             </td>
         </tr>
 }

@@ -48,7 +48,7 @@ namespace Uni.Controllers
         // GET: Produtoes/Create
         public IActionResult Create()
         {
-            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "Email");
+            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "NomeEmpresa");
             return View();
         }
 
@@ -63,7 +63,7 @@ namespace Uni.Controllers
             {
 
                 Fornecedor fornecedor = new Fornecedor();
-                fornecedor.Cnpj = produto.Fornecedor.Cnpj;
+                fornecedor.Cnpj = produto.Fornecedor_Cnpj;
                 
                 long lastestFornecedorId = fornecedor.Cnpj;
                 produto.Fornecedor_Cnpj = lastestFornecedorId;
@@ -73,7 +73,7 @@ namespace Uni.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "Email", produto.Fornecedor_Cnpj);
+            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "NomeEmpresa", produto.Fornecedor_Cnpj);
             return View(produto);
         }
 
@@ -90,7 +90,7 @@ namespace Uni.Controllers
             {
                 return NotFound();
             }
-            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "Email", produto.Fornecedor_Cnpj);
+            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "NomeEmpresa", produto.Fornecedor_Cnpj);
             return View(produto);
         }
 
@@ -126,7 +126,7 @@ namespace Uni.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "Email", produto.Fornecedor_Cnpj);
+            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "NomeEmpresa", produto.Fornecedor_Cnpj);
             return View(produto);
         }
 

@@ -21,6 +21,9 @@ namespace Uni.Data
         public DbSet<Uni.Models.Funcionario> Funcionario { get; set; }
         public DbSet<Uni.Models.Cliente> Cliente { get; set; }
         public DbSet<Uni.Models.Produto> Produto { get; set; }
+        public DbSet<Uni.Models.Venda> Venda { get; set; }
+        public DbSet<Uni.Models.Venda_Produto> Venda_Produto { get; set; }
+        public DbSet<Uni.Models.Cliente_Venda> Cliente_Venda { get; set; }
 
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Sitecore.FakeDb;
 using Uni.Data;
 using Uni.Models;
 
@@ -13,6 +14,16 @@ namespace Uni.Controllers
     public class Venda_ProdutoController : Controller
     {
         private readonly UniContext _context;
+       
+
+        //ADD PRODUTO 
+        public ActionResult AddProduto()
+        {
+          /*  var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            ViewBag.Venda_Id_venda = new SelectList(CombosHelper.GetVendas(user.CompanyId), "IdVenda", "Descricao"); */
+            return View();
+        }
+
 
         public Venda_ProdutoController(UniContext context)
         {

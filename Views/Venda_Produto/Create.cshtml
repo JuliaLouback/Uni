@@ -1,7 +1,7 @@
 ﻿@model Uni.Models.Venda_Produto
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Adicionar";
 }
 
 <h1>Create</h1>
@@ -12,11 +12,12 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Quantidade" class="control-label"></label>
-                <input asp-for="Quantidade" class="form-control" />
-                <span asp-validation-for="Quantidade" class="text-danger"></span>
-            </div>
+             <div class="form-group">
+                 <label asp-for="Quantidade" class="control-label"></label>
+                 <input asp-for="Quantidade" class="form-control" />
+                 <span asp-validation-for="Quantidade" class="text-danger"></span>
+             </div>
+     
             <div class="form-group">
                 <label asp-for="Valor" class="control-label"></label>
                 <input asp-for="Valor" class="form-control" />
@@ -31,16 +32,28 @@
                 <input asp-for="Produto_Id_produto" class="form-control" />
                 <span asp-validation-for="Produto_Id_produto" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="col-md-1 col-sm-12">
+                <div class="form-group">
+                    <input type="submit" value="Add Produto" class="btn btn-primary" />
+                </div>
+            </div>
+
+            <div class="col-md-1 col-sm-12">
+                <div class="form-group">
+                    <a class="btn btn-success" asp-action="Index">Voltar</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
+<!-- <div>
     <a asp-action="Index">Back to List</a>
 </div>
+-->
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

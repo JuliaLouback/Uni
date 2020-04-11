@@ -1,0 +1,99 @@
+﻿@model Uni.Models.Venda
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Excluir</h1>
+
+<h3>Tem certeza que deseja excluir?</h3>
+<div>
+    <h4>Venda</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.Nome)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Nome)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.Cpf)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Cpf)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Funcionario.Nome)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Funcionario.Nome)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Funcionario.Cpf)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Funcionario.Cpf)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Data_venda)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.TextBoxFor(model => model.Data_venda, "{0:dd/MM/yyyy}", new { @style = "border:none;" })
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Valor_total)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Valor_total)
+        </dd>
+    </dl>
+    <h4>Produtos </h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Nome
+                </th>
+                <th>
+                    Quantidade
+                </th>
+                <th>
+                    Valor Unitário
+                </th>
+                <th>
+                    Total
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.Lista != null)
+            {
+                foreach (VendaProduto produto in ViewBag.Lista)
+                {
+                    <tr>
+                        <td>
+                            @produto.Produto.Nome
+                        </td>
+                        <td>
+                            @produto.Quantidade
+                        </td>
+                        <td>
+                            R$ @produto.Produto.Valor_unitario
+                        </td>
+                        <td>
+                            R$ @produto.Valor
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id_venda" />
+        <a class="btn btn-success" asp-action="Index">Voltar</a>
+        <input type="submit" value="Excluir" class="btn btn-danger" /> 
+    </form>
+</div>

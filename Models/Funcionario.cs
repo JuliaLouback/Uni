@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Uni.Models
 {
@@ -32,8 +29,8 @@ namespace Uni.Models
 
         [Required(ErrorMessage = "Data de nascimento é obrigatório", AllowEmptyStrings = false)]
         [Display(Name = "Data de Nascimento")]
-        [DisplayFormat(DataFormatString = "dd/mm/yyyy")]
-        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         public DateTime Data_nascimento { get; set; }
 
         [ForeignKey("Endereco_Id_endereco")]

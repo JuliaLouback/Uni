@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Uni.Models.Venda>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary mt-2">Venda</h1>
+
+<p>
+    <a class="btn btn-outline-primary mt-4" asp-action="Create">Adicionar</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcionario.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor_total)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Funcionario.Nome)
+            </td>
+                       <td>
+                @Html.DisplayFor(modelItem => item.Valor_total)
+            </td>
+            <td>
+                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id_venda" asp-route-novo="1">Editar</a>
+                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id_venda">Detalhes</a> 
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_venda">Excluir</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

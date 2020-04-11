@@ -32,6 +32,8 @@
           "Microsoft.EntityFrameworkCore.Tools": "3.1.3",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "3.1.1",
           "Sitecore.FakeDb": "2.0.1",
+          "cco.mvc.globalization.pt-br": "1.0.0",
+          "jQuery.MaskedInput": "1.4.1",
           "Microsoft.AspNetCore.Antiforgery": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Cookies": "3.1.0.0",
@@ -141,7 +143,6 @@
           "Microsoft.VisualBasic.Core": "10.0.5.0",
           "Microsoft.VisualBasic": "10.0.0.0",
           "Microsoft.Win32.Primitives.Reference": "4.1.2.0",
-          "Microsoft.Win32.Registry.Reference": "4.1.3.0",
           "mscorlib": "4.0.0.0",
           "netstandard": "2.1.0.0",
           "System.AppContext.Reference": "4.2.2.0",
@@ -166,7 +167,6 @@
           "System.Diagnostics.Contracts": "4.0.4.0",
           "System.Diagnostics.Debug.Reference": "4.1.2.0",
           "System.Diagnostics.DiagnosticSource.Reference": "4.0.5.0",
-          "System.Diagnostics.EventLog": "4.0.2.0",
           "System.Diagnostics.FileVersionInfo": "4.0.4.0",
           "System.Diagnostics.Process": "4.2.2.0",
           "System.Diagnostics.StackTrace": "4.1.2.0",
@@ -192,7 +192,6 @@
           "System.IO.FileSystem.Watcher": "4.1.2.0",
           "System.IO.IsolatedStorage": "4.1.2.0",
           "System.IO.MemoryMappedFiles": "4.1.2.0",
-          "System.IO.Pipelines": "4.0.2.0",
           "System.IO.Pipes": "4.1.2.0",
           "System.IO.UnmanagedMemoryStream": "4.1.2.0",
           "System.Linq.Reference": "4.2.2.0",
@@ -248,19 +247,14 @@
           "System.Runtime.Serialization.Json.Reference": "4.0.5.0",
           "System.Runtime.Serialization.Primitives.Reference": "4.2.2.0",
           "System.Runtime.Serialization.Xml": "4.1.5.0",
-          "System.Security.AccessControl.Reference": "4.1.1.0",
           "System.Security.Claims": "4.1.2.0",
           "System.Security.Cryptography.Algorithms.Reference": "4.3.2.0",
-          "System.Security.Cryptography.Cng.Reference": "4.3.3.0",
           "System.Security.Cryptography.Csp.Reference": "4.1.2.0",
           "System.Security.Cryptography.Encoding.Reference": "4.1.2.0",
           "System.Security.Cryptography.Primitives.Reference": "4.1.2.0",
           "System.Security.Cryptography.X509Certificates.Reference": "4.2.2.0",
-          "System.Security.Cryptography.Xml": "4.0.3.0",
           "System.Security": "4.0.0.0",
-          "System.Security.Permissions.Reference": "4.0.3.0",
           "System.Security.Principal": "4.1.2.0",
-          "System.Security.Principal.Windows.Reference": "4.1.1.0",
           "System.Security.SecureString.Reference": "4.1.2.0",
           "System.ServiceModel.Web": "4.0.0.0",
           "System.ServiceProcess": "4.0.0.0",
@@ -285,7 +279,6 @@
           "System.Web": "4.0.0.0",
           "System.Web.HttpUtility": "4.0.2.0",
           "System.Windows": "4.0.0.0",
-          "System.Windows.Extensions": "4.0.1.0",
           "System.Xml": "4.0.0.0",
           "System.Xml.Linq": "4.0.0.0",
           "System.Xml.ReaderWriter.Reference": "4.2.2.0",
@@ -302,6 +295,83 @@
         },
         "compile": {
           "Uni.dll": {}
+        }
+      },
+      "cco.mvc.globalization.pt-br/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNet.Mvc.pt-br": "5.2.3"
+        }
+      },
+      "jQuery/1.9.0": {},
+      "jQuery.MaskedInput/1.4.1": {
+        "dependencies": {
+          "jQuery": "1.9.0"
+        }
+      },
+      "Microsoft.AspNet.Mvc/5.2.3": {
+        "dependencies": {
+          "Microsoft.AspNet.Razor": "3.2.3",
+          "Microsoft.AspNet.WebPages": "3.2.3"
+        },
+        "runtime": {
+          "lib/net45/System.Web.Mvc.dll": {
+            "assemblyVersion": "5.2.3.0",
+            "fileVersion": "5.2.30128.0"
+          }
+        },
+        "compile": {
+          "lib/net45/System.Web.Mvc.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Mvc.pt-br/5.2.3": {
+        "dependencies": {
+          "Microsoft.AspNet.Mvc": "5.2.3"
+        },
+        "resources": {
+          "lib/net45/pt-br/System.Web.Mvc.resources.dll": {
+            "locale": "pt-br"
+          }
+        }
+      },
+      "Microsoft.AspNet.Razor/3.2.3": {
+        "runtime": {
+          "lib/net45/System.Web.Razor.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.30128.0"
+          }
+        },
+        "compile": {
+          "lib/net45/System.Web.Razor.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebPages/3.2.3": {
+        "dependencies": {
+          "Microsoft.AspNet.Razor": "3.2.3",
+          "Microsoft.Web.Infrastructure": "1.0.0"
+        },
+        "runtime": {
+          "lib/net45/System.Web.Helpers.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.30128.0"
+          },
+          "lib/net45/System.Web.WebPages.Deployment.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.30128.0"
+          },
+          "lib/net45/System.Web.WebPages.Razor.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.30128.0"
+          },
+          "lib/net45/System.Web.WebPages.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.30128.0"
+          }
+        },
+        "compile": {
+          "lib/net45/System.Web.Helpers.dll": {},
+          "lib/net45/System.Web.WebPages.Deployment.dll": {},
+          "lib/net45/System.Web.WebPages.Razor.dll": {},
+          "lib/net45/System.Web.WebPages.dll": {}
         }
       },
       "Microsoft.AspNetCore.Cryptography.Internal/3.1.3": {
@@ -1209,6 +1279,17 @@
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll": {}
+        }
+      },
+      "Microsoft.Web.Infrastructure/1.0.0": {
+        "runtime": {
+          "lib/net40/Microsoft.Web.Infrastructure.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.20105.407"
+          }
+        },
+        "compile": {
+          "lib/net40/Microsoft.Web.Infrastructure.dll": {}
         }
       },
       "Microsoft.Win32.Primitives/4.3.0": {
@@ -3100,12 +3181,6 @@
         },
         "compileOnly": true
       },
-      "Microsoft.Win32.Registry.Reference/4.1.3.0": {
-        "compile": {
-          "Microsoft.Win32.Registry.dll": {}
-        },
-        "compileOnly": true
-      },
       "mscorlib/4.0.0.0": {
         "compile": {
           "mscorlib.dll": {}
@@ -3247,12 +3322,6 @@
       "System.Diagnostics.DiagnosticSource.Reference/4.0.5.0": {
         "compile": {
           "System.Diagnostics.DiagnosticSource.dll": {}
-        },
-        "compileOnly": true
-      },
-      "System.Diagnostics.EventLog/4.0.2.0": {
-        "compile": {
-          "System.Diagnostics.EventLog.dll": {}
         },
         "compileOnly": true
       },
@@ -3403,12 +3472,6 @@
       "System.IO.MemoryMappedFiles/4.1.2.0": {
         "compile": {
           "System.IO.MemoryMappedFiles.dll": {}
-        },
-        "compileOnly": true
-      },
-      "System.IO.Pipelines/4.0.2.0": {
-        "compile": {
-          "System.IO.Pipelines.dll": {}
         },
         "compileOnly": true
       },
@@ -3742,12 +3805,6 @@
         },
         "compileOnly": true
       },
-      "System.Security.AccessControl.Reference/4.1.1.0": {
-        "compile": {
-          "System.Security.AccessControl.dll": {}
-        },
-        "compileOnly": true
-      },
       "System.Security.Claims/4.1.2.0": {
         "compile": {
           "System.Security.Claims.dll": {}
@@ -3757,12 +3814,6 @@
       "System.Security.Cryptography.Algorithms.Reference/4.3.2.0": {
         "compile": {
           "System.Security.Cryptography.Algorithms.dll": {}
-        },
-        "compileOnly": true
-      },
-      "System.Security.Cryptography.Cng.Reference/4.3.3.0": {
-        "compile": {
-          "System.Security.Cryptography.Cng.dll": {}
         },
         "compileOnly": true
       },
@@ -3790,33 +3841,15 @@
         },
         "compileOnly": true
       },
-      "System.Security.Cryptography.Xml/4.0.3.0": {
-        "compile": {
-          "System.Security.Cryptography.Xml.dll": {}
-        },
-        "compileOnly": true
-      },
       "System.Security/4.0.0.0": {
         "compile": {
           "System.Security.dll": {}
         },
         "compileOnly": true
       },
-      "System.Security.Permissions.Reference/4.0.3.0": {
-        "compile": {
-          "System.Security.Permissions.dll": {}
-        },
-        "compileOnly": true
-      },
       "System.Security.Principal/4.1.2.0": {
         "compile": {
           "System.Security.Principal.dll": {}
-        },
-        "compileOnly": true
-      },
-      "System.Security.Principal.Windows.Reference/4.1.1.0": {
-        "compile": {
-          "System.Security.Principal.Windows.dll": {}
         },
         "compileOnly": true
       },
@@ -3964,12 +3997,6 @@
         },
         "compileOnly": true
       },
-      "System.Windows.Extensions/4.0.1.0": {
-        "compile": {
-          "System.Windows.Extensions.dll": {}
-        },
-        "compileOnly": true
-      },
       "System.Xml/4.0.0.0": {
         "compile": {
           "System.Xml.dll": {}
@@ -4037,6 +4064,55 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "cco.mvc.globalization.pt-br/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RdvUoHRKoOhntHqZfcixv1/xxmBopdSbFM9sN9E7MjTl8r2McxgFiJ9E4AxJiTcM/Dt/TNJlBa4SDfMq0tT0fQ==",
+      "path": "cco.mvc.globalization.pt-br/1.0.0",
+      "hashPath": "cco.mvc.globalization.pt-br.1.0.0.nupkg.sha512"
+    },
+    "jQuery/1.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bS6OGSd/QL39vKKhATpeehgZDCzV6foRJ52EocEGAB29VetwXkQHN6KQIBlBbW9VJzuHr+rQxHYZ13MnPGQ/vw==",
+      "path": "jquery/1.9.0",
+      "hashPath": "jquery.1.9.0.nupkg.sha512"
+    },
+    "jQuery.MaskedInput/1.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-U/XBjJtENm8HhAm5PjOxlaH+q13PpTJpvDJOPg1bTU0uMssn8pXalqgIqYyg9dvytfodAPneOSwXBG+FxetELA==",
+      "path": "jquery.maskedinput/1.4.1",
+      "hashPath": "jquery.maskedinput.1.4.1.nupkg.sha512"
+    },
+    "Microsoft.AspNet.Mvc/5.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-i8jZf5QrbcFmjiYWRD7o7qTak/oXKxV80MgP4cZ33A8GC0RBtBIdZ1VHaloGUg+qsHUz5rVkGpwenM+ugDz5PA==",
+      "path": "microsoft.aspnet.mvc/5.2.3",
+      "hashPath": "microsoft.aspnet.mvc.5.2.3.nupkg.sha512"
+    },
+    "Microsoft.AspNet.Mvc.pt-br/5.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-djKMMh7wQ3oGTlNHDPTH6Cliql+xi20gIwBpBi2bFJ8RCpePeDraWXWrBixP7fFeDifypBK8FSVPuN0xbIKrYg==",
+      "path": "microsoft.aspnet.mvc.pt-br/5.2.3",
+      "hashPath": "microsoft.aspnet.mvc.pt-br.5.2.3.nupkg.sha512"
+    },
+    "Microsoft.AspNet.Razor/3.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-leta+Q73O7+pR8ThTqXmwaNMSqwZQQ3BHfpUHd8S1XaUWe1jRVLitMHqo1AmY7wPNLyankPA1beiUKEGj8Q3Dw==",
+      "path": "microsoft.aspnet.razor/3.2.3",
+      "hashPath": "microsoft.aspnet.razor.3.2.3.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebPages/3.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zbtxBERla5RE/mhftwbrXOzc0r6lh8WcnjpGW7QQe+PvSDDx1BgsTUGzfCXO/vJznHNpY5oCSYLt8Q5vUu7F0g==",
+      "path": "microsoft.aspnet.webpages/3.2.3",
+      "hashPath": "microsoft.aspnet.webpages.3.2.3.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Cryptography.Internal/3.1.3": {
       "type": "package",
@@ -4436,6 +4512,13 @@
       "sha512": "sha512-U+ud8PSdPOxnRMPNZcuppp5vS+PbY2nzHVNvcD1u/RYzG8jXVtrwlDkFLazbEsR7/8uym2UbdvQ5qKEcSkzPXA==",
       "path": "microsoft.visualstudio.web.codegenerators.mvc/3.1.1",
       "hashPath": "microsoft.visualstudio.web.codegenerators.mvc.3.1.1.nupkg.sha512"
+    },
+    "Microsoft.Web.Infrastructure/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FNmvLn5m2LTU/Rs2KWVo0SIIh9Ek+U0ojex7xeDaSHw/zgEP77A8vY5cVWgUtBGS8MJfDGNn8rpXJWEIQaPwTg==",
+      "path": "microsoft.web.infrastructure/1.0.0",
+      "hashPath": "microsoft.web.infrastructure.1.0.0.nupkg.sha512"
     },
     "Microsoft.Win32.Primitives/4.3.0": {
       "type": "package",
@@ -5794,11 +5877,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.Win32.Registry.Reference/4.1.3.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
     "mscorlib/4.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
@@ -5915,11 +5993,6 @@
       "sha512": ""
     },
     "System.Diagnostics.DiagnosticSource.Reference/4.0.5.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "System.Diagnostics.EventLog/4.0.2.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -6045,11 +6118,6 @@
       "sha512": ""
     },
     "System.IO.MemoryMappedFiles/4.1.2.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "System.IO.Pipelines/4.0.2.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -6329,22 +6397,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "System.Security.AccessControl.Reference/4.1.1.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
     "System.Security.Claims/4.1.2.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
     },
     "System.Security.Cryptography.Algorithms.Reference/4.3.2.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "System.Security.Cryptography.Cng.Reference/4.3.3.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -6369,27 +6427,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "System.Security.Cryptography.Xml/4.0.3.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
     "System.Security/4.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
     },
-    "System.Security.Permissions.Reference/4.0.3.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
     "System.Security.Principal/4.1.2.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "System.Security.Principal.Windows.Reference/4.1.1.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -6510,11 +6553,6 @@
       "sha512": ""
     },
     "System.Windows/4.0.0.0": {
-      "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "System.Windows.Extensions/4.0.1.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""

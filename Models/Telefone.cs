@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Uni.Models
 {
@@ -12,7 +8,7 @@ namespace Uni.Models
         public int Id_telefone { get; set; }
 
         [Required(ErrorMessage = "Telefone é obrigatório", AllowEmptyStrings = false)]
-        [Display (Name ="Telefone")]
+        [Display(Name = "Telefone")]
         public long Telefones { get; set; }
     }
 }

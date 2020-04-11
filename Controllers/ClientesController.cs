@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 using Uni.Data;
 using Uni.Models;
 
@@ -85,7 +83,7 @@ namespace Uni.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return View(cliente);
         }
 
@@ -108,7 +106,7 @@ namespace Uni.Controllers
             {
                 return NotFound();
             }
-         
+
             return View(cliente);
         }
 
@@ -164,7 +162,7 @@ namespace Uni.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return View(cliente);
         }
 
@@ -210,7 +208,7 @@ namespace Uni.Controllers
             _context.Telefone.Remove(telefone);
             _context.Endereco.Remove(endereco);
 
- 
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

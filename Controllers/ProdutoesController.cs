@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 using Uni.Data;
 using Uni.Models;
 
@@ -48,7 +46,7 @@ namespace Uni.Controllers
         // GET: Produtoes/Create
         public IActionResult Create()
         {
-            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "NomeEmpresa");
+            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "Nome_empresa");
             return View();
         }
 
@@ -64,7 +62,7 @@ namespace Uni.Controllers
 
                 Fornecedor fornecedor = new Fornecedor();
                 fornecedor.Cnpj = produto.Fornecedor_Cnpj;
-                
+
                 long lastestFornecedorId = fornecedor.Cnpj;
                 produto.Fornecedor_Cnpj = lastestFornecedorId;
 
@@ -90,7 +88,7 @@ namespace Uni.Controllers
             {
                 return NotFound();
             }
-            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "NomeEmpresa", produto.Fornecedor_Cnpj);
+            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "Nome_empresa", produto.Fornecedor_Cnpj);
             return View(produto);
         }
 
@@ -126,7 +124,7 @@ namespace Uni.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "NomeEmpresa", produto.Fornecedor_Cnpj);
+            ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "Nome_empresa", produto.Fornecedor_Cnpj);
             return View(produto);
         }
 

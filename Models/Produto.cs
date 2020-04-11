@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Uni.Models
 {
@@ -19,7 +15,8 @@ namespace Uni.Models
 
         [Required(ErrorMessage = "Valor do produto é obrigatório", AllowEmptyStrings = false)]
         [Display(Name = "Valor Unitário")]
-        [StringLength(80)]
+        [DataType(DataType.Currency)]
+        [StringLength(10)]
         public string Valor_unitario { get; set; }
 
         [Required(ErrorMessage = "Unidade de medida é obrigatorio", AllowEmptyStrings = false)]
@@ -39,7 +36,7 @@ namespace Uni.Models
         [Display(Name = "Estoque Máximo")]
         public long Estoque_maximo { get; set; }
 
-        [ForeignKey("Fornecedor Cnpj")]
+        [ForeignKey("Fornecedor_Cnpj")]
         public Fornecedor Fornecedor { get; set; }
         [Display(Name = "Fornecedor")]
         public long Fornecedor_Cnpj { get; set; }

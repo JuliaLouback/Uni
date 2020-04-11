@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 using Uni.Data;
 using Uni.Models;
 
@@ -91,7 +89,7 @@ namespace Uni.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return View(funcionario);
         }
 
@@ -114,7 +112,7 @@ namespace Uni.Controllers
             {
                 return NotFound();
             }
-            
+
             return View(funcionario);
         }
 
@@ -134,7 +132,7 @@ namespace Uni.Controllers
             {
                 try
                 {
-                   var telefones = _context.Telefone.First(a => a.Id_telefone == funcionario.Telefone_Id_telefone);
+                    var telefones = _context.Telefone.First(a => a.Id_telefone == funcionario.Telefone_Id_telefone);
                     telefones.Telefones = funcionario.Telefone.Telefones;
 
                     var funcionarios = _context.Funcionario.First(a => a.Cpf == funcionario.Cpf);
@@ -171,7 +169,7 @@ namespace Uni.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return View(funcionario);
         }
 

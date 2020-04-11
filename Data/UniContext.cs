@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Uni.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Uni.Data
 {
     public class UniContext : DbContext
     {
-        public UniContext (DbContextOptions<UniContext> options)
+        public UniContext(DbContextOptions<UniContext> options)
             : base(options)
         {
         }
@@ -22,8 +17,7 @@ namespace Uni.Data
         public DbSet<Uni.Models.Cliente> Cliente { get; set; }
         public DbSet<Uni.Models.Produto> Produto { get; set; }
         public DbSet<Uni.Models.Venda> Venda { get; set; }
-        public DbSet<Uni.Models.Venda_Produto> Venda_Produto { get; set; }
-        public DbSet<Uni.Models.Cliente_Venda> Cliente_Venda { get; set; }
+        public DbSet<Uni.Models.VendaProduto> VendaProduto { get; set; }
 
     }
 }

@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Net;
+using System.Net.Mail;
 
 namespace Uni.Areas.Identity.Pages.Account
 {
@@ -40,8 +42,9 @@ namespace Uni.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (user == null)
                 {
+                    System.Diagnostics.Debug.WriteLine(user.Email);
                     // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }
@@ -56,15 +59,42 @@ namespace Uni.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
+                SendEmail(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Recuperar senha - Uni Construções",
+                    $"Por favor recupere sua senha <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'> clicando aqui!</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 
             return Page();
+        }
+
+        public void SendEmail(string Email, string assunto, string mensagem)
+        {
+           
+            var credentials = new NetworkCredential("projetouniconstrucoes@gmail.com", "UniConstrucao1234");
+            // Mail message
+            var mail = new MailMessage()
+            {
+                From = new MailAddress("noreply@uniconstrucoes.com"),
+                Subject = assunto,
+                Body = mensagem
+            };
+            mail.IsBodyHtml = true;
+            mail.To.Add(new MailAddress(Email));
+            // Smtp client
+            var client = new SmtpClient()
+            {
+                Port = 587,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Host = "smtp.gmail.com",
+                EnableSsl = true,
+                Credentials = credentials
+            };
+
+            client.Send(mail);
         }
     }
 }

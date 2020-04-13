@@ -9,7 +9,7 @@ using Uni.Models;
 
 namespace Uni.Controllers
 {
-    [Authorize(Roles = "Admin, Gerente")]
+    [Authorize(Roles = "Admin, Gerente, Vendedor")]
     public class ClientesController : Controller
     {
         private readonly UniContext _context;

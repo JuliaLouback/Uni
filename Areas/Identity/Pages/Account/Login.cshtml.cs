@@ -39,12 +39,14 @@ namespace Uni.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Email é obrigatório")]
+            [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Informe um email válido")]
             [EmailAddress]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Senha é obrigatório")]
             [DataType(DataType.Password)]
+            [StringLength(100, ErrorMessage = "A senha deve estar entre {2} e {1} caracteres.", MinimumLength = 6)]
             public string Password { get; set; }
 
             [Display(Name = "Remember me?")]

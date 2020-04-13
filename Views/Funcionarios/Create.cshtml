@@ -9,7 +9,7 @@
 <h4>Funcionário</h4>
 <hr />
 <div class="row">
-    <div class="col-md-10 col-sm-12">
+    <div class="col-md-12 col-sm-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
@@ -34,14 +34,20 @@
                         <span asp-validation-for="Data_nascimento" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-3 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Email" class="control-label"></label>
                         <input asp-for="Email" class="form-control" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                 </div>
-
+                <div class="col-md-3 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Senha" class="control-label"></label>
+                        <input asp-for="Senha" class="form-control" />
+                        <span asp-validation-for="Senha" class="text-danger"></span>
+                    </div>
+                </div>
                 <div class="col-md-3 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Telefone.Telefones" class="control-label"></label>
@@ -54,9 +60,9 @@
                         <label asp-for="Cargo" class="control-label"></label>
                         <select asp-for="Cargo" class="form-control">
                             <option value="Vendedor">Vendedor</option>
-                            <option value="Auxíliar">Auxíliar</option>
                             <option value="RH">RH</option>
                             <option value="Gerente">Gerente</option>
+                            <option value="Admin">Admin</option>
                         </select>
                         <span asp-validation-for="Cargo" class="text-danger"></span>
                     </div>
@@ -103,6 +109,7 @@
                         <span asp-validation-for="Endereco.Estado" class="text-danger"></span>
                     </div>
                 </div>
+
                 <div class="col-md-1 col-sm-12">
                     <div class="form-group">
                         <a class="btn btn-success" asp-action="Index">Voltar</a>

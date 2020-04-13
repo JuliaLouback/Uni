@@ -48,6 +48,21 @@ namespace Uni.Migrations
                     b.ToTable("Cliente");
                 });
 
+            modelBuilder.Entity("Uni.Models.CriarRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("NomeRole")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CriarRole");
+                });
+
             modelBuilder.Entity("Uni.Models.Endereco", b =>
                 {
                     b.Property<int>("Id_endereco")
@@ -147,6 +162,11 @@ namespace Uni.Migrations
                         .HasColumnType("nvarchar(80)")
                         .HasMaxLength(80);
 
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
                     b.Property<int>("Telefone_Id_telefone")
                         .HasColumnType("int");
 
@@ -226,7 +246,8 @@ namespace Uni.Migrations
                     b.Property<long>("Cliente_Cpf")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("Data_venda")
+                    b.Property<DateTime?>("Data_venda")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<long>("Funcionario_Cpf")

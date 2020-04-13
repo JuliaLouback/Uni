@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aTkfo60x8wGIL5+1rguWyFRP+TXdzc3viCYXIKAnF5SyK2epEdTsHBNJaDDXi0z0Fl+NZNXAAQkyzO4UN7Dx6Q==",
+  "dgSpecHash": "K/FDlU1y916CigKfTLpSyBGBar45vbro/f8Gv3Fz1NNcOdkgNuyhTM6UaFe9wB8iHPs8Kt+Siz4JzPxSpfvcHA==",
   "success": true,
-  "projectFilePath": "D:\\Uni\\Uni.csproj",
+  "projectFilePath": "C:\\Users\\julia\\Music\\Uni\\Uni.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\julia\\.nuget\\packages\\cco.mvc.globalization.pt-br\\1.0.0\\cco.mvc.globalization.pt-br.1.0.0.nupkg.sha512",
     "C:\\Users\\julia\\.nuget\\packages\\jquery\\1.9.0\\jquery.1.9.0.nupkg.sha512",

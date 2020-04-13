@@ -1,20 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Uni.Data;
 using Uni.Models;
 
 namespace Uni.Controllers
 {
+    [Authorize(Roles = "Admin, Gerente, RH")]
     public class FuncionariosController : Controller
     {
         private readonly UniContext _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public FuncionariosController(UniContext context)
+        public FuncionariosController(UniContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         // GET: Funcionarios
@@ -64,7 +77,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Cpf,Nome,Email,Cargo,Data_nascimento,Endereco_Id_endereco,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
+        public async Task<IActionResult> Create([Bind("Cpf,Nome,Email,Cargo,Data_nascimento,Endereco_Id_endereco,Senha,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
         {
             if (ModelState.IsValid)
             {
@@ -85,14 +98,52 @@ namespace Uni.Controllers
                 funcionario.Telefone_Id_telefone = lastestTelefoneId;
                 funcionario.Endereco_Id_endereco = lastestEnderecoId;
 
+                var user = new IdentityUser { UserName = funcionario.Email, Email = funcionario.Email };
+                var result = await _userManager.CreateAsync(user, funcionario.Senha);
+                var applicationRole = await _roleManager.FindByNameAsync(funcionario.Cargo);
+                if (applicationRole != null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Louback");
+                    IdentityResult roleResult = await _userManager.AddToRoleAsync(user, applicationRole.Name);
+                }
+
                 _context.Add(funcionario);
                 await _context.SaveChangesAsync();
+                SendEmail(funcionario.Email,funcionario.Senha);
                 return RedirectToAction(nameof(Index));
             }
 
             return View(funcionario);
         }
 
+        public void SendEmail(string Email, string Senha)
+        {
+            string assunto = "Cadastro Efetuado - Uni Construções";
+            string mensagem = $"Seu cadastro na Empresa Uni Construções foi efetuado, utilize o e-mail: {Email} e a senha: {Senha} para realizar o login!";
+
+            var credentials = new NetworkCredential("projetouniconstrucoes@gmail.com", "UniConstrucao1234");
+            // Mail message
+            var mail = new MailMessage()
+            {
+                From = new MailAddress("noreply@uniconstrucoes.com"),
+                Subject = assunto,
+                Body = mensagem
+            };
+            mail.IsBodyHtml = true;
+            mail.To.Add(new MailAddress(Email));
+            // Smtp client
+            var client = new SmtpClient()
+            {
+                Port = 587,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Host = "smtp.gmail.com",
+                EnableSsl = true,
+                Credentials = credentials
+            };
+
+            client.Send(mail);
+        }
         // GET: Funcionarios/Edit/5
         public async Task<IActionResult> Edit(long? id, int telefone, int endereco)
         {

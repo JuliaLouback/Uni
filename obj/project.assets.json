@@ -9170,11 +9170,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Uni\\Uni.csproj",
+      "projectUniqueName": "C:\\Users\\julia\\Music\\Uni\\Uni.csproj",
       "projectName": "Uni",
-      "projectPath": "D:\\Uni\\Uni.csproj",
+      "projectPath": "C:\\Users\\julia\\Music\\Uni\\Uni.csproj",
       "packagesPath": "C:\\Users\\julia\\.nuget\\packages\\",
-      "outputPath": "D:\\Uni\\obj\\",
+      "outputPath": "C:\\Users\\julia\\Music\\Uni\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"

@@ -33,6 +33,12 @@ namespace Uni.Models
         [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         public DateTime Data_nascimento { get; set; }
 
+        [Required]
+        [StringLength(100, ErrorMessage = "A senha deve estar entre {2} e {1} caracteres.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Senha { get; set; }
+        
         [ForeignKey("Endereco_Id_endereco")]
         public Endereco Endereco { get; set; }
 

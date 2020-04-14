@@ -57,7 +57,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id_produto,Nome,Valor_unitario,Unidade_medida,Descricao,Estoque_minimo,Estoque_maximo,Fornecedor_Cnpj, Fornecedor")] Produto produto)
+        public async Task<IActionResult> Create([Bind("Id_produto,Nome,Valor_unitario,Unidade_medida,Descricao,Estoque_minimo,Estoque_maximo,Estoque_atual,Fornecedor_Cnpj, Fornecedor")] Produto produto)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id_produto,Nome,Valor_unitario,Unidade_medida,Descricao,Estoque_minimo,Estoque_maximo,Fornecedor_Cnpj")] Produto produto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id_produto,Nome,Valor_unitario,Unidade_medida,Descricao,Estoque_minimo,Estoque_maximo,Estoque_atual,Fornecedor_Cnpj")] Produto produto)
         {
             if (id != produto.Id_produto)
             {

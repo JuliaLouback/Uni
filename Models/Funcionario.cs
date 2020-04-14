@@ -9,6 +9,7 @@ namespace Uni.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         [Display(Name = "CPF")]
+       
         [Required(ErrorMessage = "CPF é obrigatório", AllowEmptyStrings = false)]
         public long Cpf { get; set; }
 
@@ -36,7 +37,7 @@ namespace Uni.Models
         [Required]
         [StringLength(100, ErrorMessage = "A senha deve estar entre {2} e {1} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Senha")]
         public string Senha { get; set; }
         
         [ForeignKey("Endereco_Id_endereco")]

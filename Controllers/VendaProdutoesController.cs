@@ -20,9 +20,12 @@ namespace Uni.Controllers
 
         private static int idEdit;
 
+        private static List<VendaProduto> listaExcluido = new List<VendaProduto>();
+
+        // ADD PRODUTO
         public ActionResult AddProduto()
         {
-            ViewData["ProductId"] = new SelectList(_context.Produto, "Id_produto", "Nome");
+            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
             return View();
         }
 
@@ -33,46 +36,69 @@ namespace Uni.Controllers
             if (ModelState.IsValid)
             {
                 var produto = _context.Produto.First(a => a.Id_produto == view.ProductId);
-                var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == view.ProductId);
 
-                if (pesquisa)
+                if (view.Quantity > produto.Estoque_atual)
                 {
-                    listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
+                    return RedirectToAction("ErroProduto", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
                 }
-                VendaProduto vendaProduto = new VendaProduto();
-                vendaProduto.Produto = produto;
-                vendaProduto.Produto_Id_produto = produto.Id_produto;
-                vendaProduto.Quantidade = Convert.ToInt32(view.Quantity);
-                vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(produto.Valor_unitario), Convert.ToDecimal(view.Quantity));
-                listaProduto.Add(vendaProduto);
+                else
+                {
+                    var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == view.ProductId);
 
-                return RedirectToAction("Create");
+                    if (pesquisa)
+                    {
+                        listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
+                    }
+                    VendaProduto vendaProduto = new VendaProduto();
+                    vendaProduto.Produto = produto;
+                    vendaProduto.Produto_Id_produto = produto.Id_produto;
+                    vendaProduto.Quantidade = Convert.ToInt32(view.Quantity);
+                    vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(produto.Valor_unitario), Convert.ToDecimal(view.Quantity));
+                    listaProduto.Add(vendaProduto);
+
+                    return RedirectToAction("Create");
+                }
             }
-            ViewData["ProductId"] = new SelectList(_context.Produto, "Id_produto", "Nome");
+            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
             return View();
         }
 
+        // EDIT PRODUTO
         public ActionResult EditProduto()
         {
-            ViewData["ProductId"] = new SelectList(_context.Produto, "Id_produto", "Nome");
+            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
+            ViewBag.Id = idEdit;
             return View();
         }
 
-        //ADD PRODUTO 
+        //EDIT PRODUTO 
         [HttpPost]
         public ActionResult EditProduto(AddProdutoView view)
         {
             if (ModelState.IsValid)
             {
-               
+
+                var produto = _context.Produto.First(a => a.Id_produto == view.ProductId);
+
                 var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == view.ProductId);
 
                 if (pesquisa)
                 {
+                    var pesquisa1 = listaProduto.Find(x => x.Produto.Id_produto == view.ProductId);
+
+                    produto.Estoque_atual = produto.Estoque_atual + pesquisa1.Quantidade;
+
+                    _context.Produto.Update(produto);
+                    _context.SaveChanges();
+
                     listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
                 }
 
-                var produto = _context.Produto.First(a => a.Id_produto == view.ProductId);
+                if (view.Quantity > produto.Estoque_atual)
+                {
+                    return RedirectToAction("ErroEditProduto", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
+                }
+
 
                 VendaProduto vendaProduto = new VendaProduto();
                 vendaProduto.Produto = produto;
@@ -80,41 +106,47 @@ namespace Uni.Controllers
                 vendaProduto.Quantidade = Convert.ToInt32(view.Quantity);
                 vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(produto.Valor_unitario), Convert.ToDecimal(view.Quantity));
 
-                System.Diagnostics.Debug.WriteLine("Julia Louback");
-                System.Diagnostics.Debug.WriteLine(vendaProduto.Produto_Id_produto);
-                System.Diagnostics.Debug.WriteLine("Julia Ribeiro");
-                System.Diagnostics.Debug.WriteLine(vendaProduto.Quantidade);
-
                 listaProduto.Add(vendaProduto);
 
                 return RedirectToAction("Edit", new { id = idEdit });
-            }
-            ViewData["ProductId"] = new SelectList(_context.Produto, "Id_produto", "Nome");
+            
+        }
+            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
             return View();
         }
 
+        // DELETE PRODUTO
         public ActionResult DeleteProduto(VendaProduto produtos)
         {
-            // listaProduto.Remove(new Venda_Produto() { Produto_Id_produto = produto.Id_produto });
-            //var pesquisa = listaProduto.Find(x => x.Produto.Id_produto == produto.Produto_Id_produto);
-
-            // return View(pesquisa);
-
             listaProduto.RemoveAll(x => x.Produto_Id_produto == produtos.Produto_Id_produto);
             return RedirectToAction("Create");
         }
 
+        // DELETE EDIT PRODUTO
         public ActionResult DeleteEditProduto(VendaProduto produtos)
         {
-            // listaProduto.Remove(new Venda_Produto() { Produto_Id_produto = produto.Id_produto });
-            //var pesquisa = listaProduto.Find(x => x.Produto.Id_produto == produto.Produto_Id_produto);
-
-            // return View(pesquisa);
+            var pesquisa = listaProduto.Find(x => x.Produto_Id_produto == produtos.Produto_Id_produto);
+            listaExcluido.Add(pesquisa);
 
             listaProduto.RemoveAll(x => x.Produto_Id_produto == produtos.Produto_Id_produto);
             return RedirectToAction("Edit", new { id = idEdit });
         }
 
+        // ERRO PRODUTO - QUANTIDADE MÁXIMA
+        public ActionResult ErroProduto(string produto, int quantidade)
+        {
+            ViewBag.Produto = produto;
+            ViewBag.Erro = quantidade;
+            return View();
+        }
+
+        // ERRO PRODUTO - QUANTIDADE MÁXIMA
+        public ActionResult ErroEditProduto(string produto, int quantidade)
+        {
+            ViewBag.Produto = produto;
+            ViewBag.Erro = quantidade;
+            return View();
+        }
 
         public VendaProdutoesController(UniContext context)
         {
@@ -165,8 +197,6 @@ namespace Uni.Controllers
         }
 
         // POST: Venda_Produto/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id_vendaProduto, Venda")] VendaProduto venda_Produto)
@@ -188,8 +218,9 @@ namespace Uni.Controllers
                 venda.Valor_total = total;
 
                 List<VendaProduto> lista = new List<VendaProduto>();
+                List<Produto> listaProd = new List<Produto>();
 
-                foreach(VendaProduto vendaProduto in listaProduto)
+                foreach (VendaProduto vendaProduto in listaProduto)
                 {
                     lista.Add(new VendaProduto {
                         Produto_Id_produto = vendaProduto.Produto_Id_produto,
@@ -197,9 +228,14 @@ namespace Uni.Controllers
                         Valor = vendaProduto.Valor,
                         Venda = venda
                     });
+
+                    var produto = _context.Produto.First(a => a.Id_produto == vendaProduto.Produto_Id_produto);
+                    produto.Estoque_atual = produto.Estoque_atual - vendaProduto.Quantidade;
+                    listaProd.Add(produto);
                 }
 
                 _context.AddRange(lista);
+                _context.Produto.UpdateRange(listaProd);
 
                 await _context.SaveChangesAsync();
                 listaProduto.Clear();
@@ -245,8 +281,6 @@ namespace Uni.Controllers
         }
 
         // POST: Venda_Produto/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Cliente_Cpf,Funcionario_Cpf,Data_venda")] Venda venda_Produto)
@@ -258,45 +292,65 @@ namespace Uni.Controllers
 
             if (ModelState.IsValid)
             {
-                    var vendas = _context.Venda.First(a => a.Id_venda == idEdit);
-                    vendas.Cliente_Cpf = venda_Produto.Cliente_Cpf;
-                    vendas.Data_venda = venda_Produto.Data_venda;
-                    vendas.Funcionario_Cpf = venda_Produto.Funcionario_Cpf;
 
-                    decimal total = 0;
-                    foreach (VendaProduto vendaProduto1 in listaProduto)
+                var vendas = _context.Venda.First(a => a.Id_venda == idEdit);
+                vendas.Cliente_Cpf = venda_Produto.Cliente_Cpf;
+                vendas.Data_venda = venda_Produto.Data_venda;
+                vendas.Funcionario_Cpf = venda_Produto.Funcionario_Cpf;
+
+                decimal total = 0;
+                foreach (VendaProduto vendaProduto1 in listaProduto)
+                {
+                    total = decimal.Add(total, vendaProduto1.Valor);
+                }
+                vendas.Valor_total = total;
+
+                List<VendaProduto> lista = new List<VendaProduto>();
+                List<Produto> listaProd = new List<Produto>();
+
+
+                foreach (VendaProduto i in listaExcluido)
+                {
+                    var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == i.Produto_Id_produto);
+                    if (!pesquisa)
                     {
-                        total = decimal.Add(total, vendaProduto1.Valor);
+                        var produto = _context.Produto.First(a => a.Id_produto == i.Produto_Id_produto);
+                        produto.Estoque_atual = produto.Estoque_atual + i.Quantidade;
+                        listaProd.Add(produto);
+                        System.Diagnostics.Debug.WriteLine(i.Quantidade);
                     }
-                    vendas.Valor_total = total;
+                }
 
-                    List<VendaProduto> lista = new List<VendaProduto>();
+                foreach (VendaProduto vendaProduto in listaProduto){
+                    lista.Add(new VendaProduto {
+                        Id_vendaProduto = vendaProduto.Id_vendaProduto,
+                        Produto_Id_produto = vendaProduto.Produto_Id_produto,
+                        Quantidade = vendaProduto.Quantidade,
+                        Valor = vendaProduto.Valor,
+                        Venda = vendas
+                    });
 
-                    foreach (VendaProduto vendaProduto in listaProduto)
-                    {
-                        lista.Add(new VendaProduto
-                        {
-                            Id_vendaProduto = vendaProduto.Id_vendaProduto,
-                            Produto_Id_produto = vendaProduto.Produto_Id_produto,
-                            Quantidade = vendaProduto.Quantidade,
-                            Valor = vendaProduto.Valor,
-                            Venda = vendas
-                        });
-                    }
+                    var produto = _context.Produto.First(a => a.Id_produto == vendaProduto.Produto_Id_produto);
+                    produto.Estoque_atual = produto.Estoque_atual - vendaProduto.Quantidade;
+                    listaProd.Add(produto);
+                    System.Diagnostics.Debug.WriteLine("teste2");
+                }
 
-
-                    _context.Update(vendas);
-                    _context.RemoveRange(_context.VendaProduto.Where(x => x.Venda_Id_venda == id));
-                    _context.UpdateRange(lista);
-                    await _context.SaveChangesAsync();
-
-                    return RedirectToAction(nameof(Index));
+                _context.Update(vendas);
+                _context.RemoveRange(_context.VendaProduto.Where(x => x.Venda_Id_venda == id));
+                _context.UpdateRange(lista);
+                _context.Produto.UpdateRange(listaProd);
+                
+                await _context.SaveChangesAsync();
+                listaExcluido.Clear();
+                return RedirectToAction(nameof(Index));
                 
             }
            
             return View(venda_Produto);
         }
 
+       
         // GET: Venda_Produto/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

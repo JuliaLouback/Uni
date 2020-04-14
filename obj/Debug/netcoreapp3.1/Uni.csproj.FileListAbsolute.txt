@@ -821,9 +821,6 @@ C:\Users\julia\Music\Uni\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlit
 C:\Users\julia\Music\Uni\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\julia\Music\Uni\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\julia\Music\Uni\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.csproj.CoreCompileInputs.cache
-C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.RazorAssemblyInfo.cache
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.RazorAssemblyInfo.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.AssemblyInfoInputs.cache
@@ -882,7 +879,6 @@ C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Telefones\Index.csh
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\AddProduto.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\Create.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\Delete.cshtml.g.cs
-C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\DeleteProduto.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\Details.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\Edit.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\EditProduto.cshtml.g.cs
@@ -921,3 +917,9 @@ C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Acco
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\Disable2fa.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\ResetAuthenticator.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\ShowRecoveryCodes.cshtml.g.cs
+C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\ErroProduto.cshtml.g.cs
+C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\ErroEditProduto.cshtml.g.cs
+C:\Users\julia\Music\Uni\bin\Debug\netcoreapp3.1\Correios.Net.dll
+C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.csproj.CoreCompileInputs.cache
+C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.MvcApplicationPartsAssemblyInfo.cache

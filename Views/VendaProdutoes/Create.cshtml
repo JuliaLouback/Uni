@@ -11,6 +11,12 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
+                @if(ViewBag.Pagina)
+                {
+                <div class="alert alert-primary" role="alert">
+                   @ViewBag.Pagina
+                </div>
+                }
                 <div class="col-md-6 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Venda.Funcionario_Cpf" class="control-label"></label>

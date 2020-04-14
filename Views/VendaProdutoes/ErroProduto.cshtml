@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "ErroProduto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary mt-2 mb-5">Quantidade máxima ultrapassada!</h1>
+
+<h4>O produto @ViewBag.Produto possui apenas <span class="text-danger">@ViewBag.Erro</span> peças no estoque!</h4>
+
+
+@Html.ActionLink("Voltar", "AddProduto", new { }, new { @class = "btn btn-primary mt-5" })
+
+

@@ -27,6 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Estoque_maximo)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estoque_atual)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -49,9 +52,12 @@
                 @Html.DisplayFor(modelItem => item.Estoque_maximo)
             </td>
             <td>
-                <a  class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id_produto">Editar</a> 
-                <a  class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id_produto">Detalhes</a> 
-                <a  class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_produto">Excluir</a>
+                @Html.DisplayFor(modelItem => item.Estoque_atual)
+            </td>
+            <td>
+                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id_produto">Editar</a>
+                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id_produto">Detalhes</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_produto">Excluir</a>
             </td>
         </tr>
 }

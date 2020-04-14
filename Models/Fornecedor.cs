@@ -10,6 +10,7 @@ namespace Uni.Models
         [Key]
         [Required(ErrorMessage = "CNPJ é obrigatório")]
         [Display(Name = "CNPJ")]
+       
         public long Cnpj { get; set; }
 
         [Required(ErrorMessage = "Nome da empresa é obrigatório")]
@@ -26,10 +27,12 @@ namespace Uni.Models
 
         [Required(ErrorMessage = "Inscrição Estadual é obrigatório")]
         [Display(Name = "Inscrição Estadual")]
+       
         public long Inscricao_estadual { get; set; }
 
         [Required(ErrorMessage = "Inscrição Municipal é obrigatório")]
         [Display(Name = "Inscrição Municipal")]
+       
         public long Inscricao_municipal { get; set; }
 
         [ForeignKey("Endereco_Id_endereco")]

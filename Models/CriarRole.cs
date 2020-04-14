@@ -11,6 +11,10 @@ namespace Uni.Models
         [Key]
 
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Nome é obrigatório", AllowEmptyStrings = false)]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$", ErrorMessage = "Informe um nome válido")]
+        [Display(Name = "Nome")]
         public string NomeRole { get; set; }
     }
 }

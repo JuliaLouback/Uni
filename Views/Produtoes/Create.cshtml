@@ -27,25 +27,43 @@
                         <span asp-validation-for="Valor_unitario" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-12">
+                <div class="col-md-3 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Unidade_medida" class="control-label"></label>
-                        <input asp-for="Unidade_medida" class="form-control" />
+                        <select asp-for="Unidade_medida" class="form-control">
+                            <option value="Bloco">Bloco</option>
+                            <option value="Caixa">Caixa</option>
+                            <option value="Galão">Galão</option>
+                            <option value="Gramas">Gramas</option>
+                            <option value="Quilograma">Quilograma</option>
+                            <option value="Litro">Litro</option>
+                            <option value="Metro">Metro</option>
+                            <option value="Pacote">Pacote</option>
+                            <option value="Peça">Peça</option>
+                            <option value="Unidade">Unidade</option>
+                        </select>
                         <span asp-validation-for="Unidade_medida" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-12">
+                <div class="col-md-3 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Estoque_minimo" class="control-label"></label>
                         <input asp-for="Estoque_minimo" class="form-control" />
                         <span asp-validation-for="Estoque_minimo" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-12">
+                <div class="col-md-3 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Estoque_maximo" class="control-label"></label>
                         <input asp-for="Estoque_maximo" class="form-control" />
                         <span asp-validation-for="Estoque_maximo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Estoque_atual" class="control-label"></label>
+                        <input asp-for="Estoque_atual" class="form-control" />
+                        <span asp-validation-for="Estoque_atual" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-8 col-sm-12">

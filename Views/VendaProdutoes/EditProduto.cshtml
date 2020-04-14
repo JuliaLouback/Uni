@@ -1,6 +1,6 @@
 ﻿@model Uni.Models.AddProdutoView;
 @{
-    ViewData["Title"] = "EditProduto";
+    ViewData["Title"] = "Editar Produto";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -23,7 +23,7 @@
                 <input type="submit" value="Adicionar Produto" class="btn btn-primary" />
             </div>
             <div class="form-group">
-                <a class="btn btn-success" asp-action="Index">Voltar</a>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@ViewBag.Id">Voltar</a>
             </div>
         </form>
     </div>

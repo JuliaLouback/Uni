@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Uni.Models.Venda>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Vendas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,10 +14,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Cliente.Nome)
+               Cliente
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Funcionario.Nome)
+                Funcionário
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Valor_total)

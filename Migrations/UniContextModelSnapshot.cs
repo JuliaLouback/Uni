@@ -48,6 +48,63 @@ namespace Uni.Migrations
                     b.ToTable("Cliente");
                 });
 
+            modelBuilder.Entity("Uni.Models.Cotacao", b =>
+                {
+                    b.Property<int>("Id_cotacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("Cliente_Cpf")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("Data_venda")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("Funcionario_Cpf")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Valor_total")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.HasKey("Id_cotacao");
+
+                    b.HasIndex("Cliente_Cpf");
+
+                    b.HasIndex("Funcionario_Cpf");
+
+                    b.ToTable("Cotacao");
+                });
+
+            modelBuilder.Entity("Uni.Models.CotacaoProduto", b =>
+                {
+                    b.Property<int>("Id_vendaProduto")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Cotacao_Id_cotacao")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Produto_Id_produto")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.HasKey("Id_vendaProduto");
+
+                    b.HasIndex("Cotacao_Id_cotacao");
+
+                    b.HasIndex("Produto_Id_produto");
+
+                    b.ToTable("CotacaoProduto");
+                });
+
             modelBuilder.Entity("Uni.Models.CriarRole", b =>
                 {
                     b.Property<int>("Id")
@@ -56,6 +113,7 @@ namespace Uni.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("NomeRole")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -307,6 +365,36 @@ namespace Uni.Migrations
                     b.HasOne("Uni.Models.Telefone", "Telefone")
                         .WithMany()
                         .HasForeignKey("Telefone_Id_telefone")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Uni.Models.Cotacao", b =>
+                {
+                    b.HasOne("Uni.Models.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("Cliente_Cpf")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Uni.Models.Funcionario", "Funcionario")
+                        .WithMany()
+                        .HasForeignKey("Funcionario_Cpf")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Uni.Models.CotacaoProduto", b =>
+                {
+                    b.HasOne("Uni.Models.Venda", "Cotacao")
+                        .WithMany()
+                        .HasForeignKey("Cotacao_Id_cotacao")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Uni.Models.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("Produto_Id_produto")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

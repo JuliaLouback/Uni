@@ -1,0 +1,103 @@
+﻿@model Uni.Models.Cotacao
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary mt-2 mb-2">Editar</h1>
+<h4>Cotacao</h4>
+<hr />
+<div class="row">
+    <div class="col-md-10 col-sm-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Funcionario_Cpf" class="control-label"></label>
+                        <select asp-for="Funcionario_Cpf" class="form-control" asp-items="ViewBag.Funcionario_Cpf"></select>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Cliente_Cpf" class="control-label"></label>
+                        <select asp-for="Cliente_Cpf" class="form-control" asp-items="ViewBag.Cliente_Cpf"></select>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Data_venda" class="control-label"></label>
+                        <input asp-for="Data_venda" class="form-control" />
+                        <span asp-validation-for="Data_venda" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-2 col-sm-12">
+                    <div class="form-group">
+                        @Html.ActionLink("Add Produto", "EditProduto", new { }, new { @class = "btn btn-info btn-block" })
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <div class="form-group">
+                        <input type="submit" value="Finalizar Venda" class="btn btn-primary btn-block" />
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <div class="form-group">
+                        <a class="btn btn-success btn-block" asp-action="Index">Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <h4>Produtos </h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Quantidade
+                    </th>
+                    <th>
+                        Valor Unitário
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.Lista != null)
+                {
+                    foreach (VendaProduto produto in ViewBag.Lista)
+                    {
+                        <tr>
+                            <td>
+                                @produto.Produto.Nome
+                            </td>
+                            <td>
+                                @produto.Quantidade
+                            </td>
+                            <td>
+                                R$ @produto.Produto.Valor_unitario
+                            </td>
+                            <td>
+                                R$ @produto.Valor
+                            </td>
+                            <td>
+                                @Html.ActionLink("Remover Produto", "DeleteEditProduto", new { produto.Produto_Id_produto }, new { @class = "btn btn-danger" })
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+
+
+    </div>
+</div>

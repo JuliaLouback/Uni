@@ -31,9 +31,9 @@ namespace Uni.Areas.Identity.Pages.Account
         public class InputModel
         {
             [BindProperty]
-            [Required]
+            [Required(ErrorMessage = "Código de recuperação é obrigatório")]
             [DataType(DataType.Text)]
-            [Display(Name = "Recovery Code")]
+            [Display(Name = "Código de Recuperação")]
             public string RecoveryCode { get; set; }
         }
 
@@ -81,7 +81,7 @@ namespace Uni.Areas.Identity.Pages.Account
             else
             {
                 _logger.LogWarning("Invalid recovery code entered for user with ID '{UserId}' ", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
+                ModelState.AddModelError(string.Empty, "Código de recuperação inválido digitado");
                 return Page();
             }
         }

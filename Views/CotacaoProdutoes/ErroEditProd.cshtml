@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "ErroEditProduto";
+    ViewData["Title"] = "Erro";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -8,5 +8,5 @@
 <h4>O produto @ViewBag.Produto possui apenas <span class="text-danger">@ViewBag.Erro</span> peças no estoque!</h4>
 
 
-@Html.ActionLink("Voltar", "EditProduto", new { @class = "btn btn-primary mt-5" })
+@Html.ActionLink("Voltar", "EditProd", new { @class = "btn btn-primary mt-5" })
 

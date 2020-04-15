@@ -13,7 +13,7 @@ namespace Uni.Models
         public decimal Valor { get; set; }
 
         [ForeignKey("Cotacao_Id_cotacao")]
-        public Venda Cotacao { get; set; }
+        public Cotacao Cotacao { get; set; }
 
         public int Cotacao_Id_cotacao { get; set; }
 

@@ -70,6 +70,18 @@
                 </div>
             </div>
         }
+        @if (User.IsInRole("Admin") || User.IsInRole("Gerente") || User.IsInRole("Vendedor"))
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
+                <div class="card border border-primary" style="width: 19rem;">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">Cotações</h4>
+                        <img src="https://image.flaticon.com/icons/svg/1250/1250673.svg" width="261" />
+                        <a href="/CotacaoProdutoes" class="btn btn-outline-primary">Saiba mais</a>
+                    </div>
+                </div>
+            </div>
+        }
         @if (User.IsInRole("Admin"))
 
         {

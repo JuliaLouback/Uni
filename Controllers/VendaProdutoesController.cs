@@ -25,7 +25,8 @@ namespace Uni.Controllers
         // ADD PRODUTO
         public ActionResult AddProduto()
         {
-            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
+            var values = listaProduto.Select(x => x.Produto.Nome).ToList();
+            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0).Where(p => !values.Contains(p.Nome)), "Id_produto", "Nome");
             return View();
         }
 
@@ -66,7 +67,8 @@ namespace Uni.Controllers
         // EDIT PRODUTO
         public ActionResult EditProduto()
         {
-            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
+            var values = listaProduto.Select(x => x.Produto.Nome).ToList();
+            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0).Where(p => !values.Contains(p.Nome)), "Id_produto", "Nome");
             ViewBag.Id = idEdit;
             return View();
         }
@@ -84,13 +86,6 @@ namespace Uni.Controllers
 
                 if (pesquisa)
                 {
-                    var pesquisa1 = listaProduto.Find(x => x.Produto.Id_produto == view.ProductId);
-
-                    produto.Estoque_atual = produto.Estoque_atual + pesquisa1.Quantidade;
-
-                    _context.Produto.Update(produto);
-                    _context.SaveChanges();
-
                     listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
                 }
 
@@ -99,12 +94,15 @@ namespace Uni.Controllers
                     return RedirectToAction("ErroEditProduto", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
                 }
 
-
                 VendaProduto vendaProduto = new VendaProduto();
                 vendaProduto.Produto = produto;
                 vendaProduto.Produto_Id_produto = produto.Id_produto;
                 vendaProduto.Quantidade = Convert.ToInt32(view.Quantity);
                 vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(produto.Valor_unitario), Convert.ToDecimal(view.Quantity));
+
+                produto.Estoque_atual = produto.Estoque_atual - Convert.ToInt32(view.Quantity);
+                _context.Produto.Update(produto);
+                _context.SaveChanges();
 
                 listaProduto.Add(vendaProduto);
 
@@ -125,8 +123,13 @@ namespace Uni.Controllers
         // DELETE EDIT PRODUTO
         public ActionResult DeleteEditProduto(VendaProduto produtos)
         {
+
             var pesquisa = listaProduto.Find(x => x.Produto_Id_produto == produtos.Produto_Id_produto);
-            listaExcluido.Add(pesquisa);
+            var produto = pesquisa.Produto;
+            produto.Estoque_atual = produto.Estoque_atual + pesquisa.Quantidade;
+
+            _context.Produto.Update(produto);
+            _context.SaveChanges();
 
             listaProduto.RemoveAll(x => x.Produto_Id_produto == produtos.Produto_Id_produto);
             return RedirectToAction("Edit", new { id = idEdit });
@@ -306,20 +309,6 @@ namespace Uni.Controllers
                 vendas.Valor_total = total;
 
                 List<VendaProduto> lista = new List<VendaProduto>();
-                List<Produto> listaProd = new List<Produto>();
-
-
-                foreach (VendaProduto i in listaExcluido)
-                {
-                    var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == i.Produto_Id_produto);
-                    if (!pesquisa)
-                    {
-                        var produto = _context.Produto.First(a => a.Id_produto == i.Produto_Id_produto);
-                        produto.Estoque_atual = produto.Estoque_atual + i.Quantidade;
-                        listaProd.Add(produto);
-                        System.Diagnostics.Debug.WriteLine(i.Quantidade);
-                    }
-                }
 
                 foreach (VendaProduto vendaProduto in listaProduto){
                     lista.Add(new VendaProduto {
@@ -329,17 +318,11 @@ namespace Uni.Controllers
                         Valor = vendaProduto.Valor,
                         Venda = vendas
                     });
-
-                    var produto = _context.Produto.First(a => a.Id_produto == vendaProduto.Produto_Id_produto);
-                    produto.Estoque_atual = produto.Estoque_atual - vendaProduto.Quantidade;
-                    listaProd.Add(produto);
-                    System.Diagnostics.Debug.WriteLine("teste2");
                 }
 
                 _context.Update(vendas);
                 _context.RemoveRange(_context.VendaProduto.Where(x => x.Venda_Id_venda == id));
                 _context.UpdateRange(lista);
-                _context.Produto.UpdateRange(listaProd);
                 
                 await _context.SaveChangesAsync();
                 listaExcluido.Clear();

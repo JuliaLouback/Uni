@@ -7,13 +7,7 @@ namespace Uni.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "NomeRole",
-                table: "CriarRole",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+           
 
             migrationBuilder.CreateTable(
                 name: "Cotacao",
@@ -59,12 +53,7 @@ namespace Uni.Migrations
             migrationBuilder.DropTable(
                 name: "Cotacao");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "NomeRole",
-                table: "CriarRole",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string));
+            
         }
     }
 }

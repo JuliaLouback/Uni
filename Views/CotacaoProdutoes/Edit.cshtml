@@ -1,12 +1,12 @@
 ﻿@model Uni.Models.Cotacao
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1 class="text-primary mt-2 mb-2">Editar</h1>
-<h4>Cotacao</h4>
+<h4>Cotação</h4>
 <hr />
 <div class="row">
     <div class="col-md-10 col-sm-12">
@@ -33,18 +33,18 @@
                     </div>
                 </div>
 
-                <div class="col-md-2 col-sm-12">
-                    <div class="form-group">
-                        @Html.ActionLink("Add Produto", "EditProduto", new { }, new { @class = "btn btn-info btn-block" })
+                <div class="col-md-2 col-sm-12 mt-2">
+                    <div class="form-group mt-4">
+                        @Html.ActionLink("Add Produto", "EditProd", new { }, new { @class = "btn btn-info btn-block" })
                     </div>
                 </div>
-                <div class="col-md-2 col-sm-12">
-                    <div class="form-group">
+                <div class="col-md-2 col-sm-12 mt-2">
+                    <div class="form-group mt-4">
                         <input type="submit" value="Finalizar Venda" class="btn btn-primary btn-block" />
                     </div>
                 </div>
-                <div class="col-md-2 col-sm-12">
-                    <div class="form-group">
+                <div class="col-md-2 col-sm-12 mt-2">
+                    <div class="form-group mt-4">
                         <a class="btn btn-success btn-block" asp-action="Index">Voltar</a>
                     </div>
                 </div>

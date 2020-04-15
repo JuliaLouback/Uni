@@ -16,17 +16,18 @@ namespace Uni.Controllers
     {
         private readonly UniContext _context;
 
-        private static List<VendaProduto> listaProduto = new List<VendaProduto>();
+        private static List<CotacaoProduto> listaProduto = new List<CotacaoProduto>();
 
         private static int idEdit;
 
-        private static List<VendaProduto> listaExcluido = new List<VendaProduto>();
+        private static List<CotacaoProduto> listaExcluido = new List<CotacaoProduto>();
 
 
         // ADD PRODUTO
         public ActionResult AddProd()
         {
-            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
+            var values = listaProduto.Select(x => x.Produto.Nome).ToList();
+            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0).Where(p => !values.Contains(p.Nome)), "Id_produto", "Nome");
             return View();
         }
 
@@ -40,7 +41,7 @@ namespace Uni.Controllers
 
                 if (view.Quantity > produto.Estoque_atual)
                 {
-                    return RedirectToAction("ErroProduto", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
+                    return RedirectToAction("ErroProd", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
                 }
                 else
                 {
@@ -50,7 +51,7 @@ namespace Uni.Controllers
                     {
                         listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
                     }
-                    VendaProduto vendaProduto = new VendaProduto();
+                    CotacaoProduto vendaProduto = new CotacaoProduto();
                     vendaProduto.Produto = produto;
                     vendaProduto.Produto_Id_produto = produto.Id_produto;
                     vendaProduto.Quantidade = Convert.ToInt32(view.Quantity);
@@ -67,7 +68,8 @@ namespace Uni.Controllers
         // EDIT PRODUTO
         public ActionResult EditProd()
         {
-            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
+            var values = listaProduto.Select(x => x.Produto.Nome).ToList();
+            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0).Where(p => !values.Contains(p.Nome)), "Id_produto", "Nome");
             ViewBag.Id = idEdit;
             return View();
         }
@@ -85,27 +87,24 @@ namespace Uni.Controllers
 
                 if (pesquisa)
                 {
-                    var pesquisa1 = listaProduto.Find(x => x.Produto.Id_produto == view.ProductId);
-
-                    produto.Estoque_atual = produto.Estoque_atual + pesquisa1.Quantidade;
-
-                    _context.Produto.Update(produto);
-                    _context.SaveChanges();
-
                     listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
                 }
 
                 if (view.Quantity > produto.Estoque_atual)
                 {
-                    return RedirectToAction("ErroEditProduto", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
+                    return RedirectToAction("ErroEditProd", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
                 }
 
 
-                VendaProduto vendaProduto = new VendaProduto();
+                CotacaoProduto vendaProduto = new CotacaoProduto();
                 vendaProduto.Produto = produto;
                 vendaProduto.Produto_Id_produto = produto.Id_produto;
                 vendaProduto.Quantidade = Convert.ToInt32(view.Quantity);
                 vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(produto.Valor_unitario), Convert.ToDecimal(view.Quantity));
+
+                produto.Estoque_atual = produto.Estoque_atual - Convert.ToInt32(view.Quantity);
+                _context.Produto.Update(produto);
+                _context.SaveChanges();
 
                 listaProduto.Add(vendaProduto);
 
@@ -127,7 +126,11 @@ namespace Uni.Controllers
         public ActionResult DeleteEditProd(VendaProduto produtos)
         {
             var pesquisa = listaProduto.Find(x => x.Produto_Id_produto == produtos.Produto_Id_produto);
-            listaExcluido.Add(pesquisa);
+            var produto = pesquisa.Produto;
+            produto.Estoque_atual = produto.Estoque_atual + pesquisa.Quantidade;
+
+            _context.Produto.Update(produto);
+            _context.SaveChanges();
 
             listaProduto.RemoveAll(x => x.Produto_Id_produto == produtos.Produto_Id_produto);
             return RedirectToAction("Edit", new { id = idEdit });
@@ -177,7 +180,7 @@ namespace Uni.Controllers
                 .FirstOrDefaultAsync(m => m.Id_cotacao == id);
 
             //Aqui muda ou não?
-            listaProduto = _context.VendaProduto.Where(x => x.Venda_Id_venda == id).Include(a => a.Produto).ToList();
+            listaProduto = _context.CotacaoProduto.Where(x => x.Cotacao_Id_cotacao == id).Include(a => a.Produto).ToList();
             ViewBag.Lista = listaProduto;
 
             if (cotacao_Produto == null)
@@ -202,7 +205,7 @@ namespace Uni.Controllers
         // POST: Cotação_Produto/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id_cotacaoProduto, Venda")] CotacaoProduto cotacao_Produto)
+        public async Task<IActionResult> Create([Bind("Id_cotacaoProduto, Cotacao")] CotacaoProduto cotacao_Produto)
         {
 
             if (ModelState.IsValid)
@@ -214,23 +217,23 @@ namespace Uni.Controllers
                 cotacao.Funcionario_Cpf = cotacao_Produto.Cotacao.Funcionario_Cpf;
 
                 decimal total = 0;
-                foreach (VendaProduto vendaProduto1 in listaProduto)
+                foreach (CotacaoProduto vendaProduto1 in listaProduto)
                 {
                     total = decimal.Add(total, vendaProduto1.Valor);
                 }
                 cotacao.Valor_total = total;
 
-                List<VendaProduto> lista = new List<VendaProduto>();
+                List<CotacaoProduto> lista = new List<CotacaoProduto>();
                 List<Produto> listaProd = new List<Produto>();
 
-                foreach (VendaProduto vendaProduto in listaProduto)
+                foreach (CotacaoProduto vendaProduto in listaProduto)
                 {
-                    lista.Add(new VendaProduto
+                    lista.Add(new CotacaoProduto
                     {
                         Produto_Id_produto = vendaProduto.Produto_Id_produto,
                         Quantidade = vendaProduto.Quantidade,
                         Valor = vendaProduto.Valor,
-                       // Venda = venda
+                        Cotacao = cotacao 
                     });
 
                     var produto = _context.Produto.First(a => a.Id_produto == vendaProduto.Produto_Id_produto);
@@ -266,7 +269,7 @@ namespace Uni.Controllers
 
             if (novo != null)
             {
-                listaProduto = _context.VendaProduto.Where(x => x.Venda_Id_venda == id).Include(a => a.Produto).ToList();
+                listaProduto = _context.CotacaoProduto.Where(x => x.Cotacao_Id_cotacao == id).Include(a => a.Produto).ToList();
                 ViewBag.Lista = listaProduto;
             }
             else
@@ -304,49 +307,30 @@ namespace Uni.Controllers
                 cotacao.Funcionario_Cpf = cotacao_Produto.Funcionario_Cpf;
 
                 decimal total = 0;
-                foreach (VendaProduto vendaProduto1 in listaProduto)
+                foreach (CotacaoProduto vendaProduto1 in listaProduto)
                 {
                     total = decimal.Add(total, vendaProduto1.Valor);
                 }
                 cotacao.Valor_total = total;
 
-                List<VendaProduto> lista = new List<VendaProduto>();
-                List<Produto> listaProd = new List<Produto>();
+                List<CotacaoProduto> lista = new List<CotacaoProduto>();
 
-
-                foreach (VendaProduto i in listaExcluido)
+                foreach (CotacaoProduto vendaProduto in listaProduto)
                 {
-                    var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == i.Produto_Id_produto);
-                    if (!pesquisa)
+                    lista.Add(new CotacaoProduto
                     {
-                        var produto = _context.Produto.First(a => a.Id_produto == i.Produto_Id_produto);
-                        produto.Estoque_atual = produto.Estoque_atual + i.Quantidade;
-                        listaProd.Add(produto);
-                        System.Diagnostics.Debug.WriteLine(i.Quantidade);
-                    }
-                }
-
-                foreach (VendaProduto vendaProduto in listaProduto)
-                {
-                    lista.Add(new VendaProduto
-                    {
-                        Id_vendaProduto = vendaProduto.Id_vendaProduto,
+                        Cotacao_Id_cotacao = vendaProduto.Cotacao_Id_cotacao,
                         Produto_Id_produto = vendaProduto.Produto_Id_produto,
                         Quantidade = vendaProduto.Quantidade,
                         Valor = vendaProduto.Valor,
-                        //Venda = vendas
+                        Cotacao = cotacao
                     });
 
-                    var produto = _context.Produto.First(a => a.Id_produto == vendaProduto.Produto_Id_produto);
-                    produto.Estoque_atual = produto.Estoque_atual - vendaProduto.Quantidade;
-                    listaProd.Add(produto);
-                    System.Diagnostics.Debug.WriteLine("teste2");
                 }
 
                 _context.Update(cotacao);
-                _context.RemoveRange(_context.VendaProduto.Where(x => x.Venda_Id_venda == id));
+                _context.RemoveRange(_context.CotacaoProduto.Where(x => x.Cotacao_Id_cotacao == id));
                 _context.UpdateRange(lista);
-                _context.Produto.UpdateRange(listaProd);
 
                 await _context.SaveChangesAsync();
                 listaExcluido.Clear();
@@ -370,7 +354,7 @@ namespace Uni.Controllers
                 .Include(v => v.Cliente).Include(v => v.Funcionario)
                 .FirstOrDefaultAsync(m => m.Id_cotacao == id);
 
-            listaProduto = _context.VendaProduto.Where(x => x.Venda_Id_venda == id).Include(a => a.Produto).ToList();
+            listaProduto = _context.CotacaoProduto.Where(x => x.Cotacao_Id_cotacao == id).Include(a => a.Produto).ToList();
             ViewBag.Lista = listaProduto;
 
             if (cotacao_Produto == null)
@@ -386,16 +370,16 @@ namespace Uni.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cotacao_Produto = await _context.Venda.FindAsync(id);
-            _context.Venda.Remove(cotacao_Produto);
-            _context.VendaProduto.RemoveRange(_context.VendaProduto.Where(x => x.Venda_Id_venda == id));
+            var cotacao_Produto = await _context.Cotacao.FindAsync(id);
+            _context.Cotacao.Remove(cotacao_Produto);
+            _context.CotacaoProduto.RemoveRange(_context.CotacaoProduto.Where(x => x.Cotacao_Id_cotacao == id));
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool Cotacao_ProdutoExists(int id)
         {
-            return _context.VendaProduto.Any(e => e.Id_vendaProduto == id);
+            return _context.CotacaoProduto.Any(e => e.Cotacao_Id_cotacao == id);
         }
     }
 }

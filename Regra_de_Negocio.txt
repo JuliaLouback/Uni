@@ -1,0 +1,15 @@
+Regra de Negócio
+
+O usuário admin@gmail.com e a senha: 1234Ju#
+
+Admin:
+O admin dá acesso para o gerente; 
+
+Gerente:
+O gerente tem acesso para cadastrar funcionário, fornecedor, cliente, produto, venda e cotação;
+
+Vendedor:
+O vendedor tem acesso a venda, cliente e cotação;
+
+RH:
+Tem acesso aos funcionários. 

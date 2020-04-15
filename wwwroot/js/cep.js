@@ -20,7 +20,7 @@ function meu_callback(conteudo) {
 		document.getElementById('cidade').innerText = (conteudo.localidade);
 		document.getElementById('uf').innerText = (conteudo.uf);
 
-	} //end if.
+	} 
 	else {
 		//CEP não Encontrado.
 		limpa_formulário_cep();
@@ -30,7 +30,6 @@ function meu_callback(conteudo) {
 	
 function pesquisacep(valor) {
 
-	//Nova variável "cep" somente com dígitos.
 	var cep = event.target.value;
 
 	//Verifica se campo cep possui valor informado.

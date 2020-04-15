@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Uni.Models.Cotacao>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Data_venda)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcionario)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data_venda)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor_total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Funcionario.Email)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id_cotacao">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id_cotacao">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id_cotacao">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

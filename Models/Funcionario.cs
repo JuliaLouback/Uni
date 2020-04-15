@@ -9,7 +9,6 @@ namespace Uni.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         [Display(Name = "CPF")]
-       
         [Required(ErrorMessage = "CPF é obrigatório", AllowEmptyStrings = false)]
         public long Cpf { get; set; }
 
@@ -34,7 +33,7 @@ namespace Uni.Models
         [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         public DateTime Data_nascimento { get; set; }
 
-        [Required]
+        // [Required]
         [StringLength(100, ErrorMessage = "A senha deve estar entre {2} e {1} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Senha")]

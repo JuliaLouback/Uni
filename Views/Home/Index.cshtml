@@ -10,57 +10,89 @@
 <div class="row">
     @if (User.Identity.IsAuthenticated)
     {
-
-        <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-            <div class="card border border-primary" style="width: 19rem;">
-                <div class="card-body">
-                    <h4 class="card-title text-primary">Fornecedores</h4>
-                    <img src="https://image.flaticon.com/icons/svg/411/411760.svg" />
-                    <a href="/Fornecedores" class="btn btn-outline-primary">Saiba mais</a>
+        @if (User.IsInRole("Admin") || User.IsInRole("Gerente"))
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
+                <div class="card border border-primary" style="width: 19rem;">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">Fornecedores</h4>
+                        <img src="https://image.flaticon.com/icons/svg/411/411760.svg" />
+                        <a href="/Fornecedores" class="btn btn-outline-primary">Saiba mais</a>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-            <div class="card border border-primary" style="width: 19rem;">
-                <div class="card-body">
-                    <h4 class="card-title text-primary">Clientes</h4>
-                    <img src="https://image.flaticon.com/icons/svg/912/912318.svg" />
-                    <a href="/Clientes" class="btn btn-outline-primary">Saiba mais</a>
+        }
+        @if (User.IsInRole("Admin") || User.IsInRole("Gerente") || User.IsInRole("Vendedor"))
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
+                <div class="card border border-primary" style="width: 19rem;">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">Clientes</h4>
+                        <img src="https://image.flaticon.com/icons/svg/912/912318.svg" />
+                        <a href="/Clientes" class="btn btn-outline-primary">Saiba mais</a>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-            <div class="card border border-primary" style="width: 19rem;">
-                <div class="card-body">
-                    <h4 class="card-title text-primary">Funcionários</h4>
-                    <img src="https://image.flaticon.com/icons/svg/1670/1670353.svg" width="262" />
-                    <a href="/Funcionarios" class="btn btn-outline-primary">Saiba mais</a>
+        }
+        @if (User.IsInRole("Admin") || User.IsInRole("Gerente") || User.IsInRole("RH"))
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
+                <div class="card border border-primary" style="width: 19rem;">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">Funcionários</h4>
+                        <img src="https://image.flaticon.com/icons/svg/1670/1670353.svg" width="262" />
+                        <a href="/Funcionarios" class="btn btn-outline-primary">Saiba mais</a>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-            <div class="card border border-primary" style="width: 19rem;">
-                <div class="card-body">
-                    <h4 class="card-title text-primary">Produtos</h4>
-                    <img src="https://image.flaticon.com/icons/svg/1524/1524539.svg" width="262" />
-                    <a href="/Produtoes" class="btn btn-outline-primary">Saiba mais</a>
+        }
+        @if (User.IsInRole("Admin") || User.IsInRole("Gerente"))
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
+                <div class="card border border-primary" style="width: 19rem;">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">Produtos</h4>
+                        <img src="https://image.flaticon.com/icons/svg/1524/1524539.svg" width="262" />
+                        <a href="/Produtoes" class="btn btn-outline-primary">Saiba mais</a>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-            <div class="card border border-primary" style="width: 19rem;">
-                <div class="card-body">
-                    <h4 class="card-title text-primary">Vendas</h4>
-                    <img src="https://image.flaticon.com/icons/svg/454/454637.svg" width="262" />
-                    <a href="/VendaProdutoes" class="btn btn-outline-primary">Saiba mais</a>
+        }
+        @if (User.IsInRole("Admin") || User.IsInRole("Gerente") || User.IsInRole("Vendedor"))
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
+                <div class="card border border-primary" style="width: 19rem;">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">Vendas</h4>
+                        <img src="https://image.flaticon.com/icons/svg/454/454637.svg" width="262" />
+                        <a href="/VendaProdutoes" class="btn btn-outline-primary">Saiba mais</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
+        @if (User.IsInRole("Admin"))
 
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
+                <div class="card border border-primary" style="width: 19rem;">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">Endereços</h4>
+                        <img src="https://image.flaticon.com/icons/svg/967/967848.svg" width="262" />
+                        <a href="/Enderecos" class="btn btn-outline-primary">Saiba mais</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
+                <div class="card border border-primary" style="width: 19rem;">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">Telefones</h4>
+                        <img src="https://image.flaticon.com/icons/svg/1250/1250592.svg" width="262" />
+                        <a href="/Telefones" class="btn btn-outline-primary">Saiba mais</a>
+                    </div>
+                </div>
+            </div>
+        }
     }
     else
     {

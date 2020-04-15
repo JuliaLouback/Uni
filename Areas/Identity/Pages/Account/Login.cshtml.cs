@@ -41,7 +41,7 @@ namespace Uni.Areas.Identity.Pages.Account
         {
             [Required(ErrorMessage = "Email é obrigatório")]
             [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Informe um email válido")]
-            [EmailAddress]
+            // [EmailAddress]
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Senha é obrigatório")]
@@ -95,7 +95,7 @@ namespace Uni.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Erro ao realizar login!");
                     return Page();
                 }
             }

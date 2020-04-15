@@ -17,6 +17,7 @@ namespace Uni
 {
     public class Startup
     {
+      
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -36,7 +37,7 @@ namespace Uni
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
-
+   
             services.AddDbContext<UniContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UniContext")));
 
@@ -82,6 +83,8 @@ namespace Uni
 
           
         }
+
+        
 
        
     }

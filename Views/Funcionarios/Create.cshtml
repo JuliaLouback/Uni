@@ -62,7 +62,6 @@
                             <option value="Vendedor">Vendedor</option>
                             <option value="RH">RH</option>
                             <option value="Gerente">Gerente</option>
-                            <option value="Admin">Admin</option>
                         </select>
                         <span asp-validation-for="Cargo" class="text-danger"></span>
                     </div>
@@ -70,7 +69,7 @@
                 <div class="col-md-3 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Endereco.Cep" class="control-label"></label>
-                        <input asp-for="Endereco.Cep" class="form-control" />
+                        <input asp-for="Endereco.Cep" class="form-control" onchange="pesquisacep(event)" />
                         <span asp-validation-for="Endereco.Cep" class="text-danger"></span>
                     </div>
                 </div>
@@ -84,28 +83,28 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Endereco.Rua" class="control-label"></label>
-                        <input asp-for="Endereco.Rua" class="form-control" />
+                        <input asp-for="Endereco.Rua" class="form-control" id="rua" />
                         <span asp-validation-for="Endereco.Rua" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Endereco.Bairro" class="control-label"></label>
-                        <input asp-for="Endereco.Bairro" class="form-control" />
+                        <input asp-for="Endereco.Bairro" class="form-control" id="bairro" />
                         <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Endereco.Cidade" class="control-label"></label>
-                        <input asp-for="Endereco.Cidade" class="form-control" />
+                        <input asp-for="Endereco.Cidade" class="form-control" id="cidade" />
                         <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Endereco.Estado" class="control-label"></label>
-                        <input asp-for="Endereco.Estado" class="form-control" />
+                        <input asp-for="Endereco.Estado" class="form-control" id="uf" />
                         <span asp-validation-for="Endereco.Estado" class="text-danger"></span>
                     </div>
                 </div>
@@ -127,4 +126,6 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/js/cep.js"></script>
 }

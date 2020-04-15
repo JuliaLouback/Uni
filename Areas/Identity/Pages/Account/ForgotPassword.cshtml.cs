@@ -44,7 +44,7 @@ namespace Uni.Areas.Identity.Pages.Account
                 var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (user == null)
                 {
-                    System.Diagnostics.Debug.WriteLine(user.Email);
+                    
                     // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }

@@ -10,6 +10,8 @@
     <Compile Remove="Migrations\20200411175623_teste.Designer.cs" />
     <Compile Remove="Migrations\20200413032900_TwoFa.cs" />
     <Compile Remove="Migrations\20200413032900_TwoFa.Designer.cs" />
+    <Compile Remove="Migrations\20200414202802_Senha1.cs" />
+    <Compile Remove="Migrations\20200414202802_Senha1.Designer.cs" />
   </ItemGroup>
 
 

@@ -21,7 +21,10 @@ namespace Uni.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailSender _emailSender;
-
+        private static string cargos;
+        private static string emails;
+        
+        
         public FuncionariosController(UniContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -103,7 +106,7 @@ namespace Uni.Controllers
                 var applicationRole = await _roleManager.FindByNameAsync(funcionario.Cargo);
                 if (applicationRole != null)
                 {
-                    System.Diagnostics.Debug.WriteLine("Louback");
+                    
                     IdentityResult roleResult = await _userManager.AddToRoleAsync(user, applicationRole.Name);
                 }
 
@@ -119,7 +122,16 @@ namespace Uni.Controllers
         public void SendEmail(string Email, string Senha)
         {
             string assunto = "Cadastro Efetuado - Uni Construções";
-            string mensagem = $"Seu cadastro na Empresa Uni Construções foi efetuado, utilize o e-mail: {Email} e a senha: {Senha} para realizar o login!";
+            string mensagem;
+
+            if (Senha != null)
+            {
+                mensagem = $"Seu cadastro na Empresa Uni Construções foi efetuado, utilize o e-mail: {Email} e a senha: {Senha} para realizar o login!";
+            }
+            else
+            {
+                mensagem = $"Seu cadastro na Empresa Uni Construções foi efetuado, utilize o e-mail: {Email} para realizar o login clicando em esqueci minha senha no primeiro acesso!";
+            } 
 
             var credentials = new NetworkCredential("projetouniconstrucoes@gmail.com", "UniConstrucao1234");
             // Mail message
@@ -145,7 +157,7 @@ namespace Uni.Controllers
             client.Send(mail);
         }
         // GET: Funcionarios/Edit/5
-        public async Task<IActionResult> Edit(long? id, int telefone, int endereco)
+        public async Task<IActionResult> Edit(long? id, int telefone, int endereco, string cargo, string email)
         {
             if (id == null)
             {
@@ -158,6 +170,10 @@ namespace Uni.Controllers
 
             funcionario.Telefone = telefone1;
             funcionario.Endereco = endereco1;
+            cargos = cargo;
+      
+            emails = email;
+            System.Diagnostics.Debug.WriteLine(emails);
 
             if (funcionario == null)
             {
@@ -172,8 +188,10 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Cpf,Nome,Email,Cargo,Data_nascimento,Endereco_Id_endereco,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
+        public async Task<IActionResult> Edit(long id, [Bind("Cpf,Nome,Email,Senha,Cargo,Data_nascimento,Endereco_Id_endereco,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
         {
+           
+
             if (id != funcionario.Cpf)
             {
                 return NotFound();
@@ -192,6 +210,7 @@ namespace Uni.Controllers
                     funcionarios.Cargo = funcionario.Cargo;
                     funcionarios.Data_nascimento = funcionario.Data_nascimento;
                     funcionarios.Nome = funcionario.Nome;
+                    funcionarios.Senha = funcionario.Senha;
 
                     var enderecos = _context.Endereco.First(a => a.Id_endereco == funcionario.Endereco_Id_endereco);
                     enderecos.Numero = funcionario.Endereco.Numero;
@@ -206,9 +225,13 @@ namespace Uni.Controllers
                     _context.Update(enderecos);
 
                     await _context.SaveChangesAsync();
+
+                    await MudarRole(funcionario.Email, funcionario.Cargo);
+                    SendEmail(funcionario.Email, null);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                
                     if (!FuncionarioExists(funcionario.Cpf))
                     {
                         return NotFound();
@@ -224,6 +247,48 @@ namespace Uni.Controllers
             return View(funcionario);
         }
 
+        public async Task MudarRole(string email, string cargo)
+        {
+            if (emails != email)
+            {
+                var user = await _userManager.FindByEmailAsync(emails);
+                user.Email = email;
+                user.UserName = email;
+
+                await _userManager.UpdateAsync(user);
+
+
+                if (cargos != cargo)
+                {
+                    var applicationRole = await _roleManager.FindByNameAsync(cargos);
+                    await _userManager.RemoveFromRoleAsync(user, applicationRole.Name);
+
+                    var applicationRole1 = await _roleManager.FindByNameAsync(cargo);
+                    if (applicationRole1 != null)
+                    {
+                        await _userManager.AddToRoleAsync(user, applicationRole1.Name);
+                    }
+
+                }
+                
+            }
+            else if (cargos != cargo)
+            {
+                var user = await _userManager.FindByNameAsync(emails);
+
+                if (user != null)
+                {
+                    var applicationRole = await _roleManager.FindByNameAsync(cargos);
+                    await _userManager.RemoveFromRoleAsync(user, applicationRole.Name);
+
+                    var applicationRole1 = await _roleManager.FindByNameAsync(cargo);
+                    if (applicationRole1 != null)
+                    {
+                       await _userManager.AddToRoleAsync(user, applicationRole1.Name);
+                    }
+                }
+            }
+        }
         // GET: Funcionarios/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
@@ -268,6 +333,12 @@ namespace Uni.Controllers
             _context.Endereco.Remove(endereco);
 
             await _context.SaveChangesAsync();
+
+            var user = await _userManager.FindByNameAsync(funcionario.Email);
+            var applicationRole = await _roleManager.FindByNameAsync(funcionario.Cargo);
+            await _userManager.RemoveFromRoleAsync(user, applicationRole.Name);
+            await _userManager.DeleteAsync(user);
+
             return RedirectToAction(nameof(Index));
         }
 

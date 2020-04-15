@@ -19,7 +19,7 @@ namespace Uni.Data
         public DbSet<Uni.Models.Produto> Produto { get; set; }
         public DbSet<Uni.Models.Venda> Venda { get; set; }
         public DbSet<Uni.Models.VendaProduto> VendaProduto { get; set; }
-        public DbSet<Uni.Models.CriarRole> CriarRole { get; set; }
+        
 
     }
 }

@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<Uni.Models.Endereco>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Endereços";
 }
 
-<h1>Index</h1>
+<h1  class="text-primary mt-2">Endereços</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-outline-primary mt-4" asp-action="Create">Adicionar</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -55,9 +55,9 @@
                 @Html.DisplayFor(modelItem => item.Estado)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id_endereco">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id_endereco">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id_endereco">Delete</a>
+                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id_endereco">Editar</a> 
+                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id_endereco">Detalhes</a> 
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_endereco">Excluir</a>
             </td>
         </tr>
 }

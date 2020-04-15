@@ -37,7 +37,7 @@
                 @Html.DisplayFor(modelItem => item.Cargo)
             </td>
             <td>
-                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Cpf" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco">Editar</a> 
+                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Cpf" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco" asp-route-cargo="@item.Cargo" asp-route-email="@item.Email">Editar</a> 
                 <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Cpf">Detalhes</a> 
                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Cpf">Excluir</a>
             </td>

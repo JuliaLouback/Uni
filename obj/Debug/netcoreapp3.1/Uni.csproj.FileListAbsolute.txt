@@ -840,11 +840,6 @@ C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Clientes\Delete.csh
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Clientes\Details.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Clientes\Edit.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Clientes\Index.cshtml.g.cs
-C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CriarRoles\Create.cshtml.g.cs
-C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CriarRoles\Delete.cshtml.g.cs
-C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CriarRoles\Details.cshtml.g.cs
-C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CriarRoles\Edit.cshtml.g.cs
-C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CriarRoles\Index.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Enderecos\Create.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Enderecos\Delete.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Enderecos\Details.cshtml.g.cs
@@ -899,7 +894,6 @@ C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\staticwebassets\Uni.StaticWebAs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.dll
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.pdb
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.genruntimeconfig.cache
-C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.csprojAssemblyReference.cache
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ForgotPassword.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ForgotPasswordConfirmation.cshtml.g.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ResetPasswordConfirmation.cshtml.g.cs
@@ -923,3 +917,4 @@ C:\Users\julia\Music\Uni\bin\Debug\netcoreapp3.1\Correios.Net.dll
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.csproj.CoreCompileInputs.cache
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\julia\Music\Uni\obj\Debug\netcoreapp3.1\Uni.csprojAssemblyReference.cache

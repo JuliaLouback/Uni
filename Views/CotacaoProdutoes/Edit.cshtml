@@ -73,7 +73,7 @@
             <tbody>
                 @if (ViewBag.Lista != null)
                 {
-                    foreach (VendaProduto produto in ViewBag.Lista)
+                    foreach (CotacaoProduto produto in ViewBag.Lista)
                     {
                         <tr>
                             <td>
@@ -89,7 +89,7 @@
                                 R$ @produto.Valor
                             </td>
                             <td>
-                                @Html.ActionLink("Remover Produto", "DeleteEditProduto", new { produto.Produto_Id_produto }, new { @class = "btn btn-danger" })
+                                @Html.ActionLink("Remover Produto", "DeleteEditProduto", new { produto.Cotacao_Id_cotacao }, new { @class = "btn btn-danger" })
                             </td>
                         </tr>
                     }

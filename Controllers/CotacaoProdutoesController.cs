@@ -24,7 +24,7 @@ namespace Uni.Controllers
 
 
         // ADD PRODUTO
-        public ActionResult AddProduto()
+        public ActionResult AddProd()
         {
             ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
             return View();
@@ -32,7 +32,7 @@ namespace Uni.Controllers
 
         //ADD PRODUTO 
         [HttpPost]
-        public ActionResult AddProduto(AddProdutoView view)
+        public ActionResult AddProd(AddProdutoView view)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace Uni.Controllers
         }
 
         // EDIT PRODUTO
-        public ActionResult EditProduto()
+        public ActionResult EditProd()
         {
             ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
             ViewBag.Id = idEdit;
@@ -74,7 +74,7 @@ namespace Uni.Controllers
 
         //EDIT PRODUTO 
         [HttpPost]
-        public ActionResult EditProduto(AddProdutoView view)
+        public ActionResult EditProd(AddProdutoView view)
         {
             if (ModelState.IsValid)
             {
@@ -117,14 +117,14 @@ namespace Uni.Controllers
         }
 
         // DELETE PRODUTO
-        public ActionResult DeleteProduto(VendaProduto produtos)
+        public ActionResult DeleteProd(VendaProduto produtos)
         {
             listaProduto.RemoveAll(x => x.Produto_Id_produto == produtos.Produto_Id_produto);
             return RedirectToAction("Create");
         }
 
         // DELETE EDIT PRODUTO
-        public ActionResult DeleteEditProduto(VendaProduto produtos)
+        public ActionResult DeleteEditProd(VendaProduto produtos)
         {
             var pesquisa = listaProduto.Find(x => x.Produto_Id_produto == produtos.Produto_Id_produto);
             listaExcluido.Add(pesquisa);
@@ -134,7 +134,7 @@ namespace Uni.Controllers
         }
 
         // ERRO PRODUTO - QUANTIDADE MÁXIMA
-        public ActionResult ErroProduto(string produto, int quantidade)
+        public ActionResult ErroProd(string produto, int quantidade)
         {
             ViewBag.Produto = produto;
             ViewBag.Erro = quantidade;
@@ -142,7 +142,7 @@ namespace Uni.Controllers
         }
 
         // ERRO PRODUTO - QUANTIDADE MÁXIMA
-        public ActionResult ErroEditProduto(string produto, int quantidade)
+        public ActionResult ErroEditProd(string produto, int quantidade)
         {
             ViewBag.Produto = produto;
             ViewBag.Erro = quantidade;
@@ -155,11 +155,12 @@ namespace Uni.Controllers
         }
 
 
+
         // GET: Cotação_Produto
         public async Task<IActionResult> Index()
         {
             listaProduto.Clear();
-            var uniContext = _context.Venda.Include(v => v.Cliente).Include(v => v.Funcionario);
+            var uniContext = _context.Cotacao.Include(v => v.Cliente).Include(v => v.Funcionario);
             return View(await uniContext.ToListAsync());
         }
 
@@ -193,7 +194,7 @@ namespace Uni.Controllers
             ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
             ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
             ViewData["Produto_Id_produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
-            ViewData["Cotacao_Id_cotacao"] = new SelectList(_context.Venda, "Id_cotacao", "Id_cotacao");
+            ViewData["Cotacao_Id_cotacao"] = new SelectList(_context.Cotacao, "Id_cotacao", "Id_cotacao");
             ViewBag.Lista = listaProduto;
             return View();
         }
@@ -287,7 +288,7 @@ namespace Uni.Controllers
         // POST: Cotação_Produto/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Cliente_Cpf,Funcionario_Cpf,Data_venda")] Venda venda_Produto)
+        public async Task<IActionResult> Edit(int id, [Bind("Cliente_Cpf,Funcionario_Cpf,Data_venda")] Cotacao cotacao_Produto)
         {
             if (id != idEdit)
             {
@@ -297,17 +298,17 @@ namespace Uni.Controllers
             if (ModelState.IsValid)
             {
 
-                var vendas = _context.Venda.First(a => a.Id_venda == idEdit);
-                vendas.Cliente_Cpf = venda_Produto.Cliente_Cpf;
-                vendas.Data_venda = venda_Produto.Data_venda;
-                vendas.Funcionario_Cpf = venda_Produto.Funcionario_Cpf;
+                var cotacao = _context.Cotacao.First(a => a.Id_cotacao == idEdit);
+                cotacao.Cliente_Cpf = cotacao_Produto.Cliente_Cpf;
+                cotacao.Data_venda = cotacao_Produto.Data_venda;
+                cotacao.Funcionario_Cpf = cotacao_Produto.Funcionario_Cpf;
 
                 decimal total = 0;
                 foreach (VendaProduto vendaProduto1 in listaProduto)
                 {
                     total = decimal.Add(total, vendaProduto1.Valor);
                 }
-                vendas.Valor_total = total;
+                cotacao.Valor_total = total;
 
                 List<VendaProduto> lista = new List<VendaProduto>();
                 List<Produto> listaProd = new List<Produto>();
@@ -333,7 +334,7 @@ namespace Uni.Controllers
                         Produto_Id_produto = vendaProduto.Produto_Id_produto,
                         Quantidade = vendaProduto.Quantidade,
                         Valor = vendaProduto.Valor,
-                        Venda = vendas
+                        //Venda = vendas
                     });
 
                     var produto = _context.Produto.First(a => a.Id_produto == vendaProduto.Produto_Id_produto);
@@ -342,7 +343,7 @@ namespace Uni.Controllers
                     System.Diagnostics.Debug.WriteLine("teste2");
                 }
 
-                _context.Update(vendas);
+                _context.Update(cotacao);
                 _context.RemoveRange(_context.VendaProduto.Where(x => x.Venda_Id_venda == id));
                 _context.UpdateRange(lista);
                 _context.Produto.UpdateRange(listaProd);
@@ -353,7 +354,7 @@ namespace Uni.Controllers
 
             }
 
-            return View(venda_Produto);
+            return View(cotacao_Produto);
         }
 
 
@@ -365,19 +366,19 @@ namespace Uni.Controllers
                 return NotFound();
             }
 
-            var venda_Produto = await _context.Venda
+            var cotacao_Produto = await _context.Cotacao
                 .Include(v => v.Cliente).Include(v => v.Funcionario)
-                .FirstOrDefaultAsync(m => m.Id_venda == id);
+                .FirstOrDefaultAsync(m => m.Id_cotacao == id);
 
             listaProduto = _context.VendaProduto.Where(x => x.Venda_Id_venda == id).Include(a => a.Produto).ToList();
             ViewBag.Lista = listaProduto;
 
-            if (venda_Produto == null)
+            if (cotacao_Produto == null)
             {
                 return NotFound();
             }
 
-            return View(venda_Produto);
+            return View(cotacao_Produto);
         }
 
         // POST: Cotação_Produto/Delete/5
@@ -385,14 +386,14 @@ namespace Uni.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var venda_Produto = await _context.Venda.FindAsync(id);
-            _context.Venda.Remove(venda_Produto);
+            var cotacao_Produto = await _context.Venda.FindAsync(id);
+            _context.Venda.Remove(cotacao_Produto);
             _context.VendaProduto.RemoveRange(_context.VendaProduto.Where(x => x.Venda_Id_venda == id));
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool Venda_ProdutoExists(int id)
+        private bool Cotacao_ProdutoExists(int id)
         {
             return _context.VendaProduto.Any(e => e.Id_vendaProduto == id);
         }

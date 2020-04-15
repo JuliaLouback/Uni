@@ -9171,11 +9171,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\Downloads\\trabalho\\Uni\\Uni.csproj",
+      "projectUniqueName": "C:\\Users\\user\\Documents\\trabalho\\Uni\\Uni.csproj",
       "projectName": "Uni",
-      "projectPath": "C:\\Users\\user\\Downloads\\trabalho\\Uni\\Uni.csproj",
+      "projectPath": "C:\\Users\\user\\Documents\\trabalho\\Uni\\Uni.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\Downloads\\trabalho\\Uni\\obj\\",
+      "outputPath": "C:\\Users\\user\\Documents\\trabalho\\Uni\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",

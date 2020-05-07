@@ -27,7 +27,7 @@ namespace Uni.Controllers
         }
 
         // GET: Clientes/Details/5
-        public async Task<IActionResult> Details(long? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -90,7 +90,7 @@ namespace Uni.Controllers
         }
 
         // GET: Clientes/Edit/5
-        public async Task<IActionResult> Edit(long? id, int telefone, int endereco)
+        public async Task<IActionResult> Edit(string? id, int telefone, int endereco)
         {
             if (id == null)
             {
@@ -117,7 +117,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Cpf,Nome,Email,Endereco_Id_endereco,Telefone_Id_telefone, Endereco, Telefone")] Cliente cliente)
+        public async Task<IActionResult> Edit(string id, [Bind("Cpf,Nome,Email,Endereco_Id_endereco,Telefone_Id_telefone, Endereco, Telefone")] Cliente cliente)
         {
             if (id != cliente.Cpf)
             {
@@ -169,7 +169,7 @@ namespace Uni.Controllers
         }
 
         // GET: Clientes/Delete/5
-        public async Task<IActionResult> Delete(long? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
@@ -198,7 +198,7 @@ namespace Uni.Controllers
         // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var cliente = await _context.Cliente.FindAsync(id);
 
@@ -215,7 +215,7 @@ namespace Uni.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClienteExists(long id)
+        private bool ClienteExists(string id)
         {
             return _context.Cliente.Any(e => e.Cpf == id);
         }

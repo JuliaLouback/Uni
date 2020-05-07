@@ -5,11 +5,15 @@ namespace Uni.Models
 {
     public class Produto
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
+        [Display(Name = "Código")]
+        [Required(ErrorMessage = "Código é obrigatório", AllowEmptyStrings = false)]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Código deve ser númerico")]
         public int Id_produto { get; set; }
 
         [Required(ErrorMessage = "Nome do Produto", AllowEmptyStrings = false)]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$")]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$", ErrorMessage = "Informe um nome válido")]
         [Display(Name = "Nome")]
         [StringLength(80)]
         public string Nome { get; set; }
@@ -44,10 +48,36 @@ namespace Uni.Models
         [Display(Name = "Estoque Atual")]
         public long Estoque_atual { get; set; }
 
+        [Required(ErrorMessage = "Valor inválio", AllowEmptyStrings = false)]
+        [Display(Name = "Peso Bruto")]
+    
+        public string Peso_bruto { get; set; }
+
+        [Required(ErrorMessage = "Valor inválio", AllowEmptyStrings = false)]
+        [Display(Name = "Peso Líquido")]
+        
+        public string Peso_liquido { get; set; }
+
         [ForeignKey("Fornecedor_Cnpj")]
         public Fornecedor Fornecedor { get; set; }
         [Display(Name = "Fornecedor")]
-        public long Fornecedor_Cnpj { get; set; }
+        public string Fornecedor_Cnpj { get; set; }
+
+        [ForeignKey("CST_Codigo")]
+        public CST CST { get; set; }
+        [Display(Name = "CST")]
+        public string CST_Codigo { get; set; }
+
+        [ForeignKey("NCM_Codigo")]
+        public NCM NCM { get; set; }
+        [Display(Name = "NCM")]
+        public long NCM_Codigo { get; set; }
+
+        [ForeignKey("CFOP_Codigo")]
+        public CFOP CFOP { get; set; }
+        [Display(Name = "CFOP")]
+        public long CFOP_Codigo { get; set; }
+
 
 
     }

@@ -26,7 +26,7 @@ namespace Uni.Controllers
         }
 
         // GET: Fornecedores/Details/5
-        public async Task<IActionResult> Details(long? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
@@ -34,13 +34,8 @@ namespace Uni.Controllers
             }
 
             var fornecedor = await _context.Fornecedor
-                .FirstOrDefaultAsync(m => m.Cnpj == id);
-
-            var telefone1 = await _context.Telefone.FindAsync(fornecedor.Telefone_Id_telefone);
-            var endereco1 = await _context.Endereco.FindAsync(fornecedor.Endereco_Id_endereco);
-
-            fornecedor.Telefone = telefone1;
-            fornecedor.Endereco = endereco1;
+                .Include(v => v.Endereco).Include(v => v.Telefone)
+                .FirstOrDefaultAsync(m => m.Telefone_Id_telefone == id);
 
             if (fornecedor == null)
             {
@@ -91,19 +86,16 @@ namespace Uni.Controllers
         }
 
         // GET: Fornecedores/Edit/5
-        public async Task<IActionResult> Edit(long? id, int telefone, int endereco)
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var fornecedor = await _context.Fornecedor.FindAsync(id);
-            var telefone1 = await _context.Telefone.FindAsync(telefone);
-            var endereco1 = await _context.Endereco.FindAsync(endereco);
-
-            fornecedor.Telefone = telefone1;
-            fornecedor.Endereco = endereco1;
+            var fornecedor = await _context.Fornecedor
+               .Include(v => v.Endereco).Include(v => v.Telefone)
+               .FirstOrDefaultAsync(m => m.Telefone_Id_telefone == id);
 
             if (fornecedor == null)
             {
@@ -117,7 +109,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Cnpj,Nome_empresa,Email,Inscricao_estadual,Inscricao_municipal, Endereco_Id_endereco, Telefone_Id_telefone, Telefone, Endereco")] Fornecedor fornecedor)
+        public async Task<IActionResult> Edit(string id, [Bind("Cnpj,Nome_empresa,Email,Inscricao_estadual,Inscricao_municipal, Endereco_Id_endereco, Telefone_Id_telefone, Telefone, Endereco")] Fornecedor fornecedor)
         {
             if (id != fornecedor.Cnpj)
             {
@@ -171,7 +163,7 @@ namespace Uni.Controllers
         }
 
         // GET: Fornecedores/Delete/5
-        public async Task<IActionResult> Delete(long? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -179,13 +171,8 @@ namespace Uni.Controllers
             }
 
             var fornecedor = await _context.Fornecedor
-                .FirstOrDefaultAsync(m => m.Cnpj == id);
-
-            var telefone1 = await _context.Telefone.FindAsync(fornecedor.Telefone_Id_telefone);
-            var endereco1 = await _context.Endereco.FindAsync(fornecedor.Endereco_Id_endereco);
-
-            fornecedor.Telefone = telefone1;
-            fornecedor.Endereco = endereco1;
+               .Include(v => v.Endereco).Include(v => v.Telefone)
+               .FirstOrDefaultAsync(m => m.Telefone_Id_telefone == id);
 
             if (fornecedor == null)
             {
@@ -198,23 +185,24 @@ namespace Uni.Controllers
         // POST: Fornecedores/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
+        public async Task<IActionResult> DeleteConfirmed(int id, int endereco)
         {
-            var fornecedor = await _context.Fornecedor.FindAsync(id);
+            var fornecedor = await _context.Fornecedor
+               .Include(v => v.Endereco).Include(v => v.Telefone)
+               .FirstOrDefaultAsync(m => m.Telefone_Id_telefone == id);
 
-            var telefone = await _context.Telefone.FindAsync(fornecedor.Telefone_Id_telefone);
-
-            var endereco = await _context.Endereco.FindAsync(fornecedor.Endereco_Id_endereco);
+            var telefone = await _context.Telefone.FindAsync(id);
+            var enderecos = await _context.Endereco.FindAsync(endereco);
 
             _context.Fornecedor.Remove(fornecedor);
             _context.Telefone.Remove(telefone);
-            _context.Endereco.Remove(endereco);
+            _context.Endereco.Remove(enderecos);
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FornecedorExists(long id)
+        private bool FornecedorExists(string id)
         {
             return _context.Fornecedor.Any(e => e.Cnpj == id);
         }

@@ -92,5 +92,6 @@
 </div>
 <div>
     <a class="btn btn-primary" asp-action="Index">Voltar</a>
-    <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.Id_venda" asp-route-novo="1">Editar</a> 
+    <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.Id_venda" asp-route-novo="1">Editar</a>
+    @Html.ActionLink("Visualizar Nota Fiscal", "GerarNota", new { id = Model.Id_venda }, new { @class = "btn btn-info" })
 </div>

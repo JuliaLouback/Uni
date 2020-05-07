@@ -10,7 +10,7 @@ namespace Uni.Models
         [Key]
         [Display(Name = "CPF")]
         [Required(ErrorMessage = "CPF é obrigatório", AllowEmptyStrings = false)]
-        public long Cpf { get; set; }
+        public string Cpf { get; set; }
 
         [Required(ErrorMessage = "Nome é obrigatório", AllowEmptyStrings = false)]
         [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$", ErrorMessage = "Informe um nome válido")]

@@ -9,7 +9,7 @@ namespace Uni.Models
         [Key]
         public int Id_venda { get; set; }
 
-        [Required(ErrorMessage = "Data da Venda")]
+        // [Required(ErrorMessage = "Data da Venda")]
         [Display(Name = "Data da Venda")]
         // [DisplayFormat(DataFormatString = "dd/mm/yyyy")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
@@ -29,13 +29,13 @@ namespace Uni.Models
         public Funcionario Funcionario { get; set; }
 
         [Display(Name = "Funcionário")]
-        public long Funcionario_Cpf { get; set; }
+        public string Funcionario_Cpf { get; set; }
 
         [ForeignKey("Cliente_Cpf")]
         public Cliente Cliente { get; set; }
 
         [Display(Name = "Cliente")]
-        public long Cliente_Cpf { get; set; }
+        public string Cliente_Cpf { get; set; }
 
     }
 }

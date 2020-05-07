@@ -10,6 +10,7 @@ namespace Uni.Models
         [Required(ErrorMessage = "Telefone é obrigatório", AllowEmptyStrings = false)]
         
         [Display(Name = "Telefone")]
-        public long Telefones { get; set; }
+        [StringLength(14, ErrorMessage = "Número incorreto", MinimumLength = 6)]
+        public string Telefones { get; set; }
     }
 }

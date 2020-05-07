@@ -25,26 +25,26 @@
                         <select asp-for="Cliente_Cpf" class="form-control" asp-items="ViewBag.Cliente_Cpf"></select>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-12">
+                <!--<div class="col-md-6 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Data_venda" class="control-label"></label>
                         <input asp-for="Data_venda" class="form-control" />
                         <span asp-validation-for="Data_venda" class="text-danger"></span>
                     </div>
-                </div>
+                </div>-->
 
                 <div class="col-md-2 col-sm-12 mt-2">
-                    <div class="form-group mt-4">
+                    <div class="form-group">
                         @Html.ActionLink("Add Produto", "EditProd", new { }, new { @class = "btn btn-info btn-block" })
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-12 mt-2">
-                    <div class="form-group mt-4">
+                    <div class="form-group">
                         <input type="submit" value="Finalizar Venda" class="btn btn-primary btn-block" />
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-12 mt-2">
-                    <div class="form-group mt-4">
+                    <div class="form-group">
                         <a class="btn btn-success btn-block" asp-action="Index">Voltar</a>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                                 R$ @produto.Valor
                             </td>
                             <td>
-                                @Html.ActionLink("Remover Produto", "DeleteEditProduto", new { produto.Cotacao_Id_cotacao }, new { @class = "btn btn-danger" })
+                                @Html.ActionLink("Remover Produto", "DeleteEditProd", new { produto.Produto_Id_produto }, new { @class = "btn btn-danger" })
                             </td>
                         </tr>
                     }

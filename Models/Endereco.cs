@@ -9,7 +9,7 @@ namespace Uni.Models
 
         [Display(Name = "CEP")]
         [Required(ErrorMessage = "CEP é obrigatório", AllowEmptyStrings = false)]
-        public long Cep { get; set; }
+        public string Cep { get; set; }
 
         [Required(ErrorMessage = "Número é obrigatório", AllowEmptyStrings = false)]
         [Display(Name = "Número")]

@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.Inscricao_municipal)
             </td>
             <td>
-                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Cnpj" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco">Editar</a>
-                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Cnpj">Detalhes</a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Cnpj">Excluir</a>
+                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Telefone_Id_telefone">Editar</a>
+                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Telefone_Id_telefone">Detalhes</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco">Excluir</a>
             </td>
         </tr>
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Uni.Data;
@@ -36,6 +37,9 @@ namespace Uni.Controllers
 
             var produto = await _context.Produto
                 .Include(p => p.Fornecedor)
+                .Include(p => p.CST)
+                .Include(p => p.CFOP)
+                .Include(p => p.NCM)
                 .FirstOrDefaultAsync(m => m.Id_produto == id);
             if (produto == null)
             {
@@ -49,6 +53,9 @@ namespace Uni.Controllers
         public IActionResult Create()
         {
             ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "Nome_empresa");
+            ViewData["CFOP_Codigo"] = new SelectList(_context.CFOP, "Codigo", "FullName");
+            ViewData["NCM_Codigo"] = new SelectList(_context.NCM, "Codigo", "FullName");
+            ViewData["CST_Codigo"] = new SelectList(_context.CST, "Codigo", "FullName");
             return View();
         }
 
@@ -57,7 +64,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id_produto,Nome,Valor_unitario,Unidade_medida,Descricao,Estoque_minimo,Estoque_maximo,Estoque_atual,Fornecedor_Cnpj, Fornecedor")] Produto produto)
+        public async Task<IActionResult> Create([Bind("Id_produto,Nome,Valor_unitario,Unidade_medida,Descricao,Estoque_minimo,Estoque_maximo,Estoque_atual,Peso_bruto, Peso_liquido,Fornecedor_Cnpj, Fornecedor, CST_Codigo, CST, CFOP_Codigo, CFOP, NCM_Codigo, NCM")] Produto produto)
         {
             if (ModelState.IsValid)
             {
@@ -65,8 +72,26 @@ namespace Uni.Controllers
                 Fornecedor fornecedor = new Fornecedor();
                 fornecedor.Cnpj = produto.Fornecedor_Cnpj;
 
-                long lastestFornecedorId = fornecedor.Cnpj;
+                CST cst = new CST();
+                cst.Codigo = produto.CST_Codigo;
+
+                CFOP cfop = new CFOP();
+                cfop.Codigo = produto.CFOP_Codigo;
+
+                NCM ncm = new NCM();
+                ncm.Codigo = produto.NCM_Codigo;
+
+                string lastestFornecedorId = fornecedor.Cnpj;
                 produto.Fornecedor_Cnpj = lastestFornecedorId;
+
+                string lastestCSTId = cst.Codigo;
+                produto.CST_Codigo = lastestCSTId;
+
+                long lastestCFOPId = cfop.Codigo;
+                produto.CFOP_Codigo = lastestCFOPId;
+
+                long lastestNCMId = ncm.Codigo;
+                produto.NCM_Codigo = lastestNCMId;
 
 
                 _context.Add(produto);
@@ -74,6 +99,9 @@ namespace Uni.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "NomeEmpresa", produto.Fornecedor_Cnpj);
+            ViewData["CFOP_Codigo"] = new SelectList(_context.CFOP, "Codigo", "FullName");
+            ViewData["NCM_Codigo"] = new SelectList(_context.NCM, "Codigo", "FullName");
+            ViewData["CST_Codigo"] = new SelectList(_context.CST, "Codigo", "FullName");
             return View(produto);
         }
 
@@ -91,6 +119,9 @@ namespace Uni.Controllers
                 return NotFound();
             }
             ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "Nome_empresa", produto.Fornecedor_Cnpj);
+            ViewData["CFOP_Codigo"] = new SelectList(_context.CFOP, "Codigo", "FullName");
+            ViewData["NCM_Codigo"] = new SelectList(_context.NCM, "Codigo", "FullName");
+            ViewData["CST_Codigo"] = new SelectList(_context.CST, "Codigo", "FullName");
             return View(produto);
         }
 
@@ -99,7 +130,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id_produto,Nome,Valor_unitario,Unidade_medida,Descricao,Estoque_minimo,Estoque_maximo,Estoque_atual,Fornecedor_Cnpj")] Produto produto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id_produto,Nome,Valor_unitario,Unidade_medida,Descricao,Estoque_minimo,Estoque_maximo,Estoque_atual,Peso_bruto, Peso_liquido, Fornecedor_Cnpj, CST_Codigo, CFOP_Codigo, NCM_Codigo")] Produto produto)
         {
             if (id != produto.Id_produto)
             {

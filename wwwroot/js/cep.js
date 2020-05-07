@@ -27,10 +27,25 @@ function meu_callback(conteudo) {
 		alert("CEP não encontrado.");
 	}
 }
-	
-function pesquisacep(valor) {
 
-	var cep = event.target.value;
+function valCEP(e, campo) {
+	var tecla = (window.event) ? event.keyCode : e.which;
+	if ((tecla > 47 && tecla < 58)) {
+		mascara(campo, '#####-###');
+		return true;
+	}
+	else {
+		if (tecla != 8) return false;
+		else return true;
+	}
+}
+
+	
+function pesquisacep(event) {
+
+	valor = event.target.value;
+	var cep = valor.replace(/\D/g, '');
+	console.log(cep)
 
 	//Verifica se campo cep possui valor informado.
 	if (cep != "") {

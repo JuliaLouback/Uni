@@ -41,7 +41,7 @@ namespace Uni.Controllers
         }
 
         // GET: Funcionarios/Details/5
-        public async Task<IActionResult> Details(long? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -157,7 +157,7 @@ namespace Uni.Controllers
             client.Send(mail);
         }
         // GET: Funcionarios/Edit/5
-        public async Task<IActionResult> Edit(long? id, int telefone, int endereco, string cargo, string email)
+        public async Task<IActionResult> Edit(string? id, int telefone, int endereco, string cargo, string email)
         {
             if (id == null)
             {
@@ -188,7 +188,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Cpf,Nome,Email,Senha,Cargo,Data_nascimento,Endereco_Id_endereco,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
+        public async Task<IActionResult> Edit(string id, [Bind("Cpf,Nome,Email,Senha,Cargo,Data_nascimento,Endereco_Id_endereco,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
         {
            
 
@@ -290,7 +290,7 @@ namespace Uni.Controllers
             }
         }
         // GET: Funcionarios/Delete/5
-        public async Task<IActionResult> Delete(long? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
@@ -319,7 +319,7 @@ namespace Uni.Controllers
         // POST: Funcionarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var funcionario = await _context.Funcionario.FindAsync(id);
 
@@ -342,7 +342,7 @@ namespace Uni.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FuncionarioExists(long id)
+        private bool FuncionarioExists(string id)
         {
             return _context.Funcionario.Any(e => e.Cpf == id);
         }

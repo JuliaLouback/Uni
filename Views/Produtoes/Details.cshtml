@@ -56,7 +56,25 @@
             @Html.DisplayNameFor(model => model.Fornecedor)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Fornecedor.Email)
+            @Html.DisplayFor(model => model.Fornecedor.Cnpj)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CFOP)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CFOP.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CST)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CST.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NCM)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NCM.FullName)
         </dd>
     </dl>
 </div>

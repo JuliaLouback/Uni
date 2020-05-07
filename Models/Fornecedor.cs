@@ -10,8 +10,7 @@ namespace Uni.Models
         [Key]
         [Required(ErrorMessage = "CNPJ é obrigatório")]
         [Display(Name = "CNPJ")]
-       
-        public long Cnpj { get; set; }
+        public string Cnpj { get; set; }
 
         [Required(ErrorMessage = "Nome da empresa é obrigatório")]
         [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$", ErrorMessage = "Informe uma empresa válida")]

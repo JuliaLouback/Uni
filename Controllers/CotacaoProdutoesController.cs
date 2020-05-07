@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Uni.Data;
@@ -210,10 +211,19 @@ namespace Uni.Controllers
 
             if (ModelState.IsValid)
             {
+
+                DateTime localDate = DateTime.Now;
+
+                string cultureName = "pt-BR";
+
+                var culture = new CultureInfo(cultureName);
+
+                string local = localDate.ToString(culture);
+
                 Cotacao cotacao = new Cotacao();
 
                 cotacao.Cliente_Cpf = cotacao_Produto.Cotacao.Cliente_Cpf;
-                cotacao.Data_venda = cotacao_Produto.Cotacao.Data_venda;
+                cotacao.Data_venda = Convert.ToDateTime(local);
                 cotacao.Funcionario_Cpf = cotacao_Produto.Cotacao.Funcionario_Cpf;
 
                 decimal total = 0;
@@ -291,7 +301,7 @@ namespace Uni.Controllers
         // POST: Cotação_Produto/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Cliente_Cpf,Funcionario_Cpf,Data_venda")] Cotacao cotacao_Produto)
+        public async Task<IActionResult> Edit(int id, [Bind("Cliente_Cpf,Funcionario_Cpf")] Cotacao cotacao_Produto)
         {
             if (id != idEdit)
             {
@@ -300,10 +310,17 @@ namespace Uni.Controllers
 
             if (ModelState.IsValid)
             {
+                DateTime localDate = DateTime.Now;
+
+                string cultureName = "pt-BR";
+
+                var culture = new CultureInfo(cultureName);
+
+                string local = localDate.ToString(culture);
 
                 var cotacao = _context.Cotacao.First(a => a.Id_cotacao == idEdit);
                 cotacao.Cliente_Cpf = cotacao_Produto.Cliente_Cpf;
-                cotacao.Data_venda = cotacao_Produto.Data_venda;
+                cotacao.Data_venda = Convert.ToDateTime(local);
                 cotacao.Funcionario_Cpf = cotacao_Produto.Funcionario_Cpf;
 
                 decimal total = 0;

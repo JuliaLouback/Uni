@@ -13,7 +13,14 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
-                <div class="col-md-8 col-sm-12">
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Id_produto" class="control-label"></label>
+                        <input asp-for="Id_produto" class="form-control" />
+                        <span asp-validation-for="Id_produto" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Nome" class="control-label"></label>
                         <input asp-for="Nome" class="form-control" />
@@ -66,6 +73,20 @@
                         <span asp-validation-for="Estoque_atual" class="text-danger"></span>
                     </div>
                 </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Peso_bruto" class="control-label"></label>
+                        <input asp-for="Peso_bruto" class="form-control" />
+                        <span asp-validation-for="Peso_bruto" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Peso_liquido" class="control-label"></label>
+                        <input asp-for="Peso_liquido" class="form-control" />
+                        <span asp-validation-for="Peso_liquido" class="text-danger"></span>
+                    </div>
+                </div>
                 <div class="col-md-8 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Descricao" class="control-label"></label>
@@ -79,6 +100,26 @@
                         <select asp-for="Fornecedor_Cnpj" class="form-control" asp-items="ViewBag.Fornecedor_Cnpj"></select>
                     </div>
                 </div>
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="CFOP_Codigo" class="control-label"></label>
+                        <select asp-for="CFOP_Codigo" class="form-control" asp-items="ViewBag.CFOP_Codigo"></select>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="NCM_Codigo" class="control-label"></label>
+                        <select asp-for="NCM_Codigo" class="form-control" asp-items="ViewBag.NCM_Codigo"></select>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="CST_Codigo" class="control-label"></label>
+                        <select asp-for="CST_Codigo" class="form-control" asp-items="ViewBag.CST_Codigo"></select>
+                    </div>
+                </div>
+
+
                 <div class="col-md-1 col-sm-12">
                     <div class="form-group">
                         <a class="btn btn-success" asp-action="Index">Voltar</a>

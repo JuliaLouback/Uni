@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\julia\\Music\\Uni\\Uni.csproj": {}
+    "D:\\Uni\\Uni.csproj": {}
   },
   "projects": {
-    "C:\\Users\\julia\\Music\\Uni\\Uni.csproj": {
+    "D:\\Uni\\Uni.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\julia\\Music\\Uni\\Uni.csproj",
+        "projectUniqueName": "D:\\Uni\\Uni.csproj",
         "projectName": "Uni",
-        "projectPath": "C:\\Users\\julia\\Music\\Uni\\Uni.csproj",
+        "projectPath": "D:\\Uni\\Uni.csproj",
         "packagesPath": "C:\\Users\\julia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\julia\\Music\\Uni\\obj\\",
+        "outputPath": "D:\\Uni\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -74,7 +74,7 @@
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[3.1.2, )"
             },
             "Sitecore.FakeDb": {
               "target": "Package",

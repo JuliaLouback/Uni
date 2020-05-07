@@ -21,5 +21,8 @@ namespace Uni.Data
         public DbSet<Uni.Models.VendaProduto> VendaProduto { get; set; }
         public DbSet<Uni.Models.Cotacao> Cotacao { get; set; }
         public DbSet<Uni.Models.CotacaoProduto> CotacaoProduto { get; set; }
+        public DbSet<Uni.Models.NCM> NCM { get; set; }
+        public DbSet<Uni.Models.CFOP> CFOP { get; set; }
+        public DbSet<Uni.Models.CST> CST { get; set; }
     }
 }

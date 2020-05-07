@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Uni.Data;
@@ -28,6 +29,71 @@ namespace Uni.Controllers
             var values = listaProduto.Select(x => x.Produto.Nome).ToList();
             ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0).Where(p => !values.Contains(p.Nome)), "Id_produto", "Nome");
             return View();
+        }
+
+        public async Task<IActionResult> GerarNota(int id)
+        {
+            var venda_Produto = await _context.Venda
+               .Include(v => v.Cliente).Include(v => v.Funcionario).Include(v => v.Cliente.Endereco).Include(v => v.Cliente.Telefone)
+               .FirstOrDefaultAsync(m => m.Id_venda == id);
+
+            listaProduto = _context.VendaProduto.Where(x => x.Venda_Id_venda == id).Include(a => a.Produto).ToList();
+            ViewBag.Lista = listaProduto;
+
+
+            DateTime localDate = DateTime.Now;
+
+            string cultureName = "pt-BR";
+            
+            var culture = new CultureInfo(cultureName);
+
+            string local = localDate.ToString(culture);
+           
+            ViewBag.Data = localDate.ToShortDateString();
+            ViewBag.Hora = DateTime.Now.ToString("HH:mm");
+
+            Random r = new Random();
+            var x = r.Next(0, 999999);
+         
+            ViewBag.NumeroNota = x.ToString("000000");
+
+            Random protocolo = new Random();
+            var protocolos = protocolo.Next(0, 999999999);
+
+            ViewBag.Protocolo = protocolos.ToString("000000000") + x.ToString("000000") + "  " + local;
+
+            decimal valorTotal = 0;
+            decimal peso_bruto = 0;
+            decimal peso_liquido = 0;
+
+            foreach (VendaProduto produto in ViewBag.Lista)
+            {
+                decimal valorIcms = 0;
+                valorIcms = produto.Valor / Convert.ToDecimal(0.82);
+                decimal valorFinal = Math.Round(valorIcms * Convert.ToDecimal(0.18), 2);
+                valorTotal = valorTotal + valorFinal;
+                peso_bruto = peso_bruto + (Convert.ToDecimal(produto.Produto.Peso_bruto) * produto.Quantidade) ;
+                peso_liquido = peso_liquido + (Convert.ToDecimal(produto.Produto.Peso_liquido) * produto.Quantidade);
+            }
+
+            ViewBag.ValorIcms = valorTotal;
+            ViewBag.PesoB = peso_bruto;
+            ViewBag.PesoL = peso_liquido;
+           
+
+            string chave = "";
+
+            for(int i = 0; i < 11; i++)
+            {
+                Random c = new Random();
+                var d = r.Next(0, 9999);
+
+                chave = chave + " " +d;
+            }
+
+            ViewBag.Chave = chave;
+
+            return View(venda_Produto); 
         }
 
         //ADD PRODUTO 
@@ -59,6 +125,8 @@ namespace Uni.Controllers
 
                     return RedirectToAction("Create");
                 }
+
+
             }
             ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
             return View();
@@ -207,10 +275,18 @@ namespace Uni.Controllers
 
             if (ModelState.IsValid)
             {
-               Venda venda = new Venda();
+                DateTime localDate = DateTime.Now;
+
+                string cultureName = "pt-BR";
+
+                var culture = new CultureInfo(cultureName);
+
+                string local = localDate.ToString(culture);
+
+                Venda venda = new Venda();
 
                 venda.Cliente_Cpf = venda_Produto.Venda.Cliente_Cpf;
-                venda.Data_venda = venda_Produto.Venda.Data_venda;
+                venda.Data_venda = Convert.ToDateTime(local);
                 venda.Funcionario_Cpf = venda_Produto.Venda.Funcionario_Cpf;
 
                 decimal total = 0;
@@ -242,7 +318,7 @@ namespace Uni.Controllers
 
                 await _context.SaveChangesAsync();
                 listaProduto.Clear();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("GerarNota", new { id = venda.Id_venda });
             }
             
             return View(venda_Produto);
@@ -286,7 +362,7 @@ namespace Uni.Controllers
         // POST: Venda_Produto/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Cliente_Cpf,Funcionario_Cpf,Data_venda")] Venda venda_Produto)
+        public async Task<IActionResult> Edit(int id, [Bind("Cliente_Cpf,Funcionario_Cpf")] Venda venda_Produto)
         {
             if (id != idEdit)
             {
@@ -295,10 +371,17 @@ namespace Uni.Controllers
 
             if (ModelState.IsValid)
             {
+                DateTime localDate = DateTime.Now;
+
+                string cultureName = "pt-BR";
+
+                var culture = new CultureInfo(cultureName);
+
+                string local = localDate.ToString(culture);
 
                 var vendas = _context.Venda.First(a => a.Id_venda == idEdit);
                 vendas.Cliente_Cpf = venda_Produto.Cliente_Cpf;
-                vendas.Data_venda = venda_Produto.Data_venda;
+                vendas.Data_venda = Convert.ToDateTime(local);
                 vendas.Funcionario_Cpf = venda_Produto.Funcionario_Cpf;
 
                 decimal total = 0;
@@ -326,8 +409,8 @@ namespace Uni.Controllers
                 
                 await _context.SaveChangesAsync();
                 listaExcluido.Clear();
-                return RedirectToAction(nameof(Index));
-                
+                return RedirectToAction("GerarNota", new { id = vendas.Id_venda });
+
             }
            
             return View(venda_Produto);

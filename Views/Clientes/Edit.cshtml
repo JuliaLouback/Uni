@@ -32,14 +32,14 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Cpf" class="control-label"></label>
-                        <input asp-for="Cpf" class="form-control" />
+                        <input asp-for="Cpf" class="form-control" onkeypress="return valCPF(event,this);return false;" maxlength="14" title="###.###.###-##" />
                         <span asp-validation-for="Cpf" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Telefone.Telefones" class="control-label"></label>
-                        <input asp-for="Telefone.Telefones" class="form-control" />
+                        <input asp-for="Telefone.Telefones" class="form-control" onkeypress="return valTELEFONE(event,this); return false;" />
                         <span asp-validation-for="Telefone.Telefones" class="text-danger"></span>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                 <div class="col-md-3 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Endereco.Cep" class="control-label"></label>
-                        <input asp-for="Endereco.Cep" class="form-control" onchange="pesquisacep(event)" />
+                        <input asp-for="Endereco.Cep" class="form-control" onkeypress="return valCEP(event,this); return false;" maxlength="9" title="#####-###" size="10" onchange="pesquisacep(event);" />
                         <span asp-validation-for="Endereco.Cep" class="text-danger"></span>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Endereco.Bairro" class="control-label"></label>
-                        <input asp-for="Endereco.Bairro" class="form-control" id="bairro"/>
+                        <input asp-for="Endereco.Bairro" class="form-control" id="bairro" />
                         <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
                     </div>
                 </div>
@@ -119,4 +119,6 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script src="~/js/cep.js"></script>
+    <script src="~/js/telefone.js"></script>
+    <script src="~/js/cpf.js"></script>
 }

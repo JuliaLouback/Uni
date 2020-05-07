@@ -13,13 +13,16 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Id_produto)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Valor_unitario)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Unidade_medida)
+               Un. Medida
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Estoque_minimo)
@@ -36,6 +39,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id_produto)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>

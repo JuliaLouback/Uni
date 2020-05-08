@@ -109,9 +109,9 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Cnpj,Nome_empresa,Email,Inscricao_estadual,Inscricao_municipal, Endereco_Id_endereco, Telefone_Id_telefone, Telefone, Endereco")] Fornecedor fornecedor)
+        public async Task<IActionResult> Edit(int id, [Bind("Cnpj,Nome_empresa,Email,Inscricao_estadual,Inscricao_municipal, Endereco_Id_endereco, Telefone_Id_telefone, Telefone, Endereco")] Fornecedor fornecedor)
         {
-            if (id != fornecedor.Cnpj)
+            if (id != fornecedor.Telefone_Id_telefone)
             {
                 return NotFound();
             }
@@ -124,7 +124,9 @@ namespace Uni.Controllers
                     var telefones = _context.Telefone.First(a => a.Id_telefone == fornecedor.Telefone_Id_telefone);
                     telefones.Telefones = fornecedor.Telefone.Telefones;
 
-                    var fornecedores = _context.Fornecedor.First(a => a.Cnpj == fornecedor.Cnpj);
+                    var fornecedores = await _context.Fornecedor
+                   .Include(v => v.Endereco).Include(v => v.Telefone)
+                   .FirstOrDefaultAsync(m => m.Telefone_Id_telefone == id);
                     fornecedores.Cnpj = fornecedor.Cnpj;
                     fornecedores.Email = fornecedor.Email;
                     fornecedores.Inscricao_estadual = fornecedor.Inscricao_estadual;

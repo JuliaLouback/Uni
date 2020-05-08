@@ -12,7 +12,7 @@
     <div class="col-md-10 col-sm-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Cnpj" />
+            <input type="hidden" asp-for="Telefone_Id_telefone" />
             <div class="row">
                 <div class="col-md-5 col-sm-12">
                     <div class="form-group">
@@ -45,7 +45,7 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Inscricao_estadual" class="control-label"></label>
-                        <input asp-for="Inscricao_estadual" class="form-control" />
+                        <input asp-for="Inscricao_estadual" class="form-control" onkeypress="return valInsc(event, this); return false;" maxlength="15"/>
                         <span asp-validation-for="Inscricao_estadual" class="text-danger"></span>
                     </div>
                 </div>
@@ -132,4 +132,5 @@
 
     <script src="~/js/cep.js"></script>
     <script src="~/js/telefone.js"></script>
+    <script src="~/js/cpf.js"></script>
 }

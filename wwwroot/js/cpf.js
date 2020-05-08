@@ -33,3 +33,16 @@ function valCNPJ(e, campo) {
         else return true;
     }
 }
+
+function valInsc(e, campo) {
+    var tecla = (window.event) ? event.keyCode : e.which;
+    if ((tecla > 47 && tecla < 58)) {
+        mascara(campo, '###.###.###.###');
+        return true;
+    }
+    else {
+        if (tecla != 8) return false;
+        else return true;
+    }
+}
+

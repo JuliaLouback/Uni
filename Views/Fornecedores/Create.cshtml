@@ -44,7 +44,7 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Inscricao_estadual" class="control-label"></label>
-                        <input asp-for="Inscricao_estadual" class="form-control" />
+                        <input asp-for="Inscricao_estadual" class="form-control" onkeypress="return valInsc(event, this); return false;" maxlength="15"/>
                         <span asp-validation-for="Inscricao_estadual" class="text-danger"></span>
                     </div>
                 </div>

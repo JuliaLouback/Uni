@@ -27,7 +27,7 @@ namespace Uni.Models
         [Required(ErrorMessage = "Inscrição Estadual é obrigatório")]
         [Display(Name = "Inscrição Estadual")]
        
-        public long Inscricao_estadual { get; set; }
+        public string Inscricao_estadual { get; set; }
 
         [Required(ErrorMessage = "Inscrição Municipal é obrigatório")]
         [Display(Name = "Inscrição Municipal")]

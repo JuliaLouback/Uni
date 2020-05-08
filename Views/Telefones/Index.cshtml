@@ -4,7 +4,7 @@
     ViewData["Title"] = "Telefones";
 }
 
-<h1>Telefones</h1>
+<h1 class="text-primary mt-2">Telefones</h1>
 
 <p>
     <a class="btn btn-outline-primary mt-4" asp-action="Create">Adicionar</a>
@@ -27,7 +27,7 @@
             <td>
                 <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id_telefone">Editar</a> 
                 <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id_telefone">Detalhes</a> 
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_telefone">Excluir</a>
+              
             </td>
         </tr>
 }

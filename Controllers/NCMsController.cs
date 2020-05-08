@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Uni.Models;
 
 namespace Uni.Controllers
 {
+    [Authorize(Roles = "Admin, Gerente")]
     public class NCMsController : Controller
     {
         private readonly UniContext _context;
@@ -66,7 +68,7 @@ namespace Uni.Controllers
         }
 
         // GET: NCMs/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(long id)
         {
             if (id == null)
             {
@@ -137,7 +139,7 @@ namespace Uni.Controllers
         // POST: NCMs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(long id)
         {
             var nCM = await _context.NCM.FindAsync(id);
             _context.NCM.Remove(nCM);

@@ -16,7 +16,7 @@ namespace Uni.Models
         public string Codigo { get; set; }
 
         [Required(ErrorMessage = "Descrição é obrigatório", AllowEmptyStrings = false)]
-        
+        [Display(Name = "Descrição")]
         public string Descricao { get; set; }
 
         [NotMapped]

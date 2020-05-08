@@ -1,18 +1,22 @@
 ﻿@model IEnumerable<Uni.Models.NCM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "NCM";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="text-primary mt-2">NCM</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-outline-primary mt-4" asp-action="Create">Adicionar</a>
 </p>
-<table class="table">
+
+<table class="table table-striped">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Codigo)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Descricao)
             </th>
@@ -20,17 +24,21 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
+                @Html.DisplayFor(modelItem => item.Codigo)
+            </td>
+            <td width="60%">
+                <p class="text-break"> @Html.DisplayFor(modelItem => item.Descricao)</p>
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Codigo">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Codigo">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Codigo">Delete</a>
+                <a class="btn btn-info"  asp-action="Edit" asp-route-id="@item.Codigo">Editar</a> 
+                <a class="btn btn-warning"  asp-action="Details" asp-route-id="@item.Codigo">Detalhes</a> 
+                <a class="btn btn-danger"  asp-action="Delete" asp-route-id="@item.Codigo">Excluir</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

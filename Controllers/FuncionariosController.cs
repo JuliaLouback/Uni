@@ -80,7 +80,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Cpf,Nome,Email,Cargo,Data_nascimento,Endereco_Id_endereco,Senha,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
+        public async Task<IActionResult> Create([Bind("Cpf,Nome,Email,Cargo,Data_nascimento,Endereco_Id_endereco,Senha,Status,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
         {
             if (ModelState.IsValid)
             {
@@ -188,7 +188,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Cpf,Nome,Email,Senha,Cargo,Data_nascimento,Endereco_Id_endereco,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
+        public async Task<IActionResult> Edit(string id, [Bind("Cpf,Nome,Email,Senha,Cargo,Data_nascimento,Status,Endereco_Id_endereco,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
         {
            
 
@@ -211,6 +211,31 @@ namespace Uni.Controllers
                     funcionarios.Data_nascimento = funcionario.Data_nascimento;
                     funcionarios.Nome = funcionario.Nome;
                     funcionarios.Senha = funcionario.Senha;
+                    funcionarios.Status = funcionario.Status;
+
+                    if (funcionario.Status == "Inativo")
+                    {
+                        var user = await _userManager.FindByNameAsync(funcionario.Email);
+                        var applicationRole = await _roleManager.FindByNameAsync(funcionario.Cargo);
+                        await _userManager.RemoveFromRoleAsync(user, applicationRole.Name);
+                        await _userManager.DeleteAsync(user);
+                    }
+                    else
+                    {
+                        var user = new IdentityUser { UserName = funcionario.Email, Email = funcionario.Email };
+
+                        if (user == null)
+                        {
+                            var result = await _userManager.CreateAsync(user, funcionario.Senha);
+                            var applicationRole = await _roleManager.FindByNameAsync(funcionario.Cargo);
+                            if (applicationRole != null)
+                            {
+
+                                IdentityResult roleResult = await _userManager.AddToRoleAsync(user, applicationRole.Name);
+                            }
+                        }
+
+                    }
 
                     var enderecos = _context.Endereco.First(a => a.Id_endereco == funcionario.Endereco_Id_endereco);
                     enderecos.Numero = funcionario.Endereco.Numero;

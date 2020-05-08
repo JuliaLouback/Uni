@@ -259,7 +259,7 @@ namespace Uni.Controllers
         // GET: Venda_Produto/Create
         public IActionResult Create()
         {
-            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
+            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo"), "Cpf", "Nome");
             ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
             ViewData["Produto_Id_produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
             ViewData["Venda_Id_venda"] = new SelectList(_context.Venda, "Id_venda", "Id_venda");
@@ -332,12 +332,7 @@ namespace Uni.Controllers
                 return NotFound();
             }
 
-            idEdit = Convert.ToInt32(id);
-
-            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
-            ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
-            ViewData["Produto_Id_produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
-            ViewData["Venda_Id_venda"] = new SelectList(_context.Venda, "Id_venda", "Id_venda");
+            
 
             if (novo != null)
             {
@@ -355,7 +350,14 @@ namespace Uni.Controllers
             {
                 return NotFound();
             }
-            
+
+            idEdit = Convert.ToInt32(id);
+
+            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo" || x.Cpf == venda_Produto.Funcionario_Cpf), "Cpf", "Nome");
+            ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
+            ViewData["Produto_Id_produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
+            ViewData["Venda_Id_venda"] = new SelectList(_context.Venda, "Id_venda", "Id_venda");
+
             return View(venda_Produto);
         }
 

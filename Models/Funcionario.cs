@@ -38,7 +38,11 @@ namespace Uni.Models
         [DataType(DataType.Password)]
         [Display(Name = "Senha")]
         public string Senha { get; set; }
-        
+
+        [Required]
+        [StringLength(45)]
+        public string Status { get; set; }
+
         [ForeignKey("Endereco_Id_endereco")]
         public Endereco Endereco { get; set; }
 

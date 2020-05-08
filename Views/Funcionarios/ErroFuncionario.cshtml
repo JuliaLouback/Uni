@@ -6,7 +6,7 @@
 
 <h1 class="text-primary mt-2 mb-5">Erro ao excluir funcionário/a!</h1>
 
-<h4>Funcionário/a <span class="text-danger">@ViewBag.Nome</span> - <span class="text-danger">@ViewBag.Cpf</span> não pode ser excluído pois está vinculado a uma ou mais vendas e/ou cotações!</h4>
+<h4>Funcionário/a <span class="text-danger">@ViewBag.Nome</span> - <span class="text-danger">@ViewBag.Cpf</span> não pode ser excluído pois está vinculado a uma ou mais vendas e/ou cotações, mude o status do funcionário para inativo!</h4>
 
 
 @Html.ActionLink("Voltar", "Delete", new { id = ViewBag.Id }, new { @class = "btn btn-primary mt-2" })

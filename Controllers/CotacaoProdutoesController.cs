@@ -195,7 +195,7 @@ namespace Uni.Controllers
         // GET: Cotação_Produto/Create
         public IActionResult Create()
         {
-            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
+            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo"), "Cpf", "Nome");
             ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
             ViewData["Produto_Id_produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
             ViewData["Cotacao_Id_cotacao"] = new SelectList(_context.Cotacao, "Id_cotacao", "Id_cotacao");
@@ -272,10 +272,7 @@ namespace Uni.Controllers
 
             idEdit = Convert.ToInt32(id);
 
-            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
-            ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
-            ViewData["Produto_Id_produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
-            ViewData["Cotacao_Id_cotacao"] = new SelectList(_context.Venda, "Id_cotacao", "Id_cotacao");
+            
 
             if (novo != null)
             {
@@ -289,6 +286,11 @@ namespace Uni.Controllers
 
 
             var cotacao_Produto = await _context.Cotacao.FirstOrDefaultAsync(x => x.Id_cotacao == id);
+
+            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo" || x.Cpf == cotacao_Produto.Funcionario_Cpf), "Cpf", "Nome");
+            ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
+            ViewData["Produto_Id_produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
+            ViewData["Venda_Id_venda"] = new SelectList(_context.Venda, "Id_venda", "Id_venda");
 
             if (cotacao_Produto == null)
             {

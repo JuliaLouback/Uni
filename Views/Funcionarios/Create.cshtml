@@ -13,55 +13,65 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-8 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Nome" class="control-label"></label>
                         <input asp-for="Nome" class="form-control" />
                         <span asp-validation-for="Nome" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-12">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Cpf" class="control-label"></label>
                         <input asp-for="Cpf" class="form-control" onkeypress="return valCPF(event,this);return false;" maxlength="14" title="###.###.###-##" />
                         <span asp-validation-for="Cpf" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-12">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Data_nascimento" class="control-label"></label>
                         <input asp-for="Data_nascimento" class="form-control" />
                         <span asp-validation-for="Data_nascimento" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-12">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Email" class="control-label"></label>
                         <input asp-for="Email" class="form-control" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-12">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Senha" class="control-label"></label>
                         <input asp-for="Senha" class="form-control" />
                         <span asp-validation-for="Senha" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-12">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Telefone.Telefones" class="control-label"></label>
                         <input asp-for="Telefone.Telefones" class="form-control" onkeypress="return valTELEFONE(event,this); return false;" />
                         <span asp-validation-for="Telefone.Telefones" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-12">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Cargo" class="control-label"></label>
                         <select asp-for="Cargo" class="form-control">
                             <option value="Vendedor">Vendedor</option>
                             <option value="RH">RH</option>
                             <option value="Gerente">Gerente</option>
+                        </select>
+                        <span asp-validation-for="Cargo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Status" class="control-label"></label>
+                        <select asp-for="Status" class="form-control">
+                            <option value="Ativo">Ativo</option>
+                            <option value="Inativo">Inativo</option>
                         </select>
                         <span asp-validation-for="Cargo" class="text-danger"></span>
                     </div>

@@ -195,12 +195,33 @@ namespace Uni.Controllers
             return View(cliente);
         }
 
+        public async Task<ActionResult> ErroCliente(string id)
+        {
+            var cliente = await _context.Cliente.FirstOrDefaultAsync(m => m.Cpf == id);
+
+            ViewBag.Nome = cliente.Nome;
+            ViewBag.Cpf = cliente.Cpf;
+            ViewBag.Id = id;
+            return View();
+        }
+
         // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var cliente = await _context.Cliente.FindAsync(id);
+
+            var clienteVenda = await _context.Venda
+              .FirstOrDefaultAsync(m => m.Cliente_Cpf == id);
+
+            var clienteCotacao = await _context.Cotacao
+             .FirstOrDefaultAsync(m => m.Cliente_Cpf == id);
+
+            if (clienteVenda != null || clienteCotacao != null)
+            {
+                return RedirectToAction("ErroCliente", new { id = id });
+            }
 
             var telefone = await _context.Telefone.FindAsync(cliente.Telefone_Id_telefone);
 

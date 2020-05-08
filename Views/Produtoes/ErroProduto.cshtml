@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "Erro Produto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary mt-2 mb-5">Erro ao excluir produto!</h1>
+
+<h4>Produto <span class="text-danger">@ViewBag.Nome</span> não pode ser excluído pois está vinculado a uma ou mais vendas e/ou cotações!</h4>
+
+
+@Html.ActionLink("Voltar", "Delete", new { id = ViewBag.Id }, new { @class = "btn btn-primary mt-2" })
+
+

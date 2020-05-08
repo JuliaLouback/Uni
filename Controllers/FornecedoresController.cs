@@ -182,23 +182,44 @@ namespace Uni.Controllers
             return View(fornecedor);
         }
 
+        public async Task<ActionResult> ErroFornecedor(int id)
+        {
+            var fornecedor = await _context.Fornecedor.FirstOrDefaultAsync(m => m.Telefone_Id_telefone == id);
+
+            ViewBag.Nome = fornecedor.Nome_empresa;
+            ViewBag.Cnpj = fornecedor.Cnpj;
+            ViewBag.Id = id;
+            return View();
+        }
+
         // POST: Fornecedores/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id, int endereco)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var fornecedor = await _context.Fornecedor
                .Include(v => v.Endereco).Include(v => v.Telefone)
                .FirstOrDefaultAsync(m => m.Telefone_Id_telefone == id);
 
-            var telefone = await _context.Telefone.FindAsync(id);
-            var enderecos = await _context.Endereco.FindAsync(endereco);
+            var fornecedorProd = await _context.Produto
+              .FirstOrDefaultAsync(m => m.Fornecedor_Cnpj == fornecedor.Cnpj);
 
-            _context.Fornecedor.Remove(fornecedor);
-            _context.Telefone.Remove(telefone);
-            _context.Endereco.Remove(enderecos);
+            if (fornecedorProd != null)
+            {
+                return RedirectToAction("ErroFornecedor", new { id = id });
+            }
+            else
+            {
 
-            await _context.SaveChangesAsync();
+                var telefone = await _context.Telefone.FindAsync(id);
+                var enderecos = await _context.Endereco.FindAsync(fornecedor.Endereco_Id_endereco);
+
+                _context.Fornecedor.Remove(fornecedor);
+                _context.Telefone.Remove(telefone);
+                _context.Endereco.Remove(enderecos);
+
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 

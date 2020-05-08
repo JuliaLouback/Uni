@@ -171,6 +171,9 @@ namespace Uni.Controllers
 
             var produto = await _context.Produto
                 .Include(p => p.Fornecedor)
+                .Include(p => p.CST)
+                .Include(p => p.CFOP)
+                .Include(p => p.NCM)
                 .FirstOrDefaultAsync(m => m.Id_produto == id);
             if (produto == null)
             {
@@ -180,12 +183,34 @@ namespace Uni.Controllers
             return View(produto);
         }
 
+        public async Task<ActionResult> ErroProduto(int id)
+        {
+            var produto = await _context.Produto.FirstOrDefaultAsync(m => m.Id_produto == id);
+
+            ViewBag.Nome = produto.Nome;
+            ViewBag.Descricao = produto.Descricao;
+            ViewBag.Id = id;
+            return View();
+        }
+
         // POST: Produtoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var produto = await _context.Produto.FindAsync(id);
+
+            var produtoVenda = await _context.VendaProduto
+           .FirstOrDefaultAsync(m => m.Produto_Id_produto == id);
+
+            var produtoCotacao = await _context.CotacaoProduto
+             .FirstOrDefaultAsync(m => m.Produto_Id_produto == id);
+
+            if (produtoVenda != null || produtoCotacao != null)
+            {
+                return RedirectToAction("ErroProduto", new { id = id });
+            }
+
             _context.Produto.Remove(produto);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

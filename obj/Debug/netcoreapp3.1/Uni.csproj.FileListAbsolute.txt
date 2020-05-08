@@ -548,3 +548,7 @@ D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CSTs\Details.cshtml.g.cs
 D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CSTs\Edit.cshtml.g.cs
 D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CSTs\Index.cshtml.g.cs
 D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\GerarNota.cshtml.g.cs
+D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Fornecedores\ErroFornecedor.cshtml.g.cs
+D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Clientes\ErroCliente.cshtml.g.cs
+D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Funcionarios\ErroFuncionario.cshtml.g.cs
+D:\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Produtoes\ErroProduto.cshtml.g.cs

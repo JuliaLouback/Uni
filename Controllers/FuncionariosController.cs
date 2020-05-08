@@ -316,6 +316,17 @@ namespace Uni.Controllers
             return View(funcionario);
         }
 
+        public async Task<ActionResult> ErroFuncionario(string id)
+        {
+            var funcionario = await _context.Funcionario.FirstOrDefaultAsync(m => m.Cpf == id);
+
+            ViewBag.Nome = funcionario.Nome;
+            ViewBag.Cpf = funcionario.Cpf;
+            ViewBag.Id = id;
+            return View();
+        }
+
+
         // POST: Funcionarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -323,6 +334,16 @@ namespace Uni.Controllers
         {
             var funcionario = await _context.Funcionario.FindAsync(id);
 
+            var funcionarioVenda = await _context.Venda
+            .FirstOrDefaultAsync(m => m.Funcionario_Cpf == id);
+
+            var funcionarioCotacao = await _context.Cotacao
+             .FirstOrDefaultAsync(m => m.Funcionario_Cpf == id);
+
+            if (funcionarioVenda != null || funcionarioCotacao != null)
+            {
+                return RedirectToAction("ErroFuncionario", new { id = id });
+            }
 
             var telefone = await _context.Telefone.FindAsync(funcionario.Telefone_Id_telefone);
 

@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "Erro Fornecedor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary mt-2 mb-5">Erro ao excluir fornecedor!</h1>
+
+<h4>O fornecedor <span class="text-danger">@ViewBag.Nome</span> - <span class="text-danger">@ViewBag.Cnpj</span> não pode ser excluído pois está vinculado a um ou mais produtos, exclua os produtos primeiro!</h4>
+
+
+@Html.ActionLink("Voltar", "Delete", new { id = ViewBag.Id}, new { @class = "btn btn-primary mt-2" })

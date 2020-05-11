@@ -33,50 +33,22 @@ namespace Uni.Controllers
             _roleManager = roleManager;
         }
 
-      
-        /*
-        // GET: Funcionarios
-        public async Task<IActionResult> Index(string funcionarioStatus, string searchString)
-        {
-                // Use LINQ to get list of status.
-                IQueryable<string> stausQuery = from m in _context.Funcionario
-                                                orderby m.Status
-                                                select m.Status;
-
-                var funcionarios = from m in _context.Funcionario
-                                   select m;
-
-                if (!string.IsNullOrEmpty(searchString))
-                {
-                    funcionarios = funcionarios.Where(s => s.Nome.Contains(searchString));
-                }
-
-                if (!string.IsNullOrEmpty(funcionarioStatus))
-                {
-                    funcionarios = funcionarios.Where(x => x.Status == funcionarioStatus);
-                }
-
-                var funcionarioStatusVM = new FuncionarioStatusViewModel
-                {
-                    Status = new SelectList(await statusQuery.Distinct().ToListAsync()),
-                    Funcionarios = await funcionarios.ToListAsync()
-                };
-                
-
-                return View(funcionarioStatusVM);
-            }
-
-        */
+     
 
         // GET: Funcionarios
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string searchString2)
         {
-            var funcionarios = from m in _context.Funcionario
+            var funcionarios = from m in _context.Funcionario.Include(v => v.Telefone)
                          select m;
 
             if (!string.IsNullOrEmpty(searchString))
             {
                 funcionarios = funcionarios.Where(s => s.Nome.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(searchString2))
+            {
+                funcionarios = funcionarios.Where(x => x.Status == searchString2);
             }
 
             return View(await funcionarios.ToListAsync());

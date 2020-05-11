@@ -1,24 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\Desktop\\Nova pasta\\Uni\\Uni.csproj": {}
+    "C:\\Users\\julia\\3D Objects\\Uni\\Uni.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user\\Desktop\\Nova pasta\\Uni\\Uni.csproj": {
+    "C:\\Users\\julia\\3D Objects\\Uni\\Uni.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\Nova pasta\\Uni\\Uni.csproj",
+        "projectUniqueName": "C:\\Users\\julia\\3D Objects\\Uni\\Uni.csproj",
         "projectName": "Uni",
-        "projectPath": "C:\\Users\\user\\Desktop\\Nova pasta\\Uni\\Uni.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\Nova pasta\\Uni\\obj\\",
+        "projectPath": "C:\\Users\\julia\\3D Objects\\Uni\\Uni.csproj",
+        "packagesPath": "C:\\Users\\julia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\julia\\3D Objects\\Uni\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\julia\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -108,7 +107,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

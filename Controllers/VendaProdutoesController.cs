@@ -228,27 +228,55 @@ namespace Uni.Controllers
         // GET: Venda_Produto 
 
         //Add aqui 
-        /*public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string searchString2, string searchString3)
         {
-            var vendaProdutos = from m in _context.VendaProduto
-                         select m;
+            listaProduto.Clear();
+            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
+            ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
+
+            var vendaProdutos = from m in _context.Venda.Include(v => v.Cliente).Include(v => v.Funcionario)
+                                select m;
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                vendaProdutos = vendaProdutos.Where(s => s.Cliente.Contains(searchString));
+                vendaProdutos = vendaProdutos.Where(s => s.Funcionario_Cpf == searchString);
             }
+
+            if (!string.IsNullOrEmpty(searchString2))
+            {
+                vendaProdutos = vendaProdutos.Where(s => s.Cliente_Cpf == searchString2);
+            }
+
+            if (!string.IsNullOrEmpty(searchString3))
+            {
+
+                string[] words = searchString3.Split('/');
+
+                string variavel = "";
+
+                for (int i = words.Length ; i > 0; i--)
+                {
+                    variavel = variavel + words[i-1] + "-";
+                }
+
+                var date = Convert.ToDateTime(variavel.Remove(variavel.Length - 1, 1)).Date;
+                var nextDay = date.AddDays(1);
+                vendaProdutos = vendaProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay);
+            }
+
 
             return View(await vendaProdutos.ToListAsync());
         }
-        */
+        
 
         
-        public async Task<IActionResult> Index()
+        /*public async Task<IActionResult> Index()
         {
             listaProduto.Clear();
+            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
             var uniContext = _context.Venda.Include(v => v.Cliente).Include(v => v.Funcionario) ;
             return View(await uniContext.ToListAsync());
-        }
+        }*/
         
         
 
@@ -296,16 +324,16 @@ namespace Uni.Controllers
             {
                 DateTime localDate = DateTime.Now;
 
-                string cultureName = "pt-BR";
+                // string cultureName = "pt-BR";
 
-                var culture = new CultureInfo(cultureName);
+                // var culture = new CultureInfo(cultureName);
 
-                string local = localDate.ToString(culture);
+                // string local = localDate.ToString(culture);
 
                 Venda venda = new Venda();
 
                 venda.Cliente_Cpf = venda_Produto.Venda.Cliente_Cpf;
-                venda.Data_venda = Convert.ToDateTime(local);
+                venda.Data_venda = localDate;
                 venda.Funcionario_Cpf = venda_Produto.Venda.Funcionario_Cpf;
 
                 decimal total = 0;

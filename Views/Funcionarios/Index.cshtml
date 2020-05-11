@@ -5,17 +5,53 @@
     ViewData["Title"] = "Funcionários";
 }
 
+<style type="text/css">
+    @@media print {
+        @@page {
+            margin-left: 15mm;
+            margin-right: 15mm;
+        }
+
+        footer {
+            page-break-after: always;
+        }
+
+        .apagar {
+            display: none;
+        }
+    }
+
+</style>
+
 <h1 class="text-primary mt-2">Funcionários</h1>
 
 <p>
-    <a class="btn btn-outline-primary mt-4" asp-action="Create">Adicionar</a>
+    <a class="btn btn-outline-primary mt-4 apagar" asp-action="Create">Adicionar</a>
 </p>
 
 <form asp-controller="Funcionarios" asp-action="Index" method="get">
     <p>
-        Nome: <input type="text" name="SearchString" />
-        <input type="submit" value="Filter" />
-    </p>
+        <div class="row apagar">
+            <div class="col-sm-12 col-md-4">
+                <label class="control-label">Nome</label>
+                <input type="text" name="SearchString" class="form-control" />
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <label class="control-label">Status</label>
+                <select name="SearchString2" class="form-control">
+                    <option value="">Todos</option>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+            <div class="col-sm-12 col-md-1 mt-2">
+                <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-4" />
+            </div>
+            <div class="col-sm-12 col-md-1 mt-2 ml-3">
+                <input type="button" value="Imprimir" onclick="window.print()" class="btn btn-outline-success mt-4 mb-4" />
+            </div>
+        </div>
+</p>
 </form>
 
 <table class="table table-striped">
@@ -30,28 +66,42 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cargo)
             </th>
+
+            <th class="mostrar">
+                @Html.DisplayNameFor(model => model.Data_nascimento)
+            </th>
+            <th class="mostrar">
+                @Html.DisplayNameFor(model => model.Telefone.Telefones)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cargo)
-                </td>
-                <td>
-                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Cpf" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco" asp-route-cargo="@item.Cargo" asp-route-email="@item.Email">Editar</a>
-                    <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Cpf">Detalhes</a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Cpf">Excluir</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cargo)
+            </td>
+
+            <td class="mostrar">
+                @Html.TextBoxFor(modelItem => item.Data_nascimento, "{0:dd/MM/yyyy}", new { @style = "border:none;background-color:transparent;" })
+            </td>
+            <td class="mostrar">
+                @Html.DisplayFor(modelItem => item.Telefone.Telefones)
+            </td>
+            <td>
+                <a class="btn btn-info apagar" asp-action="Edit" asp-route-id="@item.Cpf" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco" asp-route-cargo="@item.Cargo" asp-route-email="@item.Email">Editar</a>
+                <a class="btn btn-warning apagar" asp-action="Details" asp-route-id="@item.Cpf">Detalhes</a>
+                <a class="btn btn-danger apagar" asp-action="Delete" asp-route-id="@item.Cpf">Excluir</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

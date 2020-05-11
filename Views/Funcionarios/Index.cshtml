@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Uni.Models.Funcionario>
+﻿@model IEnumerable<Uni.Models.Funcionario> 
+
 
 @{
     ViewData["Title"] = "Funcionários";
@@ -9,6 +10,14 @@
 <p>
     <a class="btn btn-outline-primary mt-4" asp-action="Create">Adicionar</a>
 </p>
+
+<form asp-controller="Funcionarios" asp-action="Index" method="get">
+    <p>
+        Nome: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -25,23 +34,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cargo)
-            </td>
-            <td>
-                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Cpf" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco" asp-route-cargo="@item.Cargo" asp-route-email="@item.Email">Editar</a> 
-                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Cpf">Detalhes</a> 
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Cpf">Excluir</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cargo)
+                </td>
+                <td>
+                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Cpf" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco" asp-route-cargo="@item.Cargo" asp-route-email="@item.Email">Editar</a>
+                    <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Cpf">Detalhes</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Cpf">Excluir</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

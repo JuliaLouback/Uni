@@ -21,5 +21,6 @@ namespace Uni.Models
         public Produto Produto { get; set; }
 
         public int Produto_Id_produto { get; set; }
+        
     }
 }

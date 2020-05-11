@@ -225,13 +225,32 @@ namespace Uni.Controllers
         }
 
 
-        // GET: Venda_Produto
+        // GET: Venda_Produto 
+
+        //Add aqui 
+        /*public async Task<IActionResult> Index(string searchString)
+        {
+            var vendaProdutos = from m in _context.VendaProduto
+                         select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                vendaProdutos = vendaProdutos.Where(s => s.Cliente.Contains(searchString));
+            }
+
+            return View(await vendaProdutos.ToListAsync());
+        }
+        */
+
+        
         public async Task<IActionResult> Index()
         {
             listaProduto.Clear();
             var uniContext = _context.Venda.Include(v => v.Cliente).Include(v => v.Funcionario) ;
             return View(await uniContext.ToListAsync());
         }
+        
+        
 
         // GET: Venda_Produto/Details/5
         public async Task<IActionResult> Details(int? id)

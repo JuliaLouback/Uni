@@ -25,6 +25,7 @@ namespace Uni.Controllers
             var uniContext = _context.Cotacao.Include(c => c.Cliente).Include(c => c.Funcionario);
             return View(await uniContext.ToListAsync());
         }
+        
 
         // GET: Cotacaos/Details/5
         public async Task<IActionResult> Details(int? id)

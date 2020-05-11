@@ -33,12 +33,73 @@ namespace Uni.Controllers
             _roleManager = roleManager;
         }
 
+      
+        /*
         // GET: Funcionarios
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string funcionarioStatus, string searchString)
+        {
+                // Use LINQ to get list of status.
+                IQueryable<string> stausQuery = from m in _context.Funcionario
+                                                orderby m.Status
+                                                select m.Status;
+
+                var funcionarios = from m in _context.Funcionario
+                                   select m;
+
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    funcionarios = funcionarios.Where(s => s.Nome.Contains(searchString));
+                }
+
+                if (!string.IsNullOrEmpty(funcionarioStatus))
+                {
+                    funcionarios = funcionarios.Where(x => x.Status == funcionarioStatus);
+                }
+
+                var funcionarioStatusVM = new FuncionarioStatusViewModel
+                {
+                    Status = new SelectList(await statusQuery.Distinct().ToListAsync()),
+                    Funcionarios = await funcionarios.ToListAsync()
+                };
+                
+
+                return View(funcionarioStatusVM);
+            }
+
+        */
+
+        // GET: Funcionarios
+        public async Task<IActionResult> Index(string searchString)
+        {
+            var funcionarios = from m in _context.Funcionario
+                         select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                funcionarios = funcionarios.Where(s => s.Nome.Contains(searchString));
+            }
+
+            return View(await funcionarios.ToListAsync());
+        }
+        
+        
+
+        
+        [HttpPost]
+        public string Index(string searchString, bool notUsed)
+        {
+            return "From [HttpPost]Index: filter on " + searchString;
+        }
+
+            
+       
+        /* public async Task<IActionResult> Index()
         {
             var uniContext = _context.Funcionario.Include(f => f.Endereco).Include(f => f.Telefone);
             return View(await uniContext.ToListAsync());
         }
+
+        */
 
         // GET: Funcionarios/Details/5
         public async Task<IActionResult> Details(string? id)

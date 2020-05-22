@@ -161,12 +161,56 @@ namespace Uni.Controllers
 
 
         // GET: Cotação_Produto
+        public async Task<IActionResult> Index(string searchString, string searchString2, string searchString3)
+        {
+            listaProduto.Clear();
+            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
+            ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
+
+            var cotacaoProdutos = from m in _context.Cotacao.Include(v => v.Cliente).Include(v => v.Funcionario)
+                                select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                cotacaoProdutos = cotacaoProdutos.Where(s => s.Funcionario_Cpf == searchString);
+            }
+
+            if (!string.IsNullOrEmpty(searchString2))
+            {
+                cotacaoProdutos = cotacaoProdutos.Where(s => s.Cliente_Cpf == searchString2);
+            }
+
+            if (!string.IsNullOrEmpty(searchString3))
+            {
+
+                string[] words = searchString3.Split('/');
+
+                string variavel = "";
+
+                for (int i = words.Length; i > 0; i--)
+                {
+                    variavel = variavel + words[i - 1] + "-";
+                }
+
+                var date = Convert.ToDateTime(variavel.Remove(variavel.Length - 1, 1)).Date;
+                var nextDay = date.AddDays(1);
+                cotacaoProdutos = cotacaoProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay);
+            }
+
+
+            return View(await cotacaoProdutos.ToListAsync());
+        }
+
+
+       
+        /*
         public async Task<IActionResult> Index()
         {
             listaProduto.Clear();
             var uniContext = _context.Cotacao.Include(v => v.Cliente).Include(v => v.Funcionario);
             return View(await uniContext.ToListAsync());
         }
+        */
 
         // GET: Cotação_Produto/Details/5
         public async Task<IActionResult> Details(int? id)

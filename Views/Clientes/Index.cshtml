@@ -4,11 +4,51 @@
     ViewData["Title"] = "Clientes";
 }
 
+<style type="text/css">
+    @@media print {
+        @@page {
+            margin-left: 15mm;
+            margin-right: 15mm;
+        }
+
+        footer {
+            page-break-after: always;
+        }
+
+        .apagar {
+            display: none;
+        }
+    }
+</style>
+
 <h1 class="text-primary mt-2">Clientes</h1>
 
 <p>
-    <a class="btn btn-outline-primary mt-4" asp-action="Create">Adicionar</a>
+    <a class="btn btn-outline-primary mt-4 apagar" asp-action="Create">Adicionar</a>
 </p>
+
+<form asp-controller="Clientes" asp-action="Index" method="get">
+
+    <div class="row apagar">
+        <div class="col-sm-12 col-md-4">
+            <label class="control-label">Nome</label>
+            <input type="text" name="SearchString" class="form-control" />
+        </div>
+
+        <div class="col-sm-12 col-md-4">
+            <label class="control-label">CPF</label>
+            <input type="text" name="SearchString2" class="form-control" onkeypress="return valCPF(event,this);return false;" cpf-mask="000.000.000-00" maxlength="14" autocomplete="off" />
+        </div>
+
+        <div class="col-sm-12 col-md-1 mt-2">
+            <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-4" />
+        </div>
+        
+        <div class="col-sm-12 col-md-1 mt-2 ml-3">
+            <input type="button" value="Imprimir" onclick="window.print()" class="btn btn-outline-success mt-4 mb-4" />
+        </div>
+    </div>
+</form>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -25,23 +65,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cpf)
-            </td>
-            <td>
-                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Cpf"  asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco">Editar</a> 
-                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Cpf">Detalhes</a> 
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Cpf">Excluir</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cpf)
+                </td>
+                <td>
+                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Cpf" asp-route-telefone="@item.Telefone_Id_telefone" asp-route-endereco="@item.Endereco_Id_endereco">Editar</a>
+                    <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Cpf">Detalhes</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Cpf">Excluir</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/js/cpf.js"></script>
+}

@@ -20,12 +20,37 @@ namespace Uni.Controllers
         }
 
         // GET: Clientes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string searchString2)
+        {
+            var cliente = from m in _context.Cliente.Include(g => g.Telefone)
+                               select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                cliente = cliente.Where(e => e.Nome.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(searchString2))
+            {
+                cliente = cliente.Where(h => h.Cpf.Contains(searchString2));
+            }
+
+            return View(await cliente.ToListAsync());
+        }
+
+        [HttpPost]
+        public string Index(string searchString, bool notUsed)
+        {
+            return "From [HttpPost]Index: filter on " + searchString;
+        }
+
+
+        /*public async Task<IActionResult> Index()
         {
             var uniContext = _context.Cliente.Include(c => c.Endereco).Include(c => c.Telefone);
             return View(await uniContext.ToListAsync());
         }
-
+        */
         // GET: Clientes/Details/5
         public async Task<IActionResult> Details(string? id)
         {

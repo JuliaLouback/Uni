@@ -37,13 +37,27 @@
                 <input type="text" name="SearchString" class="form-control" />
             </div>
             <div class="col-sm-12 col-md-4">
+                <label class="control-label">CPF</label>
+                <input type="text" name="SearchString2" class="form-control cpf-mask" />
+            </div>
+            <div class="col-sm-12 col-md-4">
                 <label class="control-label">Status</label>
-                <select name="SearchString2" class="form-control">
+                <select name="SearchString3" class="form-control">
                     <option value="">Todos</option>
                     <option value="Ativo">Ativo</option>
                     <option value="Inativo">Inativo</option>
                 </select>
             </div>
+            <div class="col-sm-12 col-md-4">
+                <label class="control-label">Cargo</label>
+                <select name="SearchString4" class="form-control">
+                    <option value="">Todos</option>
+                    <option value="Gerente">Gerente</option>
+                    <option value="RH">RH</option>
+                    <option value="Vendedor">Vendedor</option>
+                </select>
+            </div>
+            
             <div class="col-sm-12 col-md-1 mt-2">
                 <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-4" />
             </div>

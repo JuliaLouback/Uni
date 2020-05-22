@@ -20,10 +20,40 @@ namespace Uni.Controllers
         }
 
         // GET: Fornecedores
+        public async Task<IActionResult> Index(string searchString, string searchString2, string searchString3, string searchString4)
+        {
+            var fornecedores = from m in _context.Fornecedor.Include(v => v.Telefone)
+                               select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                fornecedores = fornecedores.Where(s => s.Nome_empresa.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(searchString2))
+            {
+                fornecedores = fornecedores.Where(y => y.Cnpj.Contains(searchString2));
+            }
+
+            if (!string.IsNullOrEmpty(searchString3))
+            {
+                fornecedores = fornecedores.Where(t => t.Endereco.Cidade.Contains(searchString3));
+            }
+            
+            if (!string.IsNullOrEmpty(searchString4))
+            {
+                fornecedores = fornecedores.Where(u => u.Endereco.Estado.Contains(searchString4));
+            }
+            return View(await fornecedores.ToListAsync());
+        }
+
+        /*
         public async Task<IActionResult> Index()
         {
             return View(await _context.Fornecedor.ToListAsync());
         }
+        
+        */
 
         // GET: Fornecedores/Details/5
         public async Task<IActionResult> Details(int id)

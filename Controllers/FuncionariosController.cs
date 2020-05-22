@@ -36,7 +36,7 @@ namespace Uni.Controllers
      
 
         // GET: Funcionarios
-        public async Task<IActionResult> Index(string searchString, string searchString2)
+        public async Task<IActionResult> Index(string searchString, string searchString2, string searchString3, string searchString4)
         {
             var funcionarios = from m in _context.Funcionario.Include(v => v.Telefone)
                          select m;
@@ -48,22 +48,32 @@ namespace Uni.Controllers
 
             if (!string.IsNullOrEmpty(searchString2))
             {
-                funcionarios = funcionarios.Where(x => x.Status == searchString2);
+                funcionarios = funcionarios.Where(y => y.Cpf.Contains(searchString2));
+            }
+            
+
+            if (!string.IsNullOrEmpty(searchString3))
+            {
+                funcionarios = funcionarios.Where(x => x.Status == searchString3);
             }
 
+            if (!string.IsNullOrEmpty(searchString4))
+            {
+                funcionarios = funcionarios.Where(t => t.Cargo == searchString4);
+            }
             return View(await funcionarios.ToListAsync());
         }
         
         
 
-        
+        /*
         [HttpPost]
         public string Index(string searchString, bool notUsed)
         {
             return "From [HttpPost]Index: filter on " + searchString;
         }
 
-            
+        */
        
         /* public async Task<IActionResult> Index()
         {

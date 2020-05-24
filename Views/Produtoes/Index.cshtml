@@ -4,68 +4,116 @@
     ViewData["Title"] = "Produtos";
 }
 
+
+<style type="text/css">
+    @@media print {
+        @@page {
+            margin-left: 15mm;
+            margin-right: 15mm;
+        }
+
+        footer {
+            page-break-after: always;
+        }
+
+        .apagar {
+            display: none;
+        }
+    }
+</style>
+
 <h1 class="text-primary mt-2">Produtos</h1>
 
 <p>
-    <a class="btn btn-outline-primary mt-4" asp-action="Create">Adicionar</a>
+    <a class="btn btn-outline-primary mt-4 apagar" asp-action="Create">Adicionar</a>
 </p>
+
+<form asp-controller="Produtoes" asp-action="Index" method="get">
+    <p>
+        <div class="row apagar">
+            <div class="col-sm-12 col-md-4">
+                <label class="control-label">Nome</label>
+                <input type="text" name="SearchString" class="form-control" />
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <label class="control-label">Unidade de Medida</label>
+                <input type="text" name="SearchString2" class="form-control" />
+            </div>
+
+
+            <div class="col-sm-12 col-md-1 mt-2">
+                <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-4" />
+            </div>
+            <div class="col-sm-12 col-md-1 mt-2 ml-3">
+                <input type="button" value="Imprimir" onclick="window.print()" class="btn btn-outline-success mt-4 mb-4" />
+            </div>
+        </div>
+    </p>
+</form>
 <table class="table table-striped">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id_produto)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Valor_unitario)
-            </th>
-            <th>
-               Un. Medida
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estoque_minimo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estoque_maximo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estoque_atual)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id_produto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                R$ @Html.DisplayFor(modelItem => item.Valor_unitario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Unidade_medida)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estoque_minimo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estoque_maximo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estoque_atual)
-            </td>
-            <td>
-                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id_produto">Editar</a>
-                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id_produto">Detalhes</a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_produto">Excluir</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+        <p>
+            <a class="btn btn-outline-primary mt-4" asp-action="Create">Adicionar</a>
+        </p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id_produto)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Valor_unitario)
+                    </th>
+                    <th>
+                        Un. Medida
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estoque_minimo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estoque_maximo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estoque_atual)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id_produto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            R$ @Html.DisplayFor(modelItem => item.Valor_unitario)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Unidade_medida)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estoque_minimo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estoque_maximo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estoque_atual)
+                        </td>
+                        <td>
+                            <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id_produto">Editar</a>
+                            <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id_produto">Detalhes</a>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_produto">Excluir</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>

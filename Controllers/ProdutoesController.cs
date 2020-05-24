@@ -20,12 +20,38 @@ namespace Uni.Controllers
             _context = context;
         }
 
+        //pesquisa
+
+        public async Task<IActionResult> Index(string searchString, string searchString2)
+        {
+            var produto = from m in _context.Produto
+                          select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                produto = produto.Where(j => j.Nome.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(searchString2))
+            {
+                produto = produto.Where(u => u.Unidade_medida.Contains(searchString2));
+            }
+
+            return View(await produto.ToListAsync());
+        }
+
+        [HttpPost]
+        public string Index(string searchString, bool notUsed)
+        {
+            return "From [HttpPost]Index: filter on " + searchString;
+        } 
+
         // GET: Produtoes
-        public async Task<IActionResult> Index()
+       /* public async Task<IActionResult> Index()
         {
             var uniContext = _context.Produto.Include(p => p.Fornecedor);
             return View(await uniContext.ToListAsync());
-        }
+        }*/
 
         // GET: Produtoes/Details/5
         public async Task<IActionResult> Details(int? id)

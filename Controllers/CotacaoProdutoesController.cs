@@ -19,6 +19,8 @@ namespace Uni.Controllers
 
         private static List<CotacaoProduto> listaProduto = new List<CotacaoProduto>();
 
+        public static AddProdutoView produtoView = new AddProdutoView();
+
         private static int idEdit;
 
         private static List<CotacaoProduto> listaExcluido = new List<CotacaoProduto>();
@@ -29,6 +31,18 @@ namespace Uni.Controllers
         {
             var values = listaProduto.Select(x => x.Produto.Nome).ToList();
             ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0).Where(p => !values.Contains(p.Nome)), "Id_produto", "Nome");
+            return View();
+        }
+
+        public ActionResult AddHistorico(int id)
+        {
+            ViewData["Data"] = new SelectList(_context.Historico.Where(x => x.Produto.Id_produto == id).OrderByDescending(x => x.Id_historico), "Id_historico", "Data_inicio");
+            return View();
+        }
+
+        public ActionResult EditHistorico(int id)
+        {
+            ViewData["Data"] = new SelectList(_context.Historico.Where(x => x.Produto.Id_produto == id).OrderByDescending(x => x.Id_historico), "Id_historico", "Data_inicio");
             return View();
         }
 
@@ -47,34 +61,17 @@ namespace Uni.Controllers
         [HttpPost]
         public ActionResult AddProd(AddProdutoView view)
         {
-            if (ModelState.IsValid)
+            var produto = _context.Produto.First(a => a.Id_produto == view.ProductId);
+
+            if (view.Quantity > produto.Estoque_atual)
             {
-                var produto = _context.Produto.First(a => a.Id_produto == view.ProductId);
-
-                if (view.Quantity > produto.Estoque_atual)
-                {
-                    return RedirectToAction("ErroProd", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
-                }
-                else
-                {
-                    var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == view.ProductId);
-
-                    if (pesquisa)
-                    {
-                        listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
-                    }
-                    CotacaoProduto vendaProduto = new CotacaoProduto();
-                    vendaProduto.Produto = produto;
-                    vendaProduto.Produto_Id_produto = produto.Id_produto;
-                    vendaProduto.Quantidade = Convert.ToInt32(view.Quantity);
-                    vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(produto.Valor_unitario), Convert.ToDecimal(view.Quantity));
-                    listaProduto.Add(vendaProduto);
-
-                    return RedirectToAction("Create");
-                }
+                return RedirectToAction("ErroProd", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
             }
-            ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
-            return View();
+            else
+            {
+                produtoView = view;
+                return RedirectToAction("AddHistorico", new { id = view.ProductId });
+            }
         }
 
         // EDIT PRODUTO
@@ -86,42 +83,82 @@ namespace Uni.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult AddHistorico(AddProdutoView view)
+        {
+            var produto = _context.Produto.First(a => a.Id_produto == produtoView.ProductId);
+            var pesquisaPreco = _context.Historico.Where(x => x.Id_historico == view.Id_historico).FirstOrDefault();
+
+            var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == produtoView.ProductId);
+
+            if (pesquisa)
+            {
+                listaProduto.RemoveAll(x => x.Produto_Id_produto == produtoView.ProductId);
+            }
+
+            produto.Valor_unitario = pesquisaPreco.Valor;
+            CotacaoProduto vendaProduto = new CotacaoProduto();
+            vendaProduto.Produto = produto;
+            vendaProduto.Produto_Id_produto = produto.Id_produto;
+            vendaProduto.Quantidade = Convert.ToInt32(produtoView.Quantity);
+            vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(pesquisaPreco.Valor), Convert.ToDecimal(produtoView.Quantity));
+            listaProduto.Add(vendaProduto);
+
+            return RedirectToAction("Create");
+        }
+
+        [HttpPost]
+        public ActionResult EditHistorico(AddProdutoView view)
+        {
+            var produto = _context.Produto.First(a => a.Id_produto == produtoView.ProductId);
+
+            var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == produtoView.ProductId);
+            var pesquisaPreco = _context.Historico.Where(x => x.Id_historico == view.Id_historico).FirstOrDefault();
+
+            if (pesquisa)
+            {
+                listaProduto.RemoveAll(x => x.Produto_Id_produto == produtoView.ProductId);
+            }
+
+            if (produtoView.Quantity > produto.Estoque_atual)
+            {
+                return RedirectToAction("ErroEditProd", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
+            }
+
+            produto.Valor_unitario = pesquisaPreco.Valor;
+            CotacaoProduto vendaProduto = new CotacaoProduto();
+            vendaProduto.Produto = produto;
+            vendaProduto.Produto_Id_produto = produto.Id_produto;
+            vendaProduto.Quantidade = Convert.ToInt32(produtoView.Quantity);
+            vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(pesquisaPreco.Valor), Convert.ToDecimal(produtoView.Quantity));
+
+            produto.Estoque_atual = produto.Estoque_atual - Convert.ToInt32(produtoView.Quantity);
+            _context.Produto.Update(produto);
+            _context.SaveChanges();
+
+            listaProduto.Add(vendaProduto);
+
+            return RedirectToAction("Edit", new { id = idEdit });
+
+        }
+
         //EDIT PRODUTO 
         [HttpPost]
         public ActionResult EditProd(AddProdutoView view)
         {
             if (ModelState.IsValid)
             {
-
                 var produto = _context.Produto.First(a => a.Id_produto == view.ProductId);
-
-                var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == view.ProductId);
-
-                if (pesquisa)
-                {
-                    listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
-                }
 
                 if (view.Quantity > produto.Estoque_atual)
                 {
                     return RedirectToAction("ErroEditProd", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
                 }
-
-
-                CotacaoProduto vendaProduto = new CotacaoProduto();
-                vendaProduto.Produto = produto;
-                vendaProduto.Produto_Id_produto = produto.Id_produto;
-                vendaProduto.Quantidade = Convert.ToInt32(view.Quantity);
-                vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(produto.Valor_unitario), Convert.ToDecimal(view.Quantity));
-
-                produto.Estoque_atual = produto.Estoque_atual - Convert.ToInt32(view.Quantity);
-                _context.Produto.Update(produto);
-                _context.SaveChanges();
-
-                listaProduto.Add(vendaProduto);
-
-                return RedirectToAction("Edit", new { id = idEdit });
-
+                else
+                {
+                    produtoView = view;
+                    return RedirectToAction("EditHistorico", new { id = view.ProductId });
+                }
             }
             ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
             return View();
@@ -210,7 +247,7 @@ namespace Uni.Controllers
                 var date1 = Convert.ToDateTime(variavel1.Remove(variavel1.Length - 1, 1)).Date;
                 var nextDay = date1.AddDays(1);
 
-                cotacaoProdutos = cotacaoProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay).OrderBy(x => x.Id_cotacao);
+                cotacaoProdutos = cotacaoProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay).OrderByDescending(x => x.Id_cotacao);
             }
             else if (!string.IsNullOrEmpty(dataIni))
             {
@@ -226,10 +263,8 @@ namespace Uni.Controllers
 
                 var date = Convert.ToDateTime(variavel.Remove(variavel.Length - 1, 1)).Date;
                 var nextDay = date.AddDays(1);
-                cotacaoProdutos = cotacaoProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay);
+                cotacaoProdutos = cotacaoProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay).OrderByDescending(x => x.Id_cotacao); ;
             }
-
-
             return View(await cotacaoProdutos.ToListAsync());
         }
 

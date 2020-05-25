@@ -1991,3 +1991,12 @@ D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\ErroLista.csh
 D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\ErroListaEdit.cshtml.g.cs
 D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CotacaoProdutoes\ErroLista.cshtml.g.cs
 D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CotacaoProdutoes\ErroListaEdit.cshtml.g.cs
+D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Historicoes\Create.cshtml.g.cs
+D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Historicoes\Delete.cshtml.g.cs
+D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Historicoes\Details.cshtml.g.cs
+D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Historicoes\Edit.cshtml.g.cs
+D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\Historicoes\Index.cshtml.g.cs
+D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\AddHistorico.cshtml.g.cs
+D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\VendaProdutoes\EditHistorico.cshtml.g.cs
+D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CotacaoProdutoes\AddHistorico.cshtml.g.cs
+D:\PROJETOS\Uni\obj\Debug\netcoreapp3.1\Razor\Views\CotacaoProdutoes\EditHistorico.cshtml.g.cs

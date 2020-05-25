@@ -17,5 +17,8 @@ namespace Uni.Models
         [Display(Name = "Quantidade")]
 
         public double Quantity { get; set; }
+
+        [Display(Name = "Data")]
+        public int Id_historico { get; set; }
     }
 }

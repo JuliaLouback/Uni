@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -119,8 +120,16 @@ namespace Uni.Controllers
                 long lastestNCMId = ncm.Codigo;
                 produto.NCM_Codigo = lastestNCMId;
 
+                DateTime localDate = DateTime.Now;
+
+                Historico historico = new Historico();
+                historico.Data_inicio = localDate;
+                historico.Produto = produto;
+                historico.Produto_Id_produto = produto.Id_produto;
+                historico.Valor = produto.Valor_unitario;
 
                 _context.Add(produto);
+                _context.Historico.Add(historico);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -167,7 +176,20 @@ namespace Uni.Controllers
             {
                 try
                 {
+                    DateTime localDate = DateTime.Now;
+
+                    var historicoAntigo = _context.Historico.OrderByDescending(x => x.Produto_Id_produto).FirstOrDefault();
+                    historicoAntigo.Data_final = localDate;
+
+                    Historico historico = new Historico();
+                    historico.Data_inicio = localDate;
+                    historico.Produto = produto;
+                    historico.Produto_Id_produto = produto.Id_produto;
+                    historico.Valor = produto.Valor_unitario;
+
                     _context.Update(produto);
+                    _context.Update(historicoAntigo);
+                    _context.Add(historico);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

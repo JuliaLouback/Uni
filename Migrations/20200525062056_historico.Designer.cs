@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Uni.Data;
 
 namespace Uni.Migrations
 {
     [DbContext(typeof(UniContext))]
-    partial class UniContextModelSnapshot : ModelSnapshot
+    [Migration("20200525062056_historico")]
+    partial class historico
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,9 +271,6 @@ namespace Uni.Migrations
 
                     b.Property<int>("Produto_Id_produto")
                         .HasColumnType("int");
-
-                    b.Property<string>("Valor")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id_historico");
 

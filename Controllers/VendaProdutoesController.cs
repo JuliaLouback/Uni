@@ -21,6 +21,8 @@ namespace Uni.Controllers
 
         private static int idEdit;
 
+        public static AddProdutoView produtoView = new AddProdutoView();
+
         private static List<VendaProduto> listaExcluido = new List<VendaProduto>();
 
         // ADD PRODUTO
@@ -28,6 +30,18 @@ namespace Uni.Controllers
         {
             var values = listaProduto.Select(x => x.Produto.Nome).ToList();
             ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0).Where(p => !values.Contains(p.Nome)), "Id_produto", "Nome");
+            return View();
+        }
+
+        public ActionResult AddHistorico(int id)
+        {
+            ViewData["Data"] = new SelectList(_context.Historico.Where(x => x.Produto.Id_produto == id).OrderByDescending(x => x.Id_historico), "Id_historico", "Data_inicio");
+            return View();
+        }
+
+        public ActionResult EditHistorico(int id)
+        {
+            ViewData["Data"] = new SelectList(_context.Historico.Where(x => x.Produto.Id_produto == id).OrderByDescending(x => x.Id_historico), "Id_historico", "Data_inicio");
             return View();
         }
 
@@ -42,77 +56,65 @@ namespace Uni.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GerarNota(int id)
+
+        [HttpPost]
+        public ActionResult AddHistorico(AddProdutoView view)
         {
-            var venda_Produto = await _context.Venda
-               .Include(v => v.Cliente).Include(v => v.Funcionario).Include(v => v.Cliente.Endereco).Include(v => v.Cliente.Telefone)
-               .FirstOrDefaultAsync(m => m.Id_venda == id);
+            var produto = _context.Produto.First(a => a.Id_produto == produtoView.ProductId);
 
-            listaProduto = _context.VendaProduto.Where(x => x.Venda_Id_venda == id).Include(a => a.Produto).ToList();
-            ViewBag.Lista = listaProduto;
+            var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == produtoView.ProductId);
+            var pesquisaPreco = _context.Historico.Where(x => x.Id_historico == view.Id_historico).FirstOrDefault();
 
+            if (pesquisa)
+            {
+                listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
+            }
 
-            DateTime localDate = DateTime.Now;
+            produto.Valor_unitario = pesquisaPreco.Valor;
+            VendaProduto vendaProduto = new VendaProduto();
+            vendaProduto.Produto = produto;
+            vendaProduto.Produto_Id_produto = produto.Id_produto;
+            vendaProduto.Quantidade = Convert.ToInt32(produtoView.Quantity);
+            vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(pesquisaPreco.Valor), Convert.ToDecimal(produtoView.Quantity));
+            listaProduto.Add(vendaProduto);
 
-            string cultureName = "pt-BR";
+            return RedirectToAction("Create");
             
-            var culture = new CultureInfo(cultureName);
+        }
 
-            string local = localDate.ToString(culture);
-           
-            ViewBag.Data = localDate.ToShortDateString();
-            ViewBag.Hora = DateTime.Now.ToString("HH:mm");
+        [HttpPost]
+        public ActionResult EditHistorico(AddProdutoView view)
+        {
+            var produto = _context.Produto.First(a => a.Id_produto == produtoView.ProductId);
 
-            Random r = new Random();
-            var x = r.Next(0, 999999);
-         
-            ViewBag.NumeroNota = x.ToString("000000");
+            var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == view.ProductId);
+            var pesquisaPreco = _context.Historico.Where(x => x.Id_historico == view.Id_historico).FirstOrDefault();
 
-            Random protocolo = new Random();
-            var protocolos = protocolo.Next(0, 999999999);
-
-            ViewBag.Protocolo = protocolos.ToString("000000000") + x.ToString("000000") + "  " + local;
-
-            decimal valorTotal = 0;
-            decimal peso_bruto = 0;
-            decimal peso_liquido = 0;
-
-            foreach (VendaProduto produto in ViewBag.Lista)
+            if (pesquisa)
             {
-                decimal valorIcms = 0;
-                valorIcms = produto.Valor / Convert.ToDecimal(0.82);
-                decimal valorFinal = Math.Round(valorIcms * Convert.ToDecimal(0.18), 2);
-                valorTotal = valorTotal + valorFinal;
-                peso_bruto = peso_bruto + (Convert.ToDecimal(produto.Produto.Peso_bruto) * produto.Quantidade) ;
-                peso_liquido = peso_liquido + (Convert.ToDecimal(produto.Produto.Peso_liquido) * produto.Quantidade);
+                listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
             }
 
-            ViewBag.ValorIcms = valorTotal;
-            ViewBag.PesoB = peso_bruto;
-            ViewBag.PesoL = peso_liquido;
-           
-
-            string chave = "";
-
-            for(int i = 0; i < 11; i++)
+            if (view.Quantity > produto.Estoque_atual)
             {
-                Random c = new Random();
-                var d = r.Next(0, 9999);
-
-                chave = chave + " " +d;
+                return RedirectToAction("ErroEditProduto", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
             }
 
-            ViewBag.Chave = chave;
+            VendaProduto vendaProduto = new VendaProduto();
+            produto.Valor_unitario = pesquisaPreco.Valor;
+            vendaProduto.Produto = produto;
+            vendaProduto.Produto_Id_produto = produto.Id_produto;
+            vendaProduto.Quantidade = Convert.ToInt32(produtoView.Quantity);
+            vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(pesquisaPreco.Valor), Convert.ToDecimal(produtoView.Quantity));
 
-            decimal valorVenda = listaProduto[0].Venda.Valor_total;
-           
-            ViewBag.ValorSeguro = Math.Round((valorVenda * Convert.ToDecimal(0.5)) / 100,2);
-            ViewBag.ValorOutros = Math.Round((valorVenda * 1) / 100, 2);
-            ViewBag.ValorIPI = Math.Round((valorVenda * Convert.ToDecimal(0.4)) / 100, 2); ;
-            ViewBag.ValorAprox = Math.Round((valorVenda *Convert.ToDecimal(0.3)) / 100, 2);
-            ViewBag.TotalNota = valorVenda + ViewBag.ValorSeguro + ViewBag.ValorOutros + ViewBag.ValorIPI + ViewBag.ValorAprox;
+            produto.Estoque_atual = produto.Estoque_atual - Convert.ToInt32(view.Quantity);
+            _context.Produto.Update(produto);
+            _context.SaveChanges();
 
-            return View(venda_Produto); 
+            listaProduto.Add(vendaProduto);
+
+            return RedirectToAction("Edit", new { id = idEdit });
+
         }
 
         //ADD PRODUTO 
@@ -129,24 +131,11 @@ namespace Uni.Controllers
                 }
                 else
                 {
-                    var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == view.ProductId);
-
-                    if (pesquisa)
-                    {
-                        listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
-                    }
-                    VendaProduto vendaProduto = new VendaProduto();
-                    vendaProduto.Produto = produto;
-                    vendaProduto.Produto_Id_produto = produto.Id_produto;
-                    vendaProduto.Quantidade = Convert.ToInt32(view.Quantity);
-                    vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(produto.Valor_unitario), Convert.ToDecimal(view.Quantity));
-                    listaProduto.Add(vendaProduto);
-
-                    return RedirectToAction("Create");
+                    produtoView = view;
+                    return RedirectToAction("AddHistorico", new { id = view.ProductId });
                 }
-
-
             }
+
             ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
             return View();
         }
@@ -166,36 +155,18 @@ namespace Uni.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var produto = _context.Produto.First(a => a.Id_produto == view.ProductId);
-
-                var pesquisa = listaProduto.Exists(x => x.Produto.Id_produto == view.ProductId);
-
-                if (pesquisa)
-                {
-                    listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
-                }
 
                 if (view.Quantity > produto.Estoque_atual)
                 {
-                    return RedirectToAction("ErroEditProduto", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
+                    return RedirectToAction("ErroProduto", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
                 }
-
-                VendaProduto vendaProduto = new VendaProduto();
-                vendaProduto.Produto = produto;
-                vendaProduto.Produto_Id_produto = produto.Id_produto;
-                vendaProduto.Quantidade = Convert.ToInt32(view.Quantity);
-                vendaProduto.Valor = decimal.Multiply(Convert.ToDecimal(produto.Valor_unitario), Convert.ToDecimal(view.Quantity));
-
-                produto.Estoque_atual = produto.Estoque_atual - Convert.ToInt32(view.Quantity);
-                _context.Produto.Update(produto);
-                _context.SaveChanges();
-
-                listaProduto.Add(vendaProduto);
-
-                return RedirectToAction("Edit", new { id = idEdit });
-            
-        }
+                else
+                {
+                    produtoView = view;
+                    return RedirectToAction("EditHistorico", new { id = view.ProductId });
+                }
+            }
             ViewData["ProductId"] = new SelectList(_context.Produto.Where(x => x.Estoque_atual > 0), "Id_produto", "Nome");
             return View();
         }
@@ -550,6 +521,79 @@ namespace Uni.Controllers
         private bool Venda_ProdutoExists(int id)
         {
             return _context.VendaProduto.Any(e => e.Id_vendaProduto == id);
+        }
+
+        public async Task<IActionResult> GerarNota(int id)
+        {
+            var venda_Produto = await _context.Venda
+               .Include(v => v.Cliente).Include(v => v.Funcionario).Include(v => v.Cliente.Endereco).Include(v => v.Cliente.Telefone)
+               .FirstOrDefaultAsync(m => m.Id_venda == id);
+
+            listaProduto = _context.VendaProduto.Where(x => x.Venda_Id_venda == id).Include(a => a.Produto).ToList();
+            ViewBag.Lista = listaProduto;
+
+
+            DateTime localDate = DateTime.Now;
+
+            string cultureName = "pt-BR";
+
+            var culture = new CultureInfo(cultureName);
+
+            string local = localDate.ToString(culture);
+
+            ViewBag.Data = localDate.ToShortDateString();
+            ViewBag.Hora = DateTime.Now.ToString("HH:mm");
+
+            Random r = new Random();
+            var x = r.Next(0, 999999);
+
+            ViewBag.NumeroNota = x.ToString("000000");
+
+            Random protocolo = new Random();
+            var protocolos = protocolo.Next(0, 999999999);
+
+            ViewBag.Protocolo = protocolos.ToString("000000000") + x.ToString("000000") + "  " + local;
+
+            decimal valorTotal = 0;
+            decimal peso_bruto = 0;
+            decimal peso_liquido = 0;
+
+            foreach (VendaProduto produto in ViewBag.Lista)
+            {
+                decimal valorIcms = 0;
+                valorIcms = produto.Valor / Convert.ToDecimal(0.82);
+                decimal valorFinal = Math.Round(valorIcms * Convert.ToDecimal(0.18), 2);
+                valorTotal = valorTotal + valorFinal;
+                peso_bruto = peso_bruto + (Convert.ToDecimal(produto.Produto.Peso_bruto) * produto.Quantidade);
+                peso_liquido = peso_liquido + (Convert.ToDecimal(produto.Produto.Peso_liquido) * produto.Quantidade);
+            }
+
+            ViewBag.ValorIcms = valorTotal;
+            ViewBag.PesoB = peso_bruto;
+            ViewBag.PesoL = peso_liquido;
+
+
+            string chave = "";
+
+            for (int i = 0; i < 11; i++)
+            {
+                Random c = new Random();
+                var d = r.Next(0, 9999);
+
+                chave = chave + " " + d;
+            }
+
+            ViewBag.Chave = chave;
+
+            decimal valorVenda = listaProduto[0].Venda.Valor_total;
+
+            ViewBag.ValorSeguro = Math.Round((valorVenda * Convert.ToDecimal(0.5)) / 100, 2);
+            ViewBag.ValorOutros = Math.Round((valorVenda * 1) / 100, 2);
+            ViewBag.ValorIPI = Math.Round((valorVenda * Convert.ToDecimal(0.4)) / 100, 2); ;
+            ViewBag.ValorAprox = Math.Round((valorVenda * Convert.ToDecimal(0.3)) / 100, 2);
+            ViewBag.TotalNota = valorVenda + ViewBag.ValorSeguro + ViewBag.ValorOutros + ViewBag.ValorIPI + ViewBag.ValorAprox;
+
+            return View(venda_Produto);
         }
     }
 }

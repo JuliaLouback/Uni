@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Uni.Models.Historico>
+
+@{
+    ViewData["Title"] = "Histórico";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary mt-2">Histórico</h1>
+
+<form asp-controller="Historicoes" asp-action="Index" method="get">
+    <p>
+        <div class="row apagar">
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label class="control-label">Produto</label>
+                <select name="Produto" class="form-control" asp-items="ViewBag.Produto">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label class="control-label">Data Início</label>
+                <input type="date" name="DataIni" class="form-control" />
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label class="control-label">Data Final</label>
+                <input type="date" name="DataFin" class="form-control" />
+            </div>
+
+            <div class="col-sm-12 col-md-2 col-lg-1 mt-2">
+                <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-md-4" />
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-1 mt-2 ml-md-3">
+                <input type="button" value="Imprimir" onclick="window.print()" class="btn btn-outline-success mt-4 mb-4" />
+            </div>
+        </div>
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Data_inicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data_final)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.TextBoxFor(modelItem => item.Data_inicio, "{0:dd/MM/yyyy}", new { @style = "border:none;background-color:transparent;" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(modelItem => item.Data_final, "{0:dd/MM/yyyy}", new { @style = "border:none;background-color:transparent;" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Produto.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor)
+                </td>
+                <!--
+                <td>
+                    <a class="btn btn-info apagar" asp-action="Edit" asp-route-id="@item.Id_historico" asp-route-novo="1">Editar</a>
+                    <a class="btn btn-warning apagar" asp-action="Details" asp-route-id="@item.Id_historico">Detalhes</a>
+                    <a class="btn btn-danger apagar" asp-action="Delete" asp-route-id="@item.Id_historico">Excluir</a>
+                </td>
+            --->
+            </tr>
+        }
+    </tbody>
+</table>

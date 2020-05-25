@@ -1,0 +1,43 @@
+﻿@model Uni.Models.Historico
+
+@{
+    ViewData["Title"] = "Adicionar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary mt-2 mb-2">Adicionar</h1>
+<h4>Histórico</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Data_inicio" class="control-label"></label>
+                <input asp-for="Data_inicio" class="form-control" />
+                <span asp-validation-for="Data_inicio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Data_final" class="control-label"></label>
+                <input asp-for="Data_final" class="form-control" />
+                <span asp-validation-for="Data_final" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Valor" class="control-label"></label>
+                <input asp-for="Valor" class="form-control" />
+                <span asp-validation-for="Valor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Produto_Id_produto" class="control-label">Produto</label>
+                <select asp-for="Produto_Id_produto" class="form-control" asp-items="ViewBag.Produto_Id_produto"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Adicionar" class="btn btn-primary" />
+            </div>
+            <div class="form-group">
+                <a class="btn btn-success" asp-action="Index">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+

@@ -18,7 +18,6 @@ INSERT INTO NCM VALUES
 ('85393100','Máquinas, aparelhos e materiais elétricos, e suas partes'),
 ('84818019','Torneiras, válvulas (incluídas as redutoras de pressão e as termostáticas) e dispositivos semelhantes, para canalizações, caldeiras, reservatórios, cubas e outros recipientes')
 
-delete from NCM
 
 insert into CFOP values ('5102',' Venda de mercadoria adquirida ou recebida de terceiros'),
 ('5403','Venda de mercadoria, adquirida ou recebida de terceiros, sujeita ao regime de substituição tributária, na condição de **contribuinte-substituto**'),

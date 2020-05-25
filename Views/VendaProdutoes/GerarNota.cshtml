@@ -641,7 +641,7 @@
                         </td>
                         <td>
                             <span class="nf-label">VALOR DO SEGURO</span>
-                            <span class="info">0,00</span>
+                            <span class="info">@ViewBag.ValorSeguro</span>
                         </td>
                         <td>
                             <span class="nf-label">DESCONTO</span>
@@ -649,11 +649,11 @@
                         </td>
                         <td>
                             <span class="nf-label">OUTRAS DESP.</span>
-                            <span class="info">0,00</span>
+                            <span class="info">@ViewBag.ValorOutros</span>
                         </td>
                         <td>
                             <span class="nf-label">VALOR DO IPI</span>
-                            <span class="info">0,00</span>
+                            <span class="info">@ViewBag.ValorIPI</span>
                         </td>
                         <td>
                             <span class="nf-label">V. ICMS UF DEST.</span>
@@ -661,7 +661,7 @@
                         </td>
                         <td>
                             <span class="nf-label label-small">V. APROX. DO TRIBUTO</span>
-                            <span class="info">0,00</span>
+                            <span class="info">@ViewBag.ValorAprox</span>
                         </td>
                         <td>
                             <span class="nf-label label-small">VALOR DA CONFINS</span>
@@ -669,7 +669,7 @@
                         </td>
                         <td>
                             <span class="nf-label label-small">V. TOTAL DA NOTA</span>
-                            <span class="info">@Html.DisplayFor(model => model.Valor_total)</span>
+                            <span class="info">@ViewBag.TotalNota</span>
                         </td>
                     </tr>
                 </tbody>

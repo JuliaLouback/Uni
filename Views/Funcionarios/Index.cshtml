@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Uni.Models.Funcionario> 
+﻿@model IEnumerable<Uni.Models.Funcionario>
 
 
 @{
@@ -6,6 +6,10 @@
 }
 
 <style type="text/css">
+
+    .mostrar {
+        display:none;
+    }
     @@media print {
         @@page {
             margin-left: 15mm;
@@ -19,8 +23,11 @@
         .apagar {
             display: none;
         }
-    }
 
+        .mostrar{
+            display:block;
+        }
+    }
 </style>
 
 <h1 class="text-primary mt-2">Funcionários</h1>
@@ -32,15 +39,15 @@
 <form asp-controller="Funcionarios" asp-action="Index" method="get">
     <p>
         <div class="row apagar">
-            <div class="col-sm-12 col-md-4">
+            <div class="col-sm-12 col-md-6 col-lg-3">
                 <label class="control-label">Nome</label>
                 <input type="text" name="SearchString" class="form-control" />
             </div>
-            <div class="col-sm-12 col-md-4">
+            <div class="col-sm-12 col-md-6 col-lg-2">
                 <label class="control-label">CPF</label>
-                <input type="text" name="SearchString2" class="form-control cpf-mask" />
+                <input name="SearchString2" class="form-control" onkeypress="return valCPF(event,this);return false;" maxlength="14" title="###.###.###-##" />
             </div>
-            <div class="col-sm-12 col-md-4">
+            <div class="col-sm-12 col-md-3 col-lg-2">
                 <label class="control-label">Status</label>
                 <select name="SearchString3" class="form-control">
                     <option value="">Todos</option>
@@ -48,7 +55,7 @@
                     <option value="Inativo">Inativo</option>
                 </select>
             </div>
-            <div class="col-sm-12 col-md-4">
+            <div class="col-sm-12 col-md-3 col-lg-2">
                 <label class="control-label">Cargo</label>
                 <select name="SearchString4" class="form-control">
                     <option value="">Todos</option>
@@ -57,20 +64,23 @@
                     <option value="Vendedor">Vendedor</option>
                 </select>
             </div>
-            
-            <div class="col-sm-12 col-md-1 mt-2">
-                <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-4" />
+
+            <div class="col-sm-12 col-md-2 col-lg-1 mt-2">
+                <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-md-4" />
             </div>
-            <div class="col-sm-12 col-md-1 mt-2 ml-3">
+            <div class="col-sm-12 col-md-2 col-lg-1 mt-2 ml-md-3">
                 <input type="button" value="Imprimir" onclick="window.print()" class="btn btn-outline-success mt-4 mb-4" />
             </div>
         </div>
-</p>
+    </p>
 </form>
 
-<table class="table table-striped">
+<table class="table table-responsive-sm table-striped">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cpf)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
@@ -94,6 +104,9 @@
         @foreach (var item in Model)
         {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cpf)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
@@ -119,3 +132,13 @@
         }
     </tbody>
 </table>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/js/cep.js"></script>
+    <script src="~/js/telefone.js"></script>
+    <script src="~/js/cpf.js"></script>
+}

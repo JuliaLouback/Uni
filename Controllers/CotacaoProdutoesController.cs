@@ -32,6 +32,17 @@ namespace Uni.Controllers
             return View();
         }
 
+        public ActionResult ErroLista()
+        {
+            return View();
+        }
+
+        public ActionResult ErroListaEdit()
+        {
+            ViewBag.Editar = idEdit;
+            return View();
+        }
+
         //ADD PRODUTO 
         [HttpPost]
         public ActionResult AddProd(AddProdutoView view)
@@ -161,7 +172,7 @@ namespace Uni.Controllers
 
 
         // GET: Cotação_Produto
-        public async Task<IActionResult> Index(string searchString, string searchString2, string searchString3)
+        public async Task<IActionResult> Index(string funcionario, string cliente, string dataIni, string dataFin)
         {
             listaProduto.Clear();
             ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
@@ -170,20 +181,41 @@ namespace Uni.Controllers
             var cotacaoProdutos = from m in _context.Cotacao.Include(v => v.Cliente).Include(v => v.Funcionario)
                                 select m;
 
-            if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(funcionario))
             {
-                cotacaoProdutos = cotacaoProdutos.Where(s => s.Funcionario_Cpf == searchString);
+                cotacaoProdutos = cotacaoProdutos.Where(s => s.Funcionario_Cpf == funcionario);
             }
 
-            if (!string.IsNullOrEmpty(searchString2))
+            if (!string.IsNullOrEmpty(cliente))
             {
-                cotacaoProdutos = cotacaoProdutos.Where(s => s.Cliente_Cpf == searchString2);
+                cotacaoProdutos = cotacaoProdutos.Where(s => s.Cliente_Cpf == cliente);
             }
 
-            if (!string.IsNullOrEmpty(searchString3))
+            if (!string.IsNullOrEmpty(dataIni) && !string.IsNullOrEmpty(dataFin))
             {
 
-                string[] words = searchString3.Split('/');
+                string[] words = dataIni.Split('/');
+                string[] words1 = dataFin.Split('/');
+
+                string variavel = "";
+                string variavel1 = "";
+
+                for (int i = words.Length; i > 0; i--)
+                {
+                    variavel = variavel + words[i - 1] + "-";
+                    variavel1 = variavel1 + words1[i - 1] + "-";
+                }
+
+                var date = Convert.ToDateTime(variavel.Remove(variavel.Length - 1, 1)).Date;
+                var date1 = Convert.ToDateTime(variavel1.Remove(variavel1.Length - 1, 1)).Date;
+                var nextDay = date1.AddDays(1);
+
+                cotacaoProdutos = cotacaoProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay).OrderBy(x => x.Id_cotacao);
+            }
+            else if (!string.IsNullOrEmpty(dataIni))
+            {
+
+                string[] words = dataIni.Split('/');
 
                 string variavel = "";
 
@@ -252,6 +284,11 @@ namespace Uni.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id_cotacaoProduto, Cotacao")] CotacaoProduto cotacao_Produto)
         {
+
+            if (listaProduto.Count == 0)
+            {
+                return RedirectToAction("ErroLista");
+            }
 
             if (ModelState.IsValid)
             {
@@ -352,6 +389,12 @@ namespace Uni.Controllers
             if (id != idEdit)
             {
                 return NotFound();
+            }
+
+
+            if (listaProduto.Count == 0)
+            {
+                return RedirectToAction("ErroListaEdit");
             }
 
             if (ModelState.IsValid)

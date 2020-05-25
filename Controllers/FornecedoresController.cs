@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Uni.Data;
 using Uni.Models;
@@ -44,6 +46,7 @@ namespace Uni.Controllers
             {
                 fornecedores = fornecedores.Where(u => u.Endereco.Estado.Contains(searchString4));
             }
+
             return View(await fornecedores.ToListAsync());
         }
 

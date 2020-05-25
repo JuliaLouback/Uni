@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "Erro Cotação";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary mt-2 mb-5">Erro ao finalizar cotação!</h1>
+
+<h4>Lista de produtos vazia, insira um ou mais produtos para finalizar a cotação!</h4>
+
+@Html.ActionLink("Voltar", "Edit", new { id = ViewBag.Editar }, new { @class = "btn btn-primary mt-2" })
+

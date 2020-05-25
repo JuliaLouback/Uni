@@ -1,6 +1,5 @@
 ﻿use Uni
 
-
 INSERT INTO NCM VALUES 
 ('25232910','Cal,Cimento Comum'),
 ('25051000','Areia'),

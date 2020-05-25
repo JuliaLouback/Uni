@@ -15,7 +15,7 @@ namespace Uni.Controllers
     public class ProdutoesController : Controller
     {
         private readonly UniContext _context;
-
+        private static string valor;
         public ProdutoesController(UniContext context)
         {
             _context = context;
@@ -153,6 +153,9 @@ namespace Uni.Controllers
             {
                 return NotFound();
             }
+
+            valor = produto.Valor_unitario;
+
             ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "Nome_empresa", produto.Fornecedor_Cnpj);
             ViewData["CFOP_Codigo"] = new SelectList(_context.CFOP, "Codigo", "FullName");
             ViewData["NCM_Codigo"] = new SelectList(_context.NCM, "Codigo", "FullName");
@@ -176,20 +179,27 @@ namespace Uni.Controllers
             {
                 try
                 {
-                    DateTime localDate = DateTime.Now;
 
-                    var historicoAntigo = _context.Historico.OrderByDescending(x => x.Produto_Id_produto).FirstOrDefault();
-                    historicoAntigo.Data_final = localDate;
+                    if (valor != produto.Valor_unitario)
+                    {
+                        DateTime localDate = DateTime.Now;
 
-                    Historico historico = new Historico();
-                    historico.Data_inicio = localDate;
-                    historico.Produto = produto;
-                    historico.Produto_Id_produto = produto.Id_produto;
-                    historico.Valor = produto.Valor_unitario;
+                        var historicoAntigo = _context.Historico.OrderByDescending(x => x.Produto_Id_produto).FirstOrDefault();
+                        historicoAntigo.Data_final = localDate;
+
+                        Historico historico = new Historico();
+                        historico.Data_inicio = localDate;
+                        historico.Produto = produto;
+                        historico.Produto_Id_produto = produto.Id_produto;
+                        historico.Valor = produto.Valor_unitario;
+
+                        _context.Update(historicoAntigo);
+                        _context.Add(historico);
+                    }
+                    
 
                     _context.Update(produto);
-                    _context.Update(historicoAntigo);
-                    _context.Add(historico);
+                  
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

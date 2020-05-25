@@ -22,7 +22,7 @@ namespace Uni.Controllers
         // GET: Historicoes
         public async Task<IActionResult> Index(int? produto, string dataIni, string dataFin)
         {
-            var historico = from m in _context.Historico.Include(v => v.Produto)
+            var historico = from m in _context.Historico.Include(v => v.Produto).OrderByDescending(x => x.Id_historico)
                                   select m;
 
             if (produto != null)

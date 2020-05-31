@@ -1,0 +1,45 @@
+﻿@model Uni.Models.HistoricoStatus
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>HistoricoStatus</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Data_inicio" class="control-label"></label>
+                <input asp-for="Data_inicio" class="form-control" />
+                <span asp-validation-for="Data_inicio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Data_final" class="control-label"></label>
+                <input asp-for="Data_final" class="form-control" />
+                <span asp-validation-for="Data_final" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Funcionario_Cpf" class="control-label"></label>
+                <select asp-for="Funcionario_Cpf" class ="form-control" asp-items="ViewBag.Funcionario_Cpf"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

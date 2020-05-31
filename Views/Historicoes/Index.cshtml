@@ -1,22 +1,15 @@
 ﻿@model IEnumerable<Uni.Models.Historico>
 
 @{
-    ViewData["Title"] = "Histórico";
+    ViewData["Title"] = "Hist. de Produtos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-primary mt-2">Histórico</h1>
+<h1 class="text-primary mt-2">Histórico de Produtos</h1>
 
 <form asp-controller="Historicoes" asp-action="Index" method="get">
     <p>
         <div class="row apagar">
-            <div class="col-sm-12 col-md-6 col-lg-3">
-                <label class="control-label">Produto</label>
-                <select name="Produto" class="form-control" asp-items="ViewBag.Produto">
-                    <option value="">Todos</option>
-                </select>
-            </div>
-
             <div class="col-sm-12 col-md-6 col-lg-3">
                 <label class="control-label">Data Início</label>
                 <input type="date" name="DataIni" class="form-control" />
@@ -25,6 +18,13 @@
             <div class="col-sm-12 col-md-6 col-lg-3">
                 <label class="control-label">Data Final</label>
                 <input type="date" name="DataFin" class="form-control" />
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label class="control-label">Produto</label>
+                <select name="Produto" class="form-control" asp-items="ViewBag.Produto">
+                    <option value="">Todos</option>
+                </select>
             </div>
 
             <div class="col-sm-12 col-md-2 col-lg-1 mt-2">
@@ -37,7 +37,7 @@
     </p>
 </form>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -52,7 +52,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Valor)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -60,10 +59,10 @@
         {
             <tr>
                 <td>
-                    @Html.TextBoxFor(modelItem => item.Data_inicio, "{0:dd/MM/yyyy}", new { @style = "border:none;background-color:transparent;" })
+                    @Html.TextBoxFor(modelItem => item.Data_inicio, "{0:dd/MM/yyyy HH:mm:ss}", new { @style = "border:none;background-color:transparent;" })
                 </td>
                 <td>
-                    @Html.TextBoxFor(modelItem => item.Data_final, "{0:dd/MM/yyyy}", new { @style = "border:none;background-color:transparent;" })
+                    @Html.TextBoxFor(modelItem => item.Data_final, "{0:dd/MM/yyyy HH:mm:ss}", new { @style = "border:none;background-color:transparent;" })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Produto.Nome)

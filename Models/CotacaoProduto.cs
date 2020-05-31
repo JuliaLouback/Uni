@@ -9,6 +9,8 @@ namespace Uni.Models
         public int Id_vendaProduto { get; set; }
         public int Quantidade { get; set; }
 
+        public string Valor_unitario { get; set; }
+
         [Column(TypeName = "decimal(10, 2)")]
         public decimal Valor { get; set; }
 

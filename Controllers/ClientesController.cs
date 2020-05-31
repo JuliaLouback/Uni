@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Uni.Data;
@@ -20,11 +21,11 @@ namespace Uni.Controllers
         }
 
         // GET: Clientes
-        public async Task<IActionResult> Index(string searchString, string searchString2)
+        public async Task<IActionResult> Index(string searchString, string searchString2, int? page)
         {
             var cliente = from m in _context.Cliente.Include(g => g.Telefone)
-                               select m;
-
+                          select m;
+           
             if (!string.IsNullOrEmpty(searchString))
             {
                 cliente = cliente.Where(e => e.Nome.Contains(searchString));
@@ -35,7 +36,23 @@ namespace Uni.Controllers
                 cliente = cliente.Where(h => h.Cpf.Contains(searchString2));
             }
 
-            return View(await cliente.ToListAsync());
+            int PageSize = 5;
+            int TotalCount = cliente.ToList().Count;
+            int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+            if (page == null)
+            {
+                ViewBag.Page = 1;
+            }
+            else
+            {
+                ViewBag.Page = page + 1;
+            }
+            ViewBag.Total = TotalPages;
+            ViewBag.Nome = searchString;
+            ViewBag.Cpf = searchString2;
+
+            return View(await cliente.Skip((page ?? 0) * PageSize).Take(PageSize).ToListAsync());
         }
 
         [HttpPost]

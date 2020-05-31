@@ -8,13 +8,13 @@
 
 <h4>Funcionário</h4>
 <hr />
-<div class="row">
-    <div class="col-md-10 col-sm-12">
+<div class="row" onload="teste()">
+    <div class="col-md-12 col-sm-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Cpf" />
             <div class="row">
-                <div class="col-md-8 col-sm-12">
+                <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Nome" class="control-label"></label>
                         <input asp-for="Nome" class="form-control" />
@@ -24,7 +24,7 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Cpf" class="control-label"></label>
-                        <input asp-for="Cpf" class="form-control" onkeypress="return valCPF(event,this);return false;" maxlength="14" title="###.###.###-##" />
+                        <input asp-for="Cpf" class="form-control" disabled />
                         <span asp-validation-for="Cpf" class="text-danger"></span>
                     </div>
                 </div>
@@ -33,20 +33,6 @@
                         <label asp-for="Data_nascimento" class="control-label"></label>
                         <input asp-for="Data_nascimento" class="form-control" />
                         <span asp-validation-for="Data_nascimento" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-8 col-sm-12">
-                    <div class="form-group">
-                        <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-12 d-none">
-                    <div class="form-group">
-                        <label asp-for="Senha" class="control-label"></label>
-                        <input asp-for="Senha" class="form-control" />
-                        <span asp-validation-for="Senha" class="text-danger"></span>
                     </div>
                 </div>
 
@@ -70,14 +56,36 @@
                 </div>
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
+                        <label asp-for="Salario" class="control-label"></label>
+                        <input asp-for="Salario" class="form-control" />
+                        <span asp-validation-for="Salario" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
                         <label asp-for="Status" class="control-label"></label>
-                        <select asp-for="Status" class="form-control">
+                        <select asp-for="Status" class="form-control" onchange="mudar(event)">
                             <option value="Ativo">Ativo</option>
                             <option value="Inativo">Inativo</option>
                         </select>
                         <span asp-validation-for="Cargo" class="text-danger"></span>
                     </div>
                 </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Senha" class="control-label"></label>
+                        <input asp-for="Senha" class="form-control" id="senha" disabled="true" />
+                        <span asp-validation-for="Senha" class="text-danger"></span>
+                    </div>
+                </div>
+
                 <div class="col-md-3 col-sm-12 d-none">
                     <div class="form-group">
                         <label asp-for="Telefone_Id_telefone" class="control-label"></label>
@@ -148,6 +156,16 @@
         </form>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    function mudar(event) {
+        if (event.target.value == "Ativo") {
+            document.getElementById("senha").disabled = false;
+        }
+    }
+
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

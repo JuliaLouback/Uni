@@ -29,6 +29,12 @@
             @Html.DisplayFor(model => model.Cargo)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Salario)
+        </dt>
+        <dd class="col-sm-10">
+            R$ @Html.DisplayFor(model => model.Salario)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Data_nascimento)
         </dt>
         <dd class="col-sm-10">
@@ -87,5 +93,5 @@
 </div>
 <div>
     <a class="btn btn-success"  asp-action="Index">Voltar</a>
-    <a class="btn btn-primary"  asp-action="Edit" asp-route-id="@Model.Cpf"  asp-route-telefone="@Model.Telefone_Id_telefone" asp-route-endereco="@Model.Endereco_Id_endereco">Editar</a> 
+    <a class="btn btn-primary"  asp-action="Edit" asp-route-id="@Model.Cpf">Editar</a> 
 </div>

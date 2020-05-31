@@ -123,6 +123,9 @@ namespace Uni.Migrations
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(10, 2)");
 
+                    b.Property<string>("Valor_unitario")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id_vendaProduto");
 
                     b.HasIndex("Cotacao_Id_cotacao");
@@ -233,6 +236,11 @@ namespace Uni.Migrations
                         .HasColumnType("nvarchar(80)")
                         .HasMaxLength(80);
 
+                    b.Property<string>("Salario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
                     b.Property<string>("Senha")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
@@ -278,6 +286,61 @@ namespace Uni.Migrations
                     b.HasIndex("Produto_Id_produto");
 
                     b.ToTable("Historico");
+                });
+
+            modelBuilder.Entity("Uni.Models.HistoricoSalario", b =>
+                {
+                    b.Property<int>("Id_historicoSalario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Cargo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Data_final")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Data_inicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Funcionario_Cpf")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Salario")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id_historicoSalario");
+
+                    b.HasIndex("Funcionario_Cpf");
+
+                    b.ToTable("HistoricoSalario");
+                });
+
+            modelBuilder.Entity("Uni.Models.HistoricoStatus", b =>
+                {
+                    b.Property<int>("Id_historicoStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("Data_final")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Data_inicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Funcionario_Cpf")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id_historicoStatus");
+
+                    b.HasIndex("Funcionario_Cpf");
+
+                    b.ToTable("HistoricoStatus");
                 });
 
             modelBuilder.Entity("Uni.Models.NCM", b =>
@@ -421,6 +484,9 @@ namespace Uni.Migrations
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(10, 2)");
 
+                    b.Property<string>("Valor_unitario")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Venda_Id_venda")
                         .HasColumnType("int");
 
@@ -511,6 +577,20 @@ namespace Uni.Migrations
                         .HasForeignKey("Produto_Id_produto")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Uni.Models.HistoricoSalario", b =>
+                {
+                    b.HasOne("Uni.Models.Funcionario", "Funcionario")
+                        .WithMany()
+                        .HasForeignKey("Funcionario_Cpf");
+                });
+
+            modelBuilder.Entity("Uni.Models.HistoricoStatus", b =>
+                {
+                    b.HasOne("Uni.Models.Funcionario", "Funcionario")
+                        .WithMany()
+                        .HasForeignKey("Funcionario_Cpf");
                 });
 
             modelBuilder.Entity("Uni.Models.Produto", b =>

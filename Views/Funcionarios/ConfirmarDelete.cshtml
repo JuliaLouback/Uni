@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "Confirmar Exclusão";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary mt-2 mb-2">Confirmar Exclusão</h1>
+<h3>Tem certeza que deseja excluir todos os dados destes funcionário, incluindo todos os registros do histórico de status e salário?</h3>
+<div class="row mt-3">
+    <div class="col-md-4">
+        <form asp-action="ConfirmarDelete">
+            <div class="form-group">
+                @Html.ActionLink("Voltar", "Index", new { }, new { @class = "btn btn-success" })
+                <input type="submit" value="Excluir" class="btn btn-danger" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

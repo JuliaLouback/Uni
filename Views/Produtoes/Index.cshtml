@@ -31,21 +31,39 @@
 <form asp-controller="Produtoes" asp-action="Index" method="get">
     <p>
         <div class="row apagar">
-            <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="col-sm-12 col-md-6 col-lg-3">
                 <label class="control-label">Nome</label>
-                <input type="text" name="SearchString" class="form-control" />
+                <input type="text" name="Nome" class="form-control" />
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-4">
-                <label class="control-label">Unidade de Medida</label>
-                <input type="text" name="SearchString2" class="form-control" />
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="control-label">Unidade de Medida</label>
+                    <select name="Unidade" class="form-control">
+                        <option value="">Todos</option>
+                        <option value="Bloco">Bloco</option>
+                        <option value="Caixa">Caixa</option>
+                        <option value="Galão">Galão</option>
+                        <option value="Gramas">Gramas</option>
+                        <option value="Quilograma">Quilograma</option>
+                        <option value="Litro">Litro</option>
+                        <option value="Metro">Metro</option>
+                        <option value="Pacote">Pacote</option>
+                        <option value="Peça">Peça</option>
+                        <option value="Unidade">Unidade</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="control-label">Fornecedor</label>
+                    <select name="Cnpj" class="form-control" asp-items="ViewBag.Fornecedor">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-1 mt-2">
+                    <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-md-4" />
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-1 mt-2 ml-md-3">
+                    <input type="button" value="Imprimir" onclick="window.print()" class="btn btn-outline-success mt-4 mb-4" />
+                </div>
             </div>
-            <div class="col-sm-12 col-md-2 col-lg-1 mt-2">
-                <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-md-4" />
-            </div>
-            <div class="col-sm-12 col-md-2 col-lg-1 mt-2 ml-md-3">
-                <input type="button" value="Imprimir" onclick="window.print()" class="btn btn-outline-success mt-4 mb-4" />
-            </div>
-        </div>
     </p>
 </form>
 

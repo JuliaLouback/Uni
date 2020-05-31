@@ -1,0 +1,120 @@
+﻿@model IEnumerable<Uni.Models.HistoricoSalario>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+
+    .mostrar {
+        display: none;
+    }
+
+    @@media print {
+        @@page {
+            margin-left: 15mm;
+            margin-right: 15mm;
+        }
+
+        footer {
+            page-break-after: always;
+        }
+
+        .apagar {
+            display: none;
+        }
+
+        .mostrar {
+            display: block;
+        }
+    }
+</style>
+
+<h1 class="text-primary mt-2">Histórico de Salários</h1>
+
+<form asp-controller="HistoricoSalarios" asp-action="Index" method="get">
+    <p>
+        <div class="row apagar">
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label class="control-label">Data Início</label>
+                <input type="date" name="DataIni" class="form-control" />
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label class="control-label">Data Final</label>
+                <input type="date" name="DataFin" class="form-control" />
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label class="control-label">Funcionário</label>
+                <select name="Funcionario" class="form-control" asp-items="ViewBag.Funcionario">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label class="control-label">Funcionário</label>
+                <select name="Cargo" class="form-control">
+                    <option value="">Todos</option>
+                    <option value="Vendedor">Vendedor</option>
+                    <option value="RH">RH</option>
+                    <option value="Gerente">Gerente</option>
+                </select>
+            </div>
+
+            <div class="col-sm-12 col-md-2 col-lg-1 mt-2">
+                <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-md-4" />
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-1 mt-2 ml-md-3">
+                <input type="button" value="Imprimir" onclick="window.print()" class="btn btn-outline-success mt-4 mb-4" />
+            </div>
+        </div>
+    </p>
+</form>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Data_inicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data_final)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcionario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cargo)
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.TextBoxFor(modelItem => item.Data_inicio, "{0:dd/MM/yyyy HH:mm:ss}", new { @style = "border:none;background-color:transparent;" })
+            </td>
+            <td>
+                @Html.TextBoxFor(modelItem => item.Data_final, "{0:dd/MM/yyyy HH:mm:ss}", new { @style = "border:none;background-color:transparent;" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Funcionario.Nome)
+            </td>
+            <td>
+                R$ @Html.DisplayFor(modelItem => item.Salario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cargo)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

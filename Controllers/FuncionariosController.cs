@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Uni.Data;
+using Uni.Migrations;
 using Uni.Models;
 
 namespace Uni.Controllers
@@ -21,10 +23,8 @@ namespace Uni.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailSender _emailSender;
-        private static string cargos;
-        private static string emails;
-        
-        
+        private static Funcionario funcionarioAdd = new Funcionario();
+           
         public FuncionariosController(UniContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -32,8 +32,6 @@ namespace Uni.Controllers
             _emailSender = emailSender;
             _roleManager = roleManager;
         }
-
-     
 
         // GET: Funcionarios
         public async Task<IActionResult> Index(string searchString, string searchString2, string searchString3, string searchString4)
@@ -123,7 +121,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Cpf,Nome,Email,Cargo,Data_nascimento,Endereco_Id_endereco,Senha,Status,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
+        public async Task<IActionResult> Create([Bind("Cpf,Nome,Email,Cargo,Data_nascimento,Endereco_Id_endereco,Senha,Status,Telefone_Id_telefone,Salario, Telefone, Endereco")] Funcionario funcionario)
         {
             if (ModelState.IsValid)
             {
@@ -137,6 +135,21 @@ namespace Uni.Controllers
                 endereco.Bairro = funcionario.Endereco.Bairro;
                 endereco.Cidade = funcionario.Endereco.Cidade;
                 endereco.Estado = funcionario.Endereco.Estado;
+
+                DateTime localDate = DateTime.Now;
+
+                HistoricoStatus historicoStatus = new HistoricoStatus();
+                historicoStatus.Data_inicio = localDate;
+                historicoStatus.Funcionario = funcionario;
+                historicoStatus.Funcionario_Cpf = funcionario.Cpf;
+                historicoStatus.Status = funcionario.Status;
+
+                HistoricoSalario historicoSalario = new HistoricoSalario();
+                historicoSalario.Data_inicio = localDate;
+                historicoSalario.Funcionario = funcionario;
+                historicoSalario.Funcionario_Cpf = funcionario.Cpf;
+                historicoSalario.Cargo = funcionario.Cargo;
+                historicoSalario.Salario = funcionario.Salario;
 
                 int lastestTelefoneId = telefone.Id_telefone;
                 int lastestEnderecoId = endereco.Id_endereco;
@@ -154,6 +167,8 @@ namespace Uni.Controllers
                 }
 
                 _context.Add(funcionario);
+                _context.Add(historicoStatus);
+                _context.Add(historicoSalario);
                 await _context.SaveChangesAsync();
                 SendEmail(funcionario.Email,funcionario.Senha);
                 return RedirectToAction(nameof(Index));
@@ -200,23 +215,15 @@ namespace Uni.Controllers
             client.Send(mail);
         }
         // GET: Funcionarios/Edit/5
-        public async Task<IActionResult> Edit(string? id, int telefone, int endereco, string cargo, string email)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var funcionario = await _context.Funcionario.FindAsync(id);
-            var telefone1 = await _context.Telefone.FindAsync(telefone);
-            var endereco1 = await _context.Endereco.FindAsync(endereco);
-
-            funcionario.Telefone = telefone1;
-            funcionario.Endereco = endereco1;
-            cargos = cargo;
-      
-            emails = email;
-            System.Diagnostics.Debug.WriteLine(emails);
+            var funcionario = await _context.Funcionario.Include(v => v.Endereco).Include(v => v.Telefone).FirstOrDefaultAsync(x=> x.Cpf == id);
+            funcionarioAdd = funcionario;
 
             if (funcionario == null)
             {
@@ -231,7 +238,7 @@ namespace Uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Cpf,Nome,Email,Senha,Cargo,Data_nascimento,Status,Endereco_Id_endereco,Telefone_Id_telefone, Telefone, Endereco")] Funcionario funcionario)
+        public async Task<IActionResult> Edit(string id, [Bind("Cpf,Nome,Email,Senha,Cargo,Data_nascimento,Status,Endereco_Id_endereco,Telefone_Id_telefone,Salario, Telefone, Endereco")] Funcionario funcionario)
         {
            
 
@@ -255,30 +262,7 @@ namespace Uni.Controllers
                     funcionarios.Nome = funcionario.Nome;
                     funcionarios.Senha = funcionario.Senha;
                     funcionarios.Status = funcionario.Status;
-
-                    if (funcionario.Status == "Inativo")
-                    {
-                        var user = await _userManager.FindByNameAsync(funcionario.Email);
-                        var applicationRole = await _roleManager.FindByNameAsync(funcionario.Cargo);
-                        await _userManager.RemoveFromRoleAsync(user, applicationRole.Name);
-                        await _userManager.DeleteAsync(user);
-                    }
-                    else
-                    {
-                        var user = new IdentityUser { UserName = funcionario.Email, Email = funcionario.Email };
-
-                        if (user == null)
-                        {
-                            var result = await _userManager.CreateAsync(user, funcionario.Senha);
-                            var applicationRole = await _roleManager.FindByNameAsync(funcionario.Cargo);
-                            if (applicationRole != null)
-                            {
-
-                                IdentityResult roleResult = await _userManager.AddToRoleAsync(user, applicationRole.Name);
-                            }
-                        }
-
-                    }
+                    funcionarios.Salario = funcionario.Salario;
 
                     var enderecos = _context.Endereco.First(a => a.Id_endereco == funcionario.Endereco_Id_endereco);
                     enderecos.Numero = funcionario.Endereco.Numero;
@@ -288,14 +272,51 @@ namespace Uni.Controllers
                     enderecos.Cidade = funcionario.Endereco.Cidade;
                     enderecos.Estado = funcionario.Endereco.Estado;
 
+                    if (funcionarioAdd.Status != funcionarios.Status)
+                    {
+                        DateTime localDate = DateTime.Now;
+
+                        var historicoAntigo = _context.HistoricoStatus.OrderByDescending(x => x.Funcionario_Cpf).FirstOrDefault();
+                        historicoAntigo.Data_final = localDate;
+
+                        HistoricoStatus historico = new HistoricoStatus();
+                        historico.Data_inicio = localDate;
+                        historico.Funcionario = funcionarios;
+                        historico.Funcionario_Cpf = funcionarios.Cpf;
+                        historico.Status = funcionarios.Status;
+
+                        _context.Update(historicoAntigo);
+                        _context.Add(historico);
+                    }
+
+                    if (funcionarioAdd.Salario != funcionarios.Salario || funcionarioAdd.Cargo != funcionario.Cargo)
+                    {
+                        DateTime localDate = DateTime.Now;
+
+                        var historicoAntigo = _context.HistoricoSalario.OrderByDescending(x => x.Funcionario_Cpf).FirstOrDefault();
+                        historicoAntigo.Data_final = localDate;
+
+                        HistoricoSalario historico = new HistoricoSalario();
+                        historico.Data_inicio = localDate;
+                        historico.Funcionario = funcionarios;
+                        historico.Funcionario_Cpf = funcionarios.Cpf;
+                        historico.Cargo = funcionarios.Cargo;
+                        historico.Salario = funcionarios.Salario;
+
+                        _context.Update(historicoAntigo);
+                        _context.Add(historico);
+                    }
+
                     _context.Update(funcionarios);
                     _context.Update(telefones);
                     _context.Update(enderecos);
 
                     await _context.SaveChangesAsync();
 
-                    await MudarRole(funcionario.Email, funcionario.Cargo);
-                    SendEmail(funcionario.Email, null);
+                    System.Diagnostics.Debug.WriteLine(funcionario.Senha);
+
+                    await MudarRole(funcionario.Email, funcionario.Cargo, funcionario.Status, funcionario.Senha);
+                    SendEmail(funcionario.Email, funcionario.Senha);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -315,20 +336,22 @@ namespace Uni.Controllers
             return View(funcionario);
         }
 
-        public async Task MudarRole(string email, string cargo)
+        public async Task MudarRole(string email, string cargo, string status, string senha)
         {
-            if (emails != email)
+            var user2 = await _userManager.FindByEmailAsync(funcionarioAdd.Email);
+
+            if (funcionarioAdd.Email != email && user2 != null)
             {
-                var user = await _userManager.FindByEmailAsync(emails);
+                var user = await _userManager.FindByEmailAsync(funcionarioAdd.Email);
                 user.Email = email;
                 user.UserName = email;
 
                 await _userManager.UpdateAsync(user);
+                string cargo1 = "";
 
-
-                if (cargos != cargo)
+                if (funcionarioAdd.Cargo != cargo)
                 {
-                    var applicationRole = await _roleManager.FindByNameAsync(cargos);
+                    var applicationRole = await _roleManager.FindByNameAsync(funcionarioAdd.Cargo);
                     await _userManager.RemoveFromRoleAsync(user, applicationRole.Name);
 
                     var applicationRole1 = await _roleManager.FindByNameAsync(cargo);
@@ -337,22 +360,70 @@ namespace Uni.Controllers
                         await _userManager.AddToRoleAsync(user, applicationRole1.Name);
                     }
 
+                    cargo1 = cargo;
+                } else
+                {
+                    cargo1 = funcionarioAdd.Cargo;
                 }
-                
+
+                if (funcionarioAdd.Status == "Ativo" && status == "Inativo")
+                {
+                    var user1 = await _userManager.FindByNameAsync(email);
+                    var applicationRole = await _roleManager.FindByNameAsync(cargo1);
+                    await _userManager.RemoveFromRoleAsync(user, applicationRole.Name);
+                    await _userManager.DeleteAsync(user);
+                }
+                else if (funcionarioAdd.Status == "Inativo" && status == "Ativo")
+                {
+                    var user1 = new IdentityUser { UserName = email, Email = email };
+
+                    if (user1 == null)
+                    {
+                        var result = await _userManager.CreateAsync(user, senha);
+                        var applicationRole = await _roleManager.FindByNameAsync(cargo1);
+                        if (applicationRole != null)
+                        {
+                            await _userManager.AddToRoleAsync(user1, applicationRole.Name);
+                        }
+                    }
+
+                }
+
             }
-            else if (cargos != cargo)
+            else if (funcionarioAdd.Cargo != cargo)
             {
-                var user = await _userManager.FindByNameAsync(emails);
+                var user = await _userManager.FindByNameAsync(funcionarioAdd.Email);
 
                 if (user != null)
                 {
-                    var applicationRole = await _roleManager.FindByNameAsync(cargos);
+                    var applicationRole = await _roleManager.FindByNameAsync(funcionarioAdd.Cargo);
                     await _userManager.RemoveFromRoleAsync(user, applicationRole.Name);
 
                     var applicationRole1 = await _roleManager.FindByNameAsync(cargo);
                     if (applicationRole1 != null)
                     {
                        await _userManager.AddToRoleAsync(user, applicationRole1.Name);
+                    }
+                }
+            } else
+            {
+                if (funcionarioAdd.Status == "Ativo" && status == "Inativo")
+                {
+                    var user = await _userManager.FindByNameAsync(funcionarioAdd.Email);
+                    var applicationRole = await _roleManager.FindByNameAsync(funcionarioAdd.Cargo);
+                    await _userManager.RemoveFromRoleAsync(user, applicationRole.Name);
+                    await _userManager.DeleteAsync(user);
+                }
+                else if (funcionarioAdd.Status == "Inativo" && status == "Ativo")
+                {
+                    var user = new IdentityUser { UserName = email, Email = email };
+
+                    await _userManager.CreateAsync(user, senha);
+                    var applicationRole = await _roleManager.FindByNameAsync(cargo);
+                    if (applicationRole != null)
+                    {
+
+                        await _userManager.AddToRoleAsync(user, applicationRole.Name);
                     }
                 }
             }
@@ -401,25 +472,45 @@ namespace Uni.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var funcionario = await _context.Funcionario.FindAsync(id);
+            funcionarioAdd = funcionario;
+            return RedirectToAction(nameof(ConfirmarDelete));
+        }
+
+        public ActionResult ConfirmarDelete()
+        {
+            ViewBag.Func = funcionarioAdd.Nome + " - " + funcionarioAdd.Cpf;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ConfirmarDelete(int? teste)
+        {
+            var funcionario = await _context.Funcionario.FindAsync(funcionarioAdd.Cpf);
 
             var funcionarioVenda = await _context.Venda
-            .FirstOrDefaultAsync(m => m.Funcionario_Cpf == id);
+            .FirstOrDefaultAsync(m => m.Funcionario_Cpf == funcionarioAdd.Cpf);
 
             var funcionarioCotacao = await _context.Cotacao
-             .FirstOrDefaultAsync(m => m.Funcionario_Cpf == id);
+             .FirstOrDefaultAsync(m => m.Funcionario_Cpf == funcionarioAdd.Cpf);
 
             if (funcionarioVenda != null || funcionarioCotacao != null)
             {
-                return RedirectToAction("ErroFuncionario", new { id = id });
+                return RedirectToAction("ErroFuncionario", new { id = funcionarioAdd.Cpf });
             }
 
             var telefone = await _context.Telefone.FindAsync(funcionario.Telefone_Id_telefone);
 
             var endereco = await _context.Endereco.FindAsync(funcionario.Endereco_Id_endereco);
 
+            var historico = _context.HistoricoStatus.Where(x => x.Funcionario_Cpf == funcionario.Cpf);
+
+            var historicoSalario = _context.HistoricoSalario.Where(x => x.Funcionario_Cpf == funcionario.Cpf);
+
             _context.Funcionario.Remove(funcionario);
             _context.Telefone.Remove(telefone);
             _context.Endereco.Remove(endereco);
+            _context.HistoricoStatus.RemoveRange(historico);
+            _context.HistoricoSalario.RemoveRange(historicoSalario);
 
             await _context.SaveChangesAsync();
 
@@ -427,8 +518,7 @@ namespace Uni.Controllers
             var applicationRole = await _roleManager.FindByNameAsync(funcionario.Cargo);
             await _userManager.RemoveFromRoleAsync(user, applicationRole.Name);
             await _userManager.DeleteAsync(user);
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
         private bool FuncionarioExists(string id)

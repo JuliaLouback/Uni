@@ -25,5 +25,7 @@ namespace Uni.Data
         public DbSet<Uni.Models.CFOP> CFOP { get; set; }
         public DbSet<Uni.Models.CST> CST { get; set; }
         public DbSet<Uni.Models.Historico> Historico { get; set; }
+        public DbSet<Uni.Models.HistoricoStatus> HistoricoStatus { get; set; }
+        public DbSet<Uni.Models.HistoricoSalario> HistoricoSalario { get; set; }
     }
 }

@@ -27,5 +27,14 @@ namespace Uni.Models
         public int Produto_Id_produto { get; set; }
 
         public string Valor { get; set; }
+
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                return Data_inicio + " - R$ " + Valor;
+            }
+        }
     }
 }

@@ -35,13 +35,13 @@ namespace Uni.Controllers
 
         public ActionResult AddHistorico(int id)
         {
-            ViewData["Data"] = new SelectList(_context.Historico.Where(x => x.Produto.Id_produto == id).OrderByDescending(x => x.Id_historico), "Id_historico", "Data_inicio");
+            ViewData["Data"] = new SelectList(_context.Historico.Where(x => x.Produto.Id_produto == id).OrderByDescending(x => x.Id_historico), "Id_historico", "FullName");
             return View();
         }
 
         public ActionResult EditHistorico(int id)
         {
-            ViewData["Data"] = new SelectList(_context.Historico.Where(x => x.Produto.Id_produto == id).OrderByDescending(x => x.Id_historico), "Id_historico", "Data_inicio");
+            ViewData["Data"] = new SelectList(_context.Historico.Where(x => x.Produto.Id_produto == id).OrderByDescending(x => x.Id_historico), "Id_historico", "FullName");
             return View();
         }
 
@@ -70,8 +70,8 @@ namespace Uni.Controllers
                 listaProduto.RemoveAll(x => x.Produto_Id_produto == view.ProductId);
             }
 
-            produto.Valor_unitario = pesquisaPreco.Valor;
             VendaProduto vendaProduto = new VendaProduto();
+            vendaProduto.Valor_unitario = Convert.ToString(pesquisaPreco.Valor);
             vendaProduto.Produto = produto;
             vendaProduto.Produto_Id_produto = produto.Id_produto;
             vendaProduto.Quantidade = Convert.ToInt32(produtoView.Quantity);
@@ -101,7 +101,7 @@ namespace Uni.Controllers
             }
 
             VendaProduto vendaProduto = new VendaProduto();
-            produto.Valor_unitario = pesquisaPreco.Valor;
+            vendaProduto.Valor_unitario = Convert.ToString(pesquisaPreco.Valor);
             vendaProduto.Produto = produto;
             vendaProduto.Produto_Id_produto = produto.Id_produto;
             vendaProduto.Quantidade = Convert.ToInt32(produtoView.Quantity);
@@ -224,6 +224,8 @@ namespace Uni.Controllers
             ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
             ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
 
+            System.Diagnostics.Debug.WriteLine(dataIni);
+
             var vendaProdutos = from m in _context.Venda.Include(v => v.Cliente).Include(v => v.Funcionario).OrderByDescending(x => x.Id_venda)
                                select m;
 
@@ -239,36 +241,13 @@ namespace Uni.Controllers
 
             if (!string.IsNullOrEmpty(dataIni) && !string.IsNullOrEmpty(dataFin))
             {
-
-                string[] words = dataIni.Split('/');
-                string[] words1 = dataFin.Split('/');
-
-                string variavel = "";
-                string variavel1 = "";
-
-                for (int i = words.Length; i > 0; i--)
-                {
-                    variavel = variavel + words[i - 1] + "-";
-                    variavel1 = variavel1 + words1[i - 1] + "-";
-                }
-
-                var date = Convert.ToDateTime(variavel.Remove(variavel.Length - 1, 1)).Date;
-                var date1 = Convert.ToDateTime(variavel1.Remove(variavel1.Length - 1, 1)).Date;
+                var date = Convert.ToDateTime(dataIni).Date;
+                var date1 = Convert.ToDateTime(dataFin).Date;
                 var nextDay = date1.AddDays(1);
 
                 vendaProdutos = vendaProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay).OrderBy(x => x.Id_venda);
             } else if(!string.IsNullOrEmpty(dataIni)){
-
-                string[] words = dataIni.Split('/');
-
-                string variavel = "";
-
-                for (int i = words.Length ; i > 0; i--)
-                {
-                    variavel = variavel + words[i-1] + "-";
-                }
-
-                var date = Convert.ToDateTime(variavel.Remove(variavel.Length - 1, 1)).Date;
+                var date = Convert.ToDateTime(dataIni).Date;
                 var nextDay = date.AddDays(1);
                 vendaProdutos = vendaProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay);
             }
@@ -315,7 +294,7 @@ namespace Uni.Controllers
         // GET: Venda_Produto/Create
         public IActionResult Create()
         {
-            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo"), "Cpf", "Nome");
+            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo" && x.Cargo == "Vendedor"), "Cpf", "Nome");
             ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
             ViewData["Produto_Id_produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
             ViewData["Venda_Id_venda"] = new SelectList(_context.Venda, "Id_venda", "Id_venda");
@@ -365,6 +344,7 @@ namespace Uni.Controllers
                         Produto_Id_produto = vendaProduto.Produto_Id_produto,
                         Quantidade = vendaProduto.Quantidade,
                         Valor = vendaProduto.Valor,
+                        Valor_unitario = vendaProduto.Valor_unitario,
                         Venda = venda
                     });
 
@@ -411,7 +391,7 @@ namespace Uni.Controllers
 
             idEdit = Convert.ToInt32(id);
 
-            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo" || x.Cpf == venda_Produto.Funcionario_Cpf), "Cpf", "Nome");
+            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo" || x.Cpf == venda_Produto.Funcionario_Cpf && x.Cargo == "Vendedor"), "Cpf", "Nome");
             ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
             ViewData["Produto_Id_produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
             ViewData["Venda_Id_venda"] = new SelectList(_context.Venda, "Id_venda", "Id_venda");
@@ -464,6 +444,7 @@ namespace Uni.Controllers
                         Id_vendaProduto = vendaProduto.Id_vendaProduto,
                         Produto_Id_produto = vendaProduto.Produto_Id_produto,
                         Quantidade = vendaProduto.Quantidade,
+                        Valor_unitario = vendaProduto.Valor_unitario,
                         Valor = vendaProduto.Valor,
                         Venda = vendas
                     });

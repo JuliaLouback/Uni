@@ -23,21 +23,28 @@ namespace Uni.Controllers
 
         //pesquisa
 
-        public async Task<IActionResult> Index(string searchString, string searchString2)
+        public async Task<IActionResult> Index(string nome, string unidade, string cnpj)
         {
-            var produto = from m in _context.Produto
+            System.Diagnostics.Debug.WriteLine(cnpj);
+            ViewData["Fornecedor"] = new SelectList(_context.Fornecedor, "Cnpj", "Nome_empresa");
+
+            var produto = from m in _context.Produto.Include(v => v.Fornecedor)
                           select m;
 
-            if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(nome))
             {
-                produto = produto.Where(j => j.Nome.Contains(searchString));
+                produto = produto.Where(j => j.Nome.Contains(nome));
             }
 
-            if (!string.IsNullOrEmpty(searchString2))
+            if (!string.IsNullOrEmpty(unidade))
             {
-                produto = produto.Where(u => u.Unidade_medida.Contains(searchString2));
+                produto = produto.Where(u => u.Unidade_medida == unidade);
             }
 
+            if (!string.IsNullOrEmpty(cnpj))
+            {
+                produto = produto.Where(u => u.Fornecedor.Cnpj == cnpj);
+            }
             return View(await produto.ToListAsync());
         }
 

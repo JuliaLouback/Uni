@@ -20,55 +20,38 @@ namespace Uni.Controllers
         }
 
         // GET: Historicoes
-        public async Task<IActionResult> Index(int? produto, string dataIni, string dataFin)
+        public async Task<IActionResult> Index(string dataIni, string dataFin, int? produto)
         {
+            System.Diagnostics.Debug.WriteLine(dataIni);
+
+            ViewData["Produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
+
+
             var historico = from m in _context.Historico.Include(v => v.Produto).OrderByDescending(x => x.Id_historico)
                                   select m;
+
+            if (!string.IsNullOrEmpty(dataIni) && !string.IsNullOrEmpty(dataFin))
+            {
+
+                
+                var date = Convert.ToDateTime(dataIni);
+                var date1 = Convert.ToDateTime(dataFin);
+                var nextDay = date1.AddDays(1);
+
+                historico = historico.Where(s => s.Data_inicio.Value.Date >= date && s.Data_final.Value.Date < nextDay);
+            }
+            else if (!string.IsNullOrEmpty(dataIni))
+            {
+
+                var date = Convert.ToDateTime(dataIni).Date;
+                var nextDay = date.AddDays(1);
+                historico = historico.Where(s => s.Data_inicio.Value.Date >= date && (s.Data_inicio.Value.Date < nextDay || s.Data_inicio.Value.Date == null) );
+            }
 
             if (produto != null)
             {
                 historico = historico.Where(s => s.Produto_Id_produto == produto);
             }
-
-            if (!string.IsNullOrEmpty(dataIni) && !string.IsNullOrEmpty(dataFin))
-            {
-
-                string[] words = dataIni.Split('/');
-                string[] words1 = dataFin.Split('/');
-
-                string variavel = "";
-                string variavel1 = "";
-
-                for (int i = words.Length; i > 0; i--)
-                {
-                    variavel = variavel + words[i - 1] + "-";
-                    variavel1 = variavel1 + words1[i - 1] + "-";
-                }
-
-                var date = Convert.ToDateTime(variavel.Remove(variavel.Length - 1, 1)).Date;
-                var date1 = Convert.ToDateTime(variavel1.Remove(variavel1.Length - 1, 1)).Date;
-                var nextDay = date1.AddDays(1);
-
-                historico = historico.Where(s => s.Data_inicio >= date && s.Data_final < nextDay).OrderByDescending(x => x.Id_historico);
-            }
-            else if (!string.IsNullOrEmpty(dataIni))
-            {
-
-                string[] words = dataIni.Split('/');
-
-                string variavel = "";
-
-                for (int i = words.Length; i > 0; i--)
-                {
-                    variavel = variavel + words[i - 1] + "-";
-                }
-
-                var date = Convert.ToDateTime(variavel.Remove(variavel.Length - 1, 1)).Date;
-                var nextDay = date.AddDays(1);
-                historico = historico.Where(s => s.Data_inicio >= date && s.Data_final < nextDay).OrderByDescending(x => x.Id_historico);
-            }
-
-            ViewData["Produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
 
             return View(await historico.ToListAsync());
 

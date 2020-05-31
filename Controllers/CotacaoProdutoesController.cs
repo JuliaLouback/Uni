@@ -96,8 +96,8 @@ namespace Uni.Controllers
                 listaProduto.RemoveAll(x => x.Produto_Id_produto == produtoView.ProductId);
             }
 
-            produto.Valor_unitario = pesquisaPreco.Valor;
             CotacaoProduto vendaProduto = new CotacaoProduto();
+            vendaProduto.Valor_unitario = Convert.ToString(pesquisaPreco.Valor);
             vendaProduto.Produto = produto;
             vendaProduto.Produto_Id_produto = produto.Id_produto;
             vendaProduto.Quantidade = Convert.ToInt32(produtoView.Quantity);
@@ -125,8 +125,9 @@ namespace Uni.Controllers
                 return RedirectToAction("ErroEditProd", new { produto = produto.Nome, quantidade = produto.Estoque_atual });
             }
 
-            produto.Valor_unitario = pesquisaPreco.Valor;
+           
             CotacaoProduto vendaProduto = new CotacaoProduto();
+            vendaProduto.Valor_unitario = Convert.ToString(pesquisaPreco.Valor);
             vendaProduto.Produto = produto;
             vendaProduto.Produto_Id_produto = produto.Id_produto;
             vendaProduto.Quantidade = Convert.ToInt32(produtoView.Quantity);
@@ -306,7 +307,7 @@ namespace Uni.Controllers
         // GET: Cotação_Produto/Create
         public IActionResult Create()
         {
-            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo"), "Cpf", "Nome");
+            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo" && x.Cargo == "Vendedor"), "Cpf", "Nome");
             ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
             ViewData["Produto_Id_produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
             ViewData["Cotacao_Id_cotacao"] = new SelectList(_context.Cotacao, "Id_cotacao", "Id_cotacao");
@@ -358,6 +359,7 @@ namespace Uni.Controllers
                     {
                         Produto_Id_produto = vendaProduto.Produto_Id_produto,
                         Quantidade = vendaProduto.Quantidade,
+                        Valor_unitario = vendaProduto.Valor_unitario,
                         Valor = vendaProduto.Valor,
                         Cotacao = cotacao 
                     });
@@ -403,7 +405,7 @@ namespace Uni.Controllers
 
             var cotacao_Produto = await _context.Cotacao.FirstOrDefaultAsync(x => x.Id_cotacao == id);
 
-            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo" || x.Cpf == cotacao_Produto.Funcionario_Cpf), "Cpf", "Nome");
+            ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario.Where(x => x.Status == "Ativo" || x.Cpf == cotacao_Produto.Funcionario_Cpf && x.Cargo == "Vendedor"), "Cpf", "Nome");
             ViewData["Cliente_Cpf"] = new SelectList(_context.Cliente, "Cpf", "Nome");
             ViewData["Produto_Id_produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
             ViewData["Venda_Id_venda"] = new SelectList(_context.Venda, "Id_venda", "Id_venda");
@@ -463,6 +465,7 @@ namespace Uni.Controllers
                         Cotacao_Id_cotacao = vendaProduto.Cotacao_Id_cotacao,
                         Produto_Id_produto = vendaProduto.Produto_Id_produto,
                         Quantidade = vendaProduto.Quantidade,
+                        Valor_unitario = vendaProduto.Valor_unitario,
                         Valor = vendaProduto.Valor,
                         Cotacao = cotacao
                     });

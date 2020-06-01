@@ -36,7 +36,7 @@ namespace Uni.Controllers
                 cliente = cliente.Where(h => h.Cpf.Contains(searchString2));
             }
 
-            int PageSize = 5;
+            int PageSize = 4;
             int TotalCount = cliente.ToList().Count;
             int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 

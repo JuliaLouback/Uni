@@ -23,7 +23,7 @@ namespace Uni.Controllers
 
         //pesquisa
 
-        public async Task<IActionResult> Index(string nome, string unidade, string cnpj)
+        public async Task<IActionResult> Index(string nome, string unidade, string cnpj, int? page)
         {
             System.Diagnostics.Debug.WriteLine(cnpj);
             ViewData["Fornecedor"] = new SelectList(_context.Fornecedor, "Cnpj", "Nome_empresa");
@@ -45,7 +45,26 @@ namespace Uni.Controllers
             {
                 produto = produto.Where(u => u.Fornecedor.Cnpj == cnpj);
             }
-            return View(await produto.ToListAsync());
+
+            int PageSize = 4;
+            int TotalCount = produto.ToList().Count;
+            int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+            if (page == null)
+            {
+                ViewBag.Page = 1;
+            }
+            else
+            {
+                ViewBag.Page = page + 1;
+            }
+            ViewBag.Total = TotalPages;
+            ViewBag.Nome = nome;
+            ViewBag.Unidade_medida = unidade;
+            ViewBag.Fornecedor = cnpj;
+
+            return View(await produto.Skip((page ?? 0) * PageSize).Take(PageSize).ToListAsync());
+            /*return View(await produto.ToListAsync());*/
         }
 
         [HttpPost]

@@ -210,7 +210,7 @@ namespace Uni.Controllers
 
 
         // GET: Cotação_Produto
-        public async Task<IActionResult> Index(string funcionario, string cliente, string dataIni, string dataFin)
+        public async Task<IActionResult> Index(string funcionario, string cliente, string dataIni, string dataFin, int? page)
         {
             listaProduto.Clear();
             ViewData["Funcionario_Cpf"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
@@ -266,7 +266,26 @@ namespace Uni.Controllers
                 var nextDay = date.AddDays(1);
                 cotacaoProdutos = cotacaoProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay).OrderByDescending(x => x.Id_cotacao); ;
             }
-            return View(await cotacaoProdutos.ToListAsync());
+            int PageSize = 4;
+            int TotalCount = cotacaoProdutos.ToList().Count;
+            int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+            if (page == null)
+            {
+                ViewBag.Page = 1;
+            }
+            else
+            {
+                ViewBag.Page = page + 1;
+            }
+            ViewBag.Total = TotalPages;
+            ViewBag.Funcionario = funcionario;
+            ViewBag.Cliente = cliente;
+            ViewBag.Data_venda = dataIni;
+            ViewBag.Data_venda = dataFin;
+
+            return View(await cotacaoProdutos.Skip((page ?? 0) * PageSize).Take(PageSize).ToListAsync());
+            /*return View(await cotacaoProdutos.ToListAsync());*/
         }
 
 

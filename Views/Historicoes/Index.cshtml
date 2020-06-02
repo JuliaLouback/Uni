@@ -71,13 +71,34 @@
                     @Html.DisplayFor(modelItem => item.Valor)
                 </td>
                 <!--
-                <td>
-                    <a class="btn btn-info apagar" asp-action="Edit" asp-route-id="@item.Id_historico" asp-route-novo="1">Editar</a>
-                    <a class="btn btn-warning apagar" asp-action="Details" asp-route-id="@item.Id_historico">Detalhes</a>
-                    <a class="btn btn-danger apagar" asp-action="Delete" asp-route-id="@item.Id_historico">Excluir</a>
-                </td>
-            --->
+                    <td>
+                        <a class="btn btn-info apagar" asp-action="Edit" asp-route-id="@item.Id_historico" asp-route-novo="1">Editar</a>
+                        <a class="btn btn-warning apagar" asp-action="Details" asp-route-id="@item.Id_historico">Detalhes</a>
+                        <a class="btn btn-danger apagar" asp-action="Delete" asp-route-id="@item.Id_historico">Excluir</a>
+                    </td>
+                --->
             </tr>
         }
     </tbody>
 </table>
+
+<nav aria-label="Page navigation example apagar">
+    <ul class="pagination">
+        @{
+            if (ViewBag.Total > 1)
+            {
+                for (int i = 1; i <= ViewBag.Total; i++)
+                {
+                    if (i == ViewBag.Page)
+                    {
+                        <li class="page-item active"> @Html.ActionLink(i.ToString(), "Index", new { dataIni = ViewBag.Data_venda, dataFin = ViewBag.Data_venda, produto = ViewBag.Produto, Page = @i - 1 }, new { @class = "page-link" })</li>
+                    }
+                    else
+                    {
+                        <li class="page-item"> @Html.ActionLink(i.ToString(), "Index", new { dataIni = ViewBag.Data_venda, dataFin = ViewBag.Data_venda, produto = ViewBag.Produto, Page = @i - 1 }, new { @class = "page-link" })</li>
+                    }
+                }
+            }
+        }
+    </ul>
+</nav>

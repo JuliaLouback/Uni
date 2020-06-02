@@ -36,95 +36,116 @@
                 <input type="text" name="Nome" class="form-control" />
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
-                    <label class="control-label">Unidade de Medida</label>
-                    <select name="Unidade" class="form-control">
-                        <option value="">Todos</option>
-                        <option value="Bloco">Bloco</option>
-                        <option value="Caixa">Caixa</option>
-                        <option value="Galão">Galão</option>
-                        <option value="Gramas">Gramas</option>
-                        <option value="Quilograma">Quilograma</option>
-                        <option value="Litro">Litro</option>
-                        <option value="Metro">Metro</option>
-                        <option value="Pacote">Pacote</option>
-                        <option value="Peça">Peça</option>
-                        <option value="Unidade">Unidade</option>
-                    </select>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-3">
-                    <label class="control-label">Fornecedor</label>
-                    <select name="Cnpj" class="form-control" asp-items="ViewBag.Fornecedor">
-                        <option value="">Todos</option>
-                    </select>
-                </div>
-                <div class="col-sm-12 col-md-2 col-lg-1 mt-2">
-                    <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-md-4" />
-                </div>
-                <div class="col-sm-12 col-md-2 col-lg-1 mt-2 ml-md-3">
-                    <input type="button" value="Imprimir" onclick="window.print()" class="btn btn-outline-success mt-4 mb-4" />
-                </div>
+                <label class="control-label">Unidade de Medida</label>
+                <select name="Unidade" class="form-control">
+                    <option value="">Todos</option>
+                    <option value="Bloco">Bloco</option>
+                    <option value="Caixa">Caixa</option>
+                    <option value="Galão">Galão</option>
+                    <option value="Gramas">Gramas</option>
+                    <option value="Quilograma">Quilograma</option>
+                    <option value="Litro">Litro</option>
+                    <option value="Metro">Metro</option>
+                    <option value="Pacote">Pacote</option>
+                    <option value="Peça">Peça</option>
+                    <option value="Unidade">Unidade</option>
+                </select>
             </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label class="control-label">Fornecedor</label>
+                <select name="Cnpj" class="form-control" asp-items="ViewBag.Fornecedor">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-1 mt-2">
+                <input type="submit" value="Pesquisar" class="btn btn-outline-secondary mt-4 mb-md-4" />
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-1 mt-2 ml-md-3">
+                <input type="button" value="Imprimir" onclick="window.print()" class="btn btn-outline-success mt-4 mb-4" />
+            </div>
+        </div>
     </p>
 </form>
 
-        <table class="table table-responsive-sm table-responsive-md table-striped">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Id_produto)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Nome)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Valor_unitario)
-                    </th>
-                    <th>
-                        Un. Medida
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Estoque_minimo)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Estoque_maximo)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Estoque_atual)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+<table class="table table-responsive-sm table-responsive-md table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id_produto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor_unitario)
+            </th>
+            <th>
+                Un. Medida
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estoque_minimo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estoque_maximo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estoque_atual)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id_produto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    R$ @Html.DisplayFor(modelItem => item.Valor_unitario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Unidade_medida)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estoque_minimo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estoque_maximo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estoque_atual)
+                </td>
+                <td>
+                    <a class="btn btn-info apagar" asp-action="Edit" asp-route-id="@item.Id_produto">Editar</a>
+                    <a class="btn btn-warning apagar" asp-action="Details" asp-route-id="@item.Id_produto">Detalhes</a>
+                    <a class="btn btn-danger apagar" asp-action="Delete" asp-route-id="@item.Id_produto">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation example apagar">
+    <ul class="pagination">
+        @{
+            if (ViewBag.Total > 1)
+            {
+                for (int i = 1; i <= ViewBag.Total; i++)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id_produto)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nome)
-                        </td>
-                        <td>
-                            R$ @Html.DisplayFor(modelItem => item.Valor_unitario)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Unidade_medida)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Estoque_minimo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Estoque_maximo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Estoque_atual)
-                        </td>
-                        <td>
-                            <a class="btn btn-info apagar" asp-action="Edit" asp-route-id="@item.Id_produto">Editar</a>
-                            <a class="btn btn-warning apagar" asp-action="Details" asp-route-id="@item.Id_produto">Detalhes</a>
-                            <a class="btn btn-danger apagar" asp-action="Delete" asp-route-id="@item.Id_produto">Excluir</a>
-                        </td>
-                    </tr>
+                    if (i == ViewBag.Page)
+                    {
+                        <li class="page-item active"> @Html.ActionLink(i.ToString(), "Index", new { nome = ViewBag.Nome, unidade = ViewBag.Unidade_medida, fornecedor = ViewBag.cnpj, Page = @i - 1 }, new { @class = "page-link" })</li>
+                    }
+                    else
+                    {
+                        <li class="page-item"> @Html.ActionLink(i.ToString(), "Index", new { nome = ViewBag.Nome, unidade = ViewBag.Unidade_medida, fornecedor = ViewBag.cnpj, Page = @i - 1 }, new { @class = "page-link" })</li>
+                    }
                 }
-            </tbody>
-        </table>
+            }
+        }
+    </ul>
+</nav>

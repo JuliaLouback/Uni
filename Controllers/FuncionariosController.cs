@@ -60,7 +60,7 @@ namespace Uni.Controllers
                 funcionarios = funcionarios.Where(t => t.Cargo == searchString4);
             }
 
-            int PageSize = 4;
+            int PageSize = 5;
             int TotalCount = funcionarios.ToList().Count;
             int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 
@@ -297,7 +297,7 @@ namespace Uni.Controllers
                     {
                         DateTime localDate = DateTime.Now;
 
-                        var historicoAntigo = _context.HistoricoStatus.OrderByDescending(x => x.Funcionario_Cpf).FirstOrDefault();
+                        var historicoAntigo = _context.HistoricoStatus.Where(x => x.Funcionario_Cpf == funcionario.Cpf && x.Data_final == null).FirstOrDefault();
                         historicoAntigo.Data_final = localDate;
 
                         HistoricoStatus historico = new HistoricoStatus();
@@ -314,7 +314,7 @@ namespace Uni.Controllers
                     {
                         DateTime localDate = DateTime.Now;
 
-                        var historicoAntigo = _context.HistoricoSalario.OrderByDescending(x => x.Funcionario_Cpf).FirstOrDefault();
+                        var historicoAntigo = _context.HistoricoSalario.Where(x => x.Funcionario_Cpf == funcionario.Cpf && x.Data_final == null).FirstOrDefault();
                         historicoAntigo.Data_final = localDate;
 
                         HistoricoSalario historico = new HistoricoSalario();

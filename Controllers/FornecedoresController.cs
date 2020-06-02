@@ -47,7 +47,7 @@ namespace Uni.Controllers
                 fornecedores = fornecedores.Where(u => u.Endereco.Estado.Contains(searchString4));
             }
 
-            int PageSize = 4;
+            int PageSize = 5;
             int TotalCount = fornecedores.ToList().Count;
             int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 

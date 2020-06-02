@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Uni.Models;
 
 namespace Uni.Controllers
 {
+    [Authorize(Roles = "Admin, Gerente")]
     public class HistoricoesController : Controller
     {
         private readonly UniContext _context;
@@ -24,7 +26,7 @@ namespace Uni.Controllers
         {
             System.Diagnostics.Debug.WriteLine(dataIni);
 
-            ViewData["Produto"] = new SelectList(_context.Produto, "Id_produto", "Nome");
+            ViewData["Produto1"] = new SelectList(_context.Produto, "Id_produto", "Nome");
 
 
             var historico = from m in _context.Historico.Include(v => v.Produto).OrderByDescending(x => x.Id_historico)
@@ -53,7 +55,7 @@ namespace Uni.Controllers
                 historico = historico.Where(s => s.Produto_Id_produto == produto);
             }
 
-            int PageSize = 4;
+            int PageSize = 5;
             int TotalCount = historico.ToList().Count;
             int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 

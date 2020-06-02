@@ -252,7 +252,7 @@ namespace Uni.Controllers
                 vendaProdutos = vendaProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay);
             }
 
-            int PageSize = 4;
+            int PageSize = 5;
             int TotalCount = vendaProdutos.ToList().Count;
             int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 

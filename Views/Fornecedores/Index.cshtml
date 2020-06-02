@@ -74,9 +74,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Inscricao_estadual)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Inscricao_municipal)
-            </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -85,7 +83,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nome_empresa)
+                    @Html.DisplayFor(modelItem => item.NomeResumido)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
@@ -96,9 +94,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Inscricao_estadual)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Inscricao_municipal)
-                </td>
+               
                 <td>
                     <a class="btn btn-info apagar" asp-action="Edit" asp-route-id="@item.Telefone_Id_telefone">Editar</a>
                     <a class="btn btn-warning apagar" asp-action="Details" asp-route-id="@item.Telefone_Id_telefone">Detalhes</a>

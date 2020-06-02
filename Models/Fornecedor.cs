@@ -45,6 +45,26 @@ namespace Uni.Models
 
         public int Telefone_Id_telefone { get; set; }
 
+        public string NomeResumido
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Nome_empresa))
+                {
+                    return null;
+                }
+
+                if (Nome_empresa.Length > 30)
+                {
+                    return Nome_empresa.Substring(0, 30) + "...";
+                }
+                else
+                {
+                    return Nome_empresa;
+                }
+            }
+        }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             int[] multiplicador1 = new int[12] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };

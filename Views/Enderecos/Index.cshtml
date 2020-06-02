@@ -62,3 +62,24 @@
 }
     </tbody>
 </table>
+
+<nav aria-label="Page navigation example apagar">
+    <ul class="pagination">
+        @{
+            if (ViewBag.Total > 1)
+            {
+                for (int i = 1; i <= ViewBag.Total; i++)
+                {
+                    if (i == ViewBag.Page)
+                    {
+                        <li class="page-item active"> @Html.ActionLink(i.ToString(), "Index", new { Page = @i - 1 }, new { @class = "page-link" })</li>
+                    }
+                    else
+                    {
+                        <li class="page-item"> @Html.ActionLink(i.ToString(), "Index", new { Page = @i - 1 }, new { @class = "page-link" })</li>
+                    }
+                }
+            }
+        }
+    </ul>
+</nav>

@@ -32,6 +32,26 @@ namespace Uni.Models
 
         public int Telefone_Id_telefone { get; set; }
 
+        public string NomeResumido
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Nome))
+                {
+                    return null;
+                }
+
+                if (Nome.Length > 30)
+                {
+                    return Nome.Substring(0, 30) + "...";
+                }
+                else
+                {
+                    return Nome;
+                }
+            }
+        }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             string Cpf1 = Cpf.Replace(".", "").Replace("-", "");

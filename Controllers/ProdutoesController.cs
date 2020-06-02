@@ -26,7 +26,7 @@ namespace Uni.Controllers
         public async Task<IActionResult> Index(string nome, string unidade, string cnpj, int? page)
         {
             System.Diagnostics.Debug.WriteLine(cnpj);
-            ViewData["Fornecedor"] = new SelectList(_context.Fornecedor, "Cnpj", "Nome_empresa");
+            ViewData["Fornecedor1"] = new SelectList(_context.Fornecedor, "Cnpj", "Nome_empresa");
 
             var produto = from m in _context.Produto.Include(v => v.Fornecedor)
                           select m;
@@ -46,7 +46,7 @@ namespace Uni.Controllers
                 produto = produto.Where(u => u.Fornecedor.Cnpj == cnpj);
             }
 
-            int PageSize = 4;
+            int PageSize = 5;
             int TotalCount = produto.ToList().Count;
             int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 
@@ -175,12 +175,12 @@ namespace Uni.Controllers
             }
 
             var produto = await _context.Produto.FindAsync(id);
+            valor = produto.Valor_unitario;
+
             if (produto == null)
             {
                 return NotFound();
             }
-
-            valor = produto.Valor_unitario;
 
             ViewData["Fornecedor_Cnpj"] = new SelectList(_context.Fornecedor, "Cnpj", "Nome_empresa", produto.Fornecedor_Cnpj);
             ViewData["CFOP_Codigo"] = new SelectList(_context.CFOP, "Codigo", "FullName");
@@ -210,7 +210,7 @@ namespace Uni.Controllers
                     {
                         DateTime localDate = DateTime.Now;
 
-                        var historicoAntigo = _context.Historico.OrderByDescending(x => x.Produto_Id_produto).FirstOrDefault();
+                        var historicoAntigo = _context.Historico.Where(x => x.Data_final == null &&  x.Produto_Id_produto == id).FirstOrDefault();
                         historicoAntigo.Data_final = localDate;
 
                         Historico historico = new Historico();

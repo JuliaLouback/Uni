@@ -78,7 +78,25 @@ namespace Uni.Models
         [Display(Name = "CFOP")]
         public long CFOP_Codigo { get; set; }
 
+        public string NomeResumido
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Nome))
+                {
+                    return null;
+                }
 
+                if (Nome.Length > 45)
+                {
+                    return Nome.Substring(0, 45) + "...";
+                }
+                else
+                {
+                    return Nome;
+                }
+            }
+        }
 
     }
 }

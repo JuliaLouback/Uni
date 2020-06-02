@@ -53,7 +53,7 @@
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
                 <label class="control-label">Fornecedor</label>
-                <select name="Cnpj" class="form-control" asp-items="ViewBag.Fornecedor">
+                <select name="Cnpj" class="form-control" asp-items="ViewBag.Fornecedor1">
                     <option value="">Todos</option>
                 </select>
             </div>
@@ -82,12 +82,7 @@
             <th>
                 Un. Medida
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estoque_minimo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estoque_maximo)
-            </th>
+          
             <th>
                 @Html.DisplayNameFor(model => model.Estoque_atual)
             </th>
@@ -102,19 +97,13 @@
                     @Html.DisplayFor(modelItem => item.Id_produto)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
+                    @Html.DisplayFor(modelItem => item.NomeResumido)
                 </td>
                 <td>
                     R$ @Html.DisplayFor(modelItem => item.Valor_unitario)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Unidade_medida)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estoque_minimo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estoque_maximo)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Estoque_atual)

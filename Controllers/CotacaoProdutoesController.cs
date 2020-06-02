@@ -266,7 +266,7 @@ namespace Uni.Controllers
                 var nextDay = date.AddDays(1);
                 cotacaoProdutos = cotacaoProdutos.Where(s => s.Data_venda >= date && s.Data_venda < nextDay).OrderByDescending(x => x.Id_cotacao); ;
             }
-            int PageSize = 4;
+            int PageSize = 5;
             int TotalCount = cotacaoProdutos.ToList().Count;
             int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 

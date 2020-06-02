@@ -22,9 +22,25 @@ namespace Uni.Controllers
         }
 
         // GET: NCMs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            return View(await _context.NCM.ToListAsync());
+            var teste = _context.NCM;
+
+            int PageSize = 5;
+            int TotalCount = teste.ToList().Count;
+            int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+            if (page == null)
+            {
+                ViewBag.Page = 1;
+            }
+            else
+            {
+                ViewBag.Page = page + 1;
+            }
+            ViewBag.Total = TotalPages;
+
+            return View(await teste.Skip((page ?? 0) * PageSize).Take(PageSize).ToListAsync());
         }
 
         // GET: NCMs/Details/5

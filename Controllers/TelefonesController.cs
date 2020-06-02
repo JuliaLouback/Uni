@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Uni.Data;
@@ -19,9 +20,25 @@ namespace Uni.Controllers
         }
 
         // GET: Telefones
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            return View(await _context.Telefone.ToListAsync());
+            var teste = _context.Telefone;
+
+            int PageSize = 5;
+            int TotalCount = teste.ToList().Count;
+            int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+            if (page == null)
+            {
+                ViewBag.Page = 1;
+            }
+            else
+            {
+                ViewBag.Page = page + 1;
+            }
+            ViewBag.Total = TotalPages;
+
+            return View(await teste.Skip((page ?? 0) * PageSize).Take(PageSize).ToListAsync());
         }
 
         // GET: Telefones/Details/5

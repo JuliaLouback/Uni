@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Uni.Models;
 
 namespace Uni.Controllers
 {
+    [Authorize(Roles = "Admin, Gerente, RH")]
     public class HistoricoSalariosController : Controller
     {
         private readonly UniContext _context;
@@ -22,7 +24,7 @@ namespace Uni.Controllers
         // GET: HistoricoSalarios
         public async Task<IActionResult> Index(string dataIni, string dataFin, string funcionario, string cargo, int? page)
         {
-            ViewData["Funcionario"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
+            ViewData["Funcionario1"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
 
             var historico = from m in _context.HistoricoSalario.Include(v => v.Funcionario).OrderByDescending(x => x.Id_historicoSalario)
                             select m;
@@ -56,7 +58,7 @@ namespace Uni.Controllers
 
             /*return View(await historico.ToListAsync());*/
 
-            int PageSize = 4;
+            int PageSize = 5;
             int TotalCount = historico.ToList().Count;
             int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 

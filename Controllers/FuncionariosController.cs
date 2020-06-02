@@ -34,7 +34,7 @@ namespace Uni.Controllers
         }
 
         // GET: Funcionarios
-        public async Task<IActionResult> Index(string searchString, string searchString2, string searchString3, string searchString4)
+        public async Task<IActionResult> Index(string searchString, string searchString2, string searchString3, string searchString4, int? page)
         {
             var funcionarios = from m in _context.Funcionario.Include(v => v.Telefone)
                          select m;
@@ -59,7 +59,28 @@ namespace Uni.Controllers
             {
                 funcionarios = funcionarios.Where(t => t.Cargo == searchString4);
             }
-            return View(await funcionarios.ToListAsync());
+
+            int PageSize = 4;
+            int TotalCount = funcionarios.ToList().Count;
+            int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+            if (page == null)
+            {
+                ViewBag.Page = 1;
+            }
+            else
+            {
+                ViewBag.Page = page + 1;
+            }
+            ViewBag.Total = TotalPages;
+            ViewBag.Nome = searchString;
+            ViewBag.Cpf = searchString2;
+            ViewBag.Status = searchString3;
+            ViewBag.Cargo = searchString4;
+
+            return View(await funcionarios.Skip((page ?? 0) * PageSize).Take(PageSize).ToListAsync());
+
+            /*return View(await funcionarios.ToListAsync());*/
         }
         
         

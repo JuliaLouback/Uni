@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Uni.Data;
 using Uni.Models;
@@ -22,7 +22,7 @@ namespace Uni.Controllers
         }
 
         // GET: Fornecedores
-        public async Task<IActionResult> Index(string searchString, string searchString2, string searchString3, string searchString4)
+        public async Task<IActionResult> Index(string searchString, string searchString2, string searchString3, string searchString4, int? page)
         {
             var fornecedores = from m in _context.Fornecedor.Include(v => v.Telefone)
                                select m;
@@ -47,8 +47,28 @@ namespace Uni.Controllers
                 fornecedores = fornecedores.Where(u => u.Endereco.Estado.Contains(searchString4));
             }
 
-            return View(await fornecedores.ToListAsync());
+            int PageSize = 4;
+            int TotalCount = fornecedores.ToList().Count;
+            int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+            if (page == null)
+            {
+                ViewBag.Page = 1;
+            }
+            else
+            {
+                ViewBag.Page = page + 1;
+            }
+            ViewBag.Total = TotalPages;
+            ViewBag.Nome = searchString;
+            ViewBag.Cnpj = searchString2;
+            ViewBag.Cidade = searchString3;
+            ViewBag.Estado = searchString4;
+
+            return View(await fornecedores.Skip((page ?? 0) * PageSize).Take(PageSize).ToListAsync());
         }
+
+        /*return View(await fornecedores.ToListAsync());*/
 
         /*
         public async Task<IActionResult> Index()

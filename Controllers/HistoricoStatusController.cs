@@ -20,7 +20,7 @@ namespace Uni.Controllers
         }
 
         // GET: HistoricoStatus
-        public async Task<IActionResult> Index(string dataIni, string dataFin, string funcionario)
+        public async Task<IActionResult> Index(string dataIni, string dataFin, string funcionario, int? page)
         {
             ViewData["Funcionario"] = new SelectList(_context.Funcionario, "Cpf", "Nome");
 
@@ -48,7 +48,26 @@ namespace Uni.Controllers
                 historico = historico.Where(s => s.Funcionario_Cpf == funcionario);
             }
 
-            return View(await historico.ToListAsync());
+            int PageSize = 4;
+            int TotalCount = historico.ToList().Count;
+            int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+            if (page == null)
+            {
+                ViewBag.Page = 1;
+            }
+            else
+            {
+                ViewBag.Page = page + 1;
+            }
+            ViewBag.Total = TotalPages;
+            ViewBag.Data_venda = dataIni;
+            ViewBag.Data_venda = dataFin;
+            ViewBag.Funcionario = funcionario;
+
+            return View(await historico.Skip((page ?? 0) * PageSize).Take(PageSize).ToListAsync());
+
+            /*return View(await historico.ToListAsync());*/
         }
 
         // GET: HistoricoStatus/Details/5

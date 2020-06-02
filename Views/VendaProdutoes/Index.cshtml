@@ -6,20 +6,20 @@
 }
 
 <style type="text/css">
-@@media print {
-    @@page {
-        margin-left: 15mm;
-        margin-right: 15mm;
-    }
+    @@media print {
+        @@page {
+            margin-left: 15mm;
+            margin-right: 15mm;
+        }
 
-    footer {
-        page-break-after: always;
-    }
+        footer {
+            page-break-after: always;
+        }
 
-    .apagar{
-        display:none;
+        .apagar {
+            display: none;
+        }
     }
-}
 </style>
 
 <h1 class="text-primary mt-2">Venda</h1>
@@ -61,7 +61,7 @@
                 <input type="button" value="Imprimir" onclick="window.print()" class="btn btn-outline-success mt-4 mb-4" />
             </div>
         </div>
-</p>
+    </p>
 </form>
 <table class="table table-responsive-sm table-striped">
     <thead>
@@ -82,32 +82,54 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cliente.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Funcionario.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Valor_total)
-            </td>
-            <td>
-                @Html.TextBoxFor(modelItem => item.Data_venda, "{0:dd/MM/yyyy}", new { @style = "border:none;background-color:transparent;" })
-            </td>
-            <!--
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Funcionario.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor_total)
+                </td>
+                <td>
+                    @Html.TextBoxFor(modelItem => item.Data_venda, "{0:dd/MM/yyyy}", new { @style = "border:none;background-color:transparent;" })
+                </td>
+                <!--
 
 
-        <td>
-        @Html.TextBoxFor(modelItem => item.Data_venda, "{0:dd/MM/yyyy}", new { @style = "border:none;background-color:transparent;" })
-    </td>-->
-            <td>
-                <a class="btn btn-info apagar" asp-action="Edit" asp-route-id="@item.Id_venda" asp-route-novo="1">Editar</a>
-                <a class="btn btn-warning apagar" asp-action="Details" asp-route-id="@item.Id_venda">Detalhes</a>
-                <a class="btn btn-danger apagar" asp-action="Delete" asp-route-id="@item.Id_venda">Excluir</a>
-            </td>
-        </tr>
-}
+                    <td>
+                    @Html.TextBoxFor(modelItem => item.Data_venda, "{0:dd/MM/yyyy}", new { @style = "border:none;background-color:transparent;" })
+                </td>-->
+                <td>
+                    <a class="btn btn-info apagar" asp-action="Edit" asp-route-id="@item.Id_venda" asp-route-novo="1">Editar</a>
+                    <a class="btn btn-warning apagar" asp-action="Details" asp-route-id="@item.Id_venda">Detalhes</a>
+                    <a class="btn btn-danger apagar" asp-action="Delete" asp-route-id="@item.Id_venda">Excluir</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<nav aria-label="Page navigation example apagar">
+    <ul class="pagination">
+        @{
+            if (ViewBag.Total > 1)
+            {
+                for (int i = 1; i <= ViewBag.Total; i++)
+                {
+                    if (i == ViewBag.Page)
+                    {
+                        <li class="page-item active"> @Html.ActionLink(i.ToString(), "Index", new { funcionario = ViewBag.Funcionario, cliente = ViewBag.Cliente, dataIni = ViewBag.Data_venda, dataFin = ViewBag.Data_venda, Page = @i - 1 }, new { @class = "page-link" })</li>
+                    }
+                    else
+                    {
+                        <li class="page-item"> @Html.ActionLink(i.ToString(), "Index", new { funcionario = ViewBag.Funcionario, cliente = ViewBag.Cliente, dataIni = ViewBag.Data_venda, dataFin = ViewBag.Data_venda, Page = @i - 1 }, new { @class = "page-link" })</li>
+                    }
+                }
+            }
+        }
+    </ul>
+</nav>

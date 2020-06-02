@@ -20,7 +20,7 @@ namespace Uni.Controllers
         }
 
         // GET: Historicoes
-        public async Task<IActionResult> Index(string dataIni, string dataFin, int? produto)
+        public async Task<IActionResult> Index(string dataIni, string dataFin, int? produto, int? page)
         {
             System.Diagnostics.Debug.WriteLine(dataIni);
 
@@ -53,7 +53,26 @@ namespace Uni.Controllers
                 historico = historico.Where(s => s.Produto_Id_produto == produto);
             }
 
-            return View(await historico.ToListAsync());
+            int PageSize = 4;
+            int TotalCount = historico.ToList().Count;
+            int TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+            if (page == null)
+            {
+                ViewBag.Page = 1;
+            }
+            else
+            {
+                ViewBag.Page = page + 1;
+            }
+            ViewBag.Total = TotalPages;
+            ViewBag.Data_venda = dataIni;
+            ViewBag.Data_venda = dataFin;
+            ViewBag.Produto = produto;
+            
+            return View(await historico.Skip((page ?? 0) * PageSize).Take(PageSize).ToListAsync());
+
+            /*return View(await historico.ToListAsync());*/
 
         }
 

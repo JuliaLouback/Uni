@@ -42,12 +42,12 @@
 
         <div class="col-sm-12 col-md-3 col-lg-2">
             <label class="control-label">Cidade</label>
-            <input type="text" name="SearchString3" class="form-control"/>
+            <input type="text" name="SearchString3" class="form-control" />
         </div>
 
         <div class="col-sm-12 col-md-3 col-lg-1">
             <label class="control-label">Estado</label>
-            <input type="text" name="SearchString4" class="form-control" maxlength="2"/>
+            <input type="text" name="SearchString4" class="form-control" maxlength="2" />
         </div>
 
         <div class="col-sm-6 col-md-2 col-lg-1 mt-2">
@@ -109,6 +109,26 @@
     </tbody>
 </table>
 
+<nav aria-label="Page navigation example apagar">
+    <ul class="pagination">
+        @{
+            if (ViewBag.Total > 1)
+            {
+                for (int i = 1; i <= ViewBag.Total; i++)
+                {
+                    if (i == ViewBag.Page)
+                    {
+                        <li class="page-item active"> @Html.ActionLink(i.ToString(), "Index", new { SearchString = ViewBag.Nome, SearchString2 = ViewBag.Cnpj, SearchString3 = ViewBag.Cidade, SearchString4 = ViewBag.Estado, Page = @i - 1 }, new { @class = "page-link" })</li>
+                    }
+                    else
+                    {
+                        <li class="page-item"> @Html.ActionLink(i.ToString(), "Index", new { SearchString = ViewBag.Nome, SearchString2 = ViewBag.Cnpj, SearchString3 = ViewBag.Cidade, SearchString4 = ViewBag.Estado, Page = @i - 1 }, new { @class = "page-link" })</li>
+                    }
+                }
+            }
+        }
+    </ul>
+</nav>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
